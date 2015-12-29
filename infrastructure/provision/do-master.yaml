@@ -1,0 +1,11 @@
+- hosts: localhost
+  tasks:
+  - digital_ocean: >
+      state=present
+      name="master-{{ master_id }}"
+      ssh_key_ids="{{ ssh_key }}"
+      region_id="{{ location  }}"
+      size_id="{{ size }}"
+      image_id="{{ image }}"
+      private_networking=yes      
+    when: groups["master-{{ master_id }}"] is undefined

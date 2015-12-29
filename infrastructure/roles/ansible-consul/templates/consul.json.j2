@@ -1,0 +1,49 @@
+{
+{% if consul_is_ui == true %}
+  "ui_dir": "{{ consul_home }}/dist",
+{% endif %}
+  "start_join": {{ consul_servers|to_nice_json }},
+{% if consul_disable_remote_exec is defined and consul_disable_remote_exec %}
+  "disable_remote_exec": {{ "true" if consul_disable_remote_exec else "false" }},
+{% endif %}
+  "domain": "{{ consul_domain }}",
+  "data_dir": "{{ consul_data_dir }}",
+  "log_level": "{{ consul_log_level }}",
+{% if consul_syslog %}
+  "enable_syslog": true,
+{% endif %}
+{% if consul_node_name is defined %}
+  "node_name": "{{ consul_node_name }}",
+{% endif %}
+  "server": {{ "true" if consul_is_server else "false" }},
+  "client_addr": "{{ consul_client_address }}",
+  "bind_addr": "{{ consul_bind_address }}",
+{% if consul_advertise_address is defined %}
+  "advertise_addr": "{{ consul_advertise_address }}",
+{% endif %}
+  "ports": {
+    "dns": {{ consul_port_dns }},
+    "rpc": {{ consul_port_rpc }},
+    "serf_lan": {{ consul_port_serf_lan }},
+    "serf_wan": {{ consul_port_serf_wan }},
+    "server": {{ consul_port_server }}
+  },
+  "datacenter": "{{ consul_datacenter }}",
+{% if consul_is_server and consul_bootstrap is defined %}
+  "bootstrap": {{ "true" if consul_bootstrap else "false" }},
+{% endif %}
+{% if consul_encrypt_key is defined %}
+  "encrypt": "{{ consul_encrypt_key }}",
+{% endif %}
+{% if consul_watches is defined %}
+  "watches": {{ consul_watches|to_nice_json }},
+{% endif %}
+{% if consul_encrypt is defined %}
+  "encrypt": "{{ consul_encrypt }}",
+{% endif %}
+{% if consul_is_server == true %}
+  "bootstrap_expect": {{  (masters|length)//2+1 }},
+{% endif %}
+  "rejoin_after_leave": {{ "true" if consul_rejoin_after_leave else "false" }},
+  "leave_on_terminate": {{ "true" if consul_leave_on_terminate else "false" }}
+}

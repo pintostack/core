@@ -1,0 +1,11 @@
+- hosts: localhost
+  tasks:
+  - digital_ocean: >
+      state=present
+      ssh_key_ids="{{ ssh_key }}"
+      name=docker-registry
+      size_id="{{ size }}"
+      region_id="{{ location }}"
+      image_id="{{ image }}"
+      private_networking=yes      
+    when: groups["docker-registry"] is undefined

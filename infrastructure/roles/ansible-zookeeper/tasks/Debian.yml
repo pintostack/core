@@ -1,0 +1,44 @@
+---
+- name: Update apt cache
+  apt: update_cache=yes cache_valid_time={{apt_cache_timeout}}
+  tags: bootstrap
+
+- name: Apt install required system packages.
+  apt: pkg={{item}} state=installed
+  tags: bootstrap
+  with_items:
+    - zookeeper
+    - zookeeperd
+
+- name: Overwrite myid file.
+  template: src=myid.j2 dest=/etc/zookeeper/conf/myid
+  tags: deploy
+  notify:
+    - Restart zookeeper
+
+- name: Overwrite default config file
+  template: src=zoo.cfg.j2 dest=/etc/zookeeper/conf/zoo.cfg
+  tags: deploy
+  notify:
+    - Restart zookeeper
+
+- name: Start zookeeper service
+  service: name=zookeeper state=started enabled=yes
+  tags: deploy
+  
+- name: register in consul service
+  template: src=zookeeper.json.j2 
+            dest=/etc/consul.d/zookeeper.json
+            mode=666
+
+- name: register in consul service
+  template: src=zookeeper_tmp.j2 
+            dest=/tmp/zookeeper.json
+            mode=666
+
+- name: curl
+  shell: curl -X PUT -d @/tmp/zookeeper.json {{ go_to }}
+  
+  
+  
+  

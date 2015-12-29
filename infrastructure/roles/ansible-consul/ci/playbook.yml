@@ -1,0 +1,12 @@
+---
+
+- name: Test Playbook
+  hosts: localhost
+  connection: local
+  sudo: yes
+  
+  roles:
+    - {role: ../../, consul_install_mode: 'server', consul_conf_bootstrap: true, consul_install_webui: true}
+
+- include: main.yml
+

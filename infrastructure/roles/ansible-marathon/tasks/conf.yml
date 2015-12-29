@@ -1,0 +1,71 @@
+---
+
+- name: Create Marathon conf directory
+  file: path=/etc/marathon/conf state=directory
+
+- name: Set required --master option
+  template: src=master.j2 dest=/etc/marathon/conf/master
+
+- name: Remove optional --artifact_store option
+  file: path=/etc/marathon/conf/artifact_store state=absent
+  when: artifact_store == ""
+
+- name: Set optional --artifact_store option
+  template: src=artifact_store.j2 dest=/etc/marathon/conf/artifact_store
+  when: artifact_store != ""
+
+- name: Remove optional --checkpoint option
+  file: path=/etc/marathon/conf/?checkpoint state=absent
+  when: checkpoint == ""
+
+- name: Set optional --checkpoint option
+  file: path=/etc/marathon/conf/?checkpoint state=touch
+  when: checkpoint != ""
+
+- name: Remove optional --zk option
+  file: path=/etc/marathon/conf/zk state=absent
+  when: marathon_zookeeper_state == ""
+
+- name: Set optional --zk option
+  template: src=zk.j2 dest=/etc/marathon/conf/zk
+  when: marathon_zookeeper_state != ""
+
+- name: Set --hostname option
+  template: src=hostname.j2 dest=/etc/marathon/conf/hostname
+
+- name: Set --http-port option
+  template: src=http_port.j2 dest=/etc/marathon/conf/http_port
+  
+- name: Upstart check
+  stat: path=/etc/init/
+  register: etc_init_check
+
+- name: systemd check
+  stat: path=/usr/lib/systemd/system/
+  register: systemd_check
+  
+- name: Upstrart environment variables 
+  lineinfile: dest=/etc/init/marathon.conf backup=yes state=present insertbefore='exec.*' line="env {{ item }}"
+  with_items: marathon_env_vars
+  when: etc_init_check.stat.exists == true
+  
+- name: systemd environment variables
+  template: src=sysconfig.j2 dest=/etc/sysconfig/marathon 
+  when: systemd_check.stat.exists == true
+
+- name: restart marathon
+  shell: sudo service marathon restart
+
+- name: copy to consul.d/
+  template: src=marathon.json.j2 
+            dest=/etc/consul.d/marathon.json
+            mode=666
+
+- name: register in consul
+  template: src=marathon_tmp.j2 
+            dest=/tmp/marathon.json
+            mode=666
+            
+- name: curl
+  shell:  curl -X PUT -d @/tmp/marathon.json {{ go_to }}
+

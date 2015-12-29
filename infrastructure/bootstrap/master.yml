@@ -1,0 +1,81 @@
+- hosts: ~.*master.*
+  user: "{{ user }}"
+  gather_facts: true
+  tasks:
+  - group_by: key=masters
+
+- hosts: masters
+  user: "{{ user }}"
+  sudo: yes
+  gather_facts: true
+  vars:
+     masters_str: |
+        {% set comma = joiner(",") %}
+        {% set eth = "ansible_"+local_iface %}
+        {% for item in groups["masters"] -%}
+            {{ comma() }}{{ hostvars[item][eth].ipv4.address }}
+        {%- endfor %}
+  pre_tasks:
+    - set_fact:
+        a_local_iface: "ansible_{{ local_iface }}"
+    - set_fact:
+        local_ip: "{{ hostvars[inventory_hostname][a_local_iface].ipv4.address }}"
+    - set_fact:
+        masters : "{{ masters_str|trim|split(',') }}" 
+    - set_fact:
+        my_zoo_id : "{{ masters|index_of(local_ip) }}"
+    - set_fact:
+        my_zk_hostnames: "{{masters|join(':2181,')}}:2181"
+    - set_fact:
+        my_quorum: "{{ (masters|length)//2+1 }}"
+    - set_fact:
+        my_hostname: "master-{{ my_zoo_id }}"
+    - debug:
+        msg: "my_zk_hostnames {{ my_zk_hostnames }}"
+    - debug:
+        msg: "my_quorum {{ my_quorum }}"
+    - debug:
+        msg: "zoo_id={{ my_zoo_id }}"
+  roles:
+    - role: ansible-swap
+      swap_file_size: "{{ ansible_memtotal_mb }}M"
+
+    - role: ansible-nginx
+      nginx_worker_processes: 1
+      nginx_remove_default: yes
+      nginx_sites:
+      - id: masters-share
+        add_webroot: yes
+        name: "service.consup.service"
+
+    - role: ansible-consul
+      dns_nameservers: ['127.0.0.1', '8.8.8.8', '8.8.4.4']
+      dns_domain: "node.consul"
+      consul_servers: "{{ masters }}"
+      consul_is_server: true
+      install_bind: true
+      consul_domain: "consul."
+      consul_port_dns: "8600"
+      consul_bind_address: "{{ local_ip }}"
+     
+    - role: ansible-zookeeper 
+      zoo_id: "{{ my_zoo_id }}"
+      zookeeper_hosts: "{{ masters|to_zk }}"
+      zoo_ip: "{{ local_ip }}"
+#      go_to: "http://{{local_ip}}:8500/v1/agent/service/register"
+
+    - role: ansible-mesos
+      mesos_ip: "{{ local_ip }}"
+      mesos_hostname: "{{ ansible_hostname }}"
+      zookeeper_hostnames: "{{ my_zk_hostnames }}"
+      mesos_install_mode: "master"
+      quorum: "{{ my_quorum }}"
+      mesos_version: 0.24.0 
+
+    - role: ansible-marathon
+      marathon_port: 8080
+      zookeeper_hostnames: "{{ my_zk_hostnames }}"
+      marathon_hostname: "{{ ansible_hostname }}"
+#      go_to: "http://{{local_ip}}:8500/v1/agent/service/register
+  post_tasks:
+    - shell: wget -O /var/www/masters-share/htdocs/spark-1.5.2-bin-hadoop2.6.tgz -c http://www.eu.apache.org/dist/spark/spark-1.5.2/spark-1.5.2-bin-hadoop2.6.tgz

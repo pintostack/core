@@ -1,0 +1,36 @@
+- name: Add Ubuntu OpenJDK repo (for additional Java versions)
+  apt_repository: repo='ppa:openjdk-r/ppa' state=present
+  when: ansible_lsb.id == 'Ubuntu' and use_openjdk_ppa
+
+- name: Install os packages
+  apt: 
+    pkg: "{{item}}"
+    state: present 
+    update_cache: yes
+  with_items: 
+    - openjdk-{{java_version}}-jre-headless
+    - openjdk-{{java_version}}-jdk
+
+- name: Find path for new libjvm.so
+  shell: '{ find -L {{java_base_path}} -type f -path "{{java_base_path}}/java-1.{{java_version}}*openjdk*/libjvm.so"; find -L {{java_base_path}} -type f -path "{{java_base_path}}/java-{{java_version}}*openjdk*/libjvm.so"; } | head -n 1'
+  register: libjvm_path_resolved
+  changed_when: false
+
+# Here we get back to ansible land...
+- name: Check for libjvm_path_resolved
+  stat: 
+    path: "{{libjvm_path_resolved.stdout}}"
+  register: libjvm
+
+- name: Link libjvm
+  file: src={{libjvm_path_resolved.stdout}} dest={{java_libjvm_symlink_path}} state=link force=yes
+  when: libjvm.stat.exists == true
+
+- name: Check if symlink created
+  stat: 
+    path: "{{java_libjvm_symlink_path}}"
+  register: libjvm_symlink
+
+- fail: 
+    msg: "Could not create libjvm symlink {{java_libjvm_symlink_path}}"
+  when: libjvm_symlink.stat.exists == False

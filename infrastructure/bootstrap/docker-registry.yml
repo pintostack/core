@@ -1,0 +1,58 @@
+- hosts: ~.*docker-registry.*
+  user: "{{ user }}"
+  gather_facts: true
+  tasks:
+  - group_by: key=dockers
+
+- hosts: ~.*master.*
+  user: "{{ user }}"
+  gather_facts: true
+  tasks:
+  - group_by: key=masters
+  tags:
+  - push
+
+- hosts: dockers
+  gather_facts: true
+  user: "{{ user }}"
+  sudo: yes
+  vars:
+    public_dns : ["8.8.8.8", "8.8.4.4"]
+  vars:
+    masters_str: |
+        {% set comma = joiner(",") %}
+        {% set eth = "ansible_"+local_iface %}
+        {% for item in groups["masters"] -%}
+            {{ comma() }}{{ hostvars[item][eth].ipv4.address }}
+        {%- endfor %}
+  pre_tasks:
+    - set_fact:
+        masters : "{{ masters_str|trim|split(',') }}"
+    - set_fact:
+        a_local_iface: "ansible_{{ local_iface }}"
+    - set_fact:
+        local_ip: "{{ hostvars[inventory_hostname][a_local_iface].ipv4.address }}"
+  tags:
+    - push
+  roles:
+    - role: ansible-swap
+      swap_file_size: "{{ ansible_memtotal_mb }}M"
+
+    - role: ansible-consul
+      dns_nameservers: "{{ public_dns }}"
+      dns_domain: "node.consul"
+      consul_servers: "{{ masters }}"
+      install_bind: false
+      dns_nameservers: "{{ masters }}"
+      consul_is_server: false
+      consul_domain: "consul."
+      consul_client_address: "{{ local_ip }}"
+      consul_bind_address: "{{ consul_client_address }}"
+
+    - role: ansible-docker-registry
+      docker_registry_ip: "{{ local_ip }}"
+      docker_registry_port: 5000
+
+    - role: ansible-docker
+      docker_opts: '"--insecure-registry docker-registry.service.consul:5000"' 
+

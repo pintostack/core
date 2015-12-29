@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+-->
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+	<property>
+		<name>dfs.datanode.hostname</name>
+		<value>${DN_HOSTNAME}</value>
+		<description>
+			VERY IMPORTANT: use hostname accessible by DNS.
+		</description>
+	</property>
+	<property>
+		<name>dfs.datanode.data.dir</name>
+		<value>file:///hadoop/data</value>
+		<description>Determines where on the local filesystem an DFS data node
+		should store its blocks.  If this is a comma-delimited
+		list of directories, then data will be stored in all named
+		directories, typically on different devices.
+		Directories that do not exist are ignored.
+		</description>
+	</property>
+	<property>
+		<name>dfs.blocksize</name>
+		<value>268435456</value>
+		<description>
+			The default block size for new files, in bytes.
+			You can use the following suffix (case insensitive):
+			k(kilo), m(mega), g(giga), t(tera), p(peta), e(exa) to specify the size (such as 128k, 512m, 1g, etc.),
+			Or provide complete size in bytes (such as 134217728 for 128 MB).
+		</description>
+	</property>
+	<property>
+  		<name>dfs.namenode.rpc-address</name>
+		<value>${NN_HOSTNAME}:${NN_RPC_PORT}</value>
+		<description>
+		RPC address that handles all clients requests. In the case of HA/Federation where multiple namenodes exist,
+		the name service id is added to the name e.g. dfs.namenode.rpc-address.ns1
+		dfs.namenode.rpc-address.EXAMPLENAMESERVICE
+		The value of this property will take the form of nn-host1:rpc-port.
+		</description>
+	</property>
+	<property>
+		<name>dfs.namenode.servicerpc-address</name>
+		<value>${NN_HOSTNAME}:${NN_SERVICE_RPC_PORT}</value>
+		<description>
+		RPC address for HDFS Services communication. BackupNode, Datanodes and all other services should be
+		connecting to this address if it is configured. In the case of HA/Federation where multiple namenodes exist,
+		the name service id is added to the name e.g. dfs.namenode.servicerpc-address.ns1
+		dfs.namenode.rpc-address.EXAMPLENAMESERVICE
+		The value of this property will take the form of nn-host1:rpc-port.
+		If the value of this property is unset the value of dfs.namenode.rpc-address will be used as the default.
+		</description>
+	</property>
+	<property>
+		<name>dfs.datanode.use.datanode.hostname</name>
+		<value>true</value>
+		<description>
+		</description>
+	</property>
+	<property>
+	<name>dfs.datanode.address</name>
+		<value>0.0.0.0:${DN_RPC_PORT}</value>
+		<description>
+		The datanode server address and port for data transfer.
+		</description>
+	</property>
+	<property>
+		<name>dfs.datanode.http.address</name>
+		<value>0.0.0.0:${DN_HTTP_PORT}</value>
+		<description>
+		The datanode http server address and port.
+		</description>
+	</property>
+	<property>
+		<name>dfs.datanode.ipc.address</name>
+		<value>0.0.0.0:${DN_IPC_PORT}</value>
+		<description>
+		The datanode ipc server address and port.
+		</description>
+	</property>
+</configuration>

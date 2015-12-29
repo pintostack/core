@@ -1,0 +1,27 @@
+---
+
+- name: Verification
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  sudo: no
+  
+  tasks:
+    - name: Wait for Consul agent to be up
+      wait_for: host="{{ansible_default_ipv4.address}}" port=8500 state=started delay=3 timeout=5
+    
+    - name: Test for Consul endpoint
+      get_url: 
+        url="http://{{ansible_default_ipv4.address}}:8500/v1/catalog/nodes" 
+        dest=/tmp/consul-nodes
+        force=yes
+      register: status
+      failed_when: "'OK' not in status.msg"
+      
+    - name: Test for Consul Web UI
+      get_url: 
+        url="http://{{ansible_default_ipv4.address}}:8500/ui/" 
+        dest=/tmp/consul-webui
+        force=yes
+      register: webui_status
+      failed_when: "'OK' not in webui_status.msg"

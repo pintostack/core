@@ -1,0 +1,16 @@
+# {{ansible_managed}}
+
+description "consul agent {{ consul_install_mode }}"
+
+# Start just after the System-V jobs (rc) to ensure networking and consul
+# are started. This is as simple as possible to ensure compatibility with
+# Ubuntu, Debian, CentOS, and RHEL distros. See:
+# http://upstart.ubuntu.com/cookbook/#standard-idioms
+start on stopped rc RUNLEVEL=[2345]
+respawn
+
+kill timeout 30
+
+script
+    su -c "{{ consul_install_path }}/consul agent -config-dir {{ consul_config_path }}" {{ consul_user }}
+end script

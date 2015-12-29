@@ -1,0 +1,58 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+
+MASTERS = __masters_count
+SLAVES = __slaves_count
+
+Vagrant.configure(2) do |config|
+
+  config.vm.box = "ubuntu/trusty64"
+  config.vm.network "private_network", type: :dhcp
+  #config.cache.enable :apt
+  #config.cache.enable :pip
+
+  (1..MASTERS).each do |i|
+    name = "master-#{i}"
+    config.vm.define name do |machine|
+      machine.vm.hostname = name
+      machine.vm.provider "virtualbox" do |v|
+        v.name = name 
+        v.gui = false
+        v.memory = 1024
+      end
+      machine.vm.provision :ansible do |ansible|
+        ansible.playbook = "playbook.yml"
+      end
+    end
+  end
+  
+  (1..SLAVES).each do |i|
+    name = "slave-#{i}"
+    config.vm.define name do |machine|
+      machine.vm.hostname = name
+      machine.vm.provider "virtualbox" do |v|
+        v.name = name 
+        v.gui = false
+        v.memory = 2048
+        v.cpus = 2
+      end
+      machine.vm.provision :ansible do |ansible|
+        ansible.playbook = "playbook.yml"
+      end
+    end
+  end  
+  
+  name = "docker-registry"
+  config.vm.define name do |dr|
+    dr.vm.hostname = name
+    dr.vm.provider "virtualbox" do |v|
+      v.name = name
+      v.gui = false
+      v.memory = 1024
+    end
+    dr.vm.provision :ansible do |ansible|
+      ansible.playbook = "playbook.yml"
+    end
+  end
+end

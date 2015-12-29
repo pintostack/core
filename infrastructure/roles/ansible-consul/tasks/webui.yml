@@ -1,0 +1,17 @@
+---
+
+- name: Recreate Web UI folder
+  file: path={{ consul_webui_path }} state={{ item }} owner={{ consul_user }} group={{ consul_group }} mode=0755
+  with_items:
+    - absent
+    - directory
+
+- name: Download Web UI
+  get_url: url={{ consul_webui_package_url }} sha256sum={{ consul_webui_package_checksum }} dest=/opt/src/{{ consul_webui_package_name }}
+
+- name: Unarchive Web UI
+  unarchive: copy=no src=/opt/src/{{ consul_webui_package_name }} dest={{ consul_webui_path }} owner={{ consul_user }} group={{ consul_group }}
+  
+- name: Move Web UI files
+  shell: 'mv {{ consul_webui_path }}/dist/* {{ consul_webui_path }}/ && rm -fr {{ consul_webui_path }}/dist'
+

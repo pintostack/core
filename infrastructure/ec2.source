@@ -1,0 +1,13 @@
+# Amazon EC2 parametrs
+AWS_REGION='eu-west-1'
+
+AWS_ACCESS_KEY_ID='AccessKey-ChangeMe'
+AWS_SECRET_ACCESS_KEY='SecretKey-ChangeMe'
+
+AWS_VPC_SUBNET_ID=subnet-changeme
+AWS_AMI=ami-47360a30
+
+BOXUSERNAME=root
+
+AWS_SSH_KEY_NAME=my-key-name
+SSH_KEY_PATH=/home/user/.ssh/ec2.pem

@@ -1,0 +1,14 @@
+# {{ansible_managed}}
+
+[Unit]
+Description=consul agent {{ consul_install_mode }}
+
+[Service]
+Type=simple
+User={{ consul_user }}
+Group={{ consul_group }}
+ExecStart={{ consul_install_path }}/consul agent -config-dir {{ consul_config_path }}
+TimeoutSec=30
+
+[Install]
+WantedBy=multi-user.target

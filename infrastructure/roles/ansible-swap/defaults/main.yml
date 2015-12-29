@@ -1,0 +1,15 @@
+---
+# For more information about default variables see:
+# http://www.ansibleworks.com/docs/playbooks_variables.html#id26
+#
+
+# swap file path
+swap_file_path: /swapfile
+# swap file size (512M, 1G)
+swap_file_size: 512M
+# Configures how often your system swaps data out of RAM to the
+# swap space. This is a value between 0 and 100 that represents a percentage
+swap_swappiness: 10
+# This setting configures how much the system will
+# choose to cache inode and dentry information over other data
+swap_vfs_scache_pressure: 50

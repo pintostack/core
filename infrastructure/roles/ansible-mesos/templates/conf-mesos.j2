@@ -1,0 +1,18 @@
+# {{ansible_managed}}
+
+# special options supported by
+# mesos-init-wrapper
+CLUSTER="{{mesos_cluster_name}}"
+IP={{mesos_ip}}
+LOGS={{mesos_log_location}}
+ULIMIT="{{mesos_ulimit}}"
+ZK="{{ mesos_zookeeper_masters }}"
+
+# mesos env variables
+# see http://mesos.apache.org/documentation/latest/configuration/
+export MESOS_HOSTNAME="{{ mesos_hostname }}"
+
+# Additional configs
+{% for config_item in mesos_additional_configs %}
+export MESOS_{{config_item.name}}={{config_item.value}}
+{% endfor %}

@@ -1,0 +1,14 @@
+---
+
+- hosts: localhost
+  connection: local
+  sudo: yes
+
+  tasks:
+    # Test for scala    
+    - name: Check scala version
+      command: "scala -version"
+      register: scala_version
+
+    - debug: 
+        msg: "{{scala_version.stderr}} was installed"

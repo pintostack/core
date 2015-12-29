@@ -1,0 +1,24 @@
+- hosts: ~.*docker-registry.*
+  user: "{{ user }}"
+  sudo: yes
+  tasks:
+    - name: mkdir ~/docker/{{ name }}
+      file: path="/home/{{ user }}/docker/{{ name }}" state=directory
+            owner={{ user }} 
+            mode=666
+
+    - name: cp "{{ name }}" to registry
+      copy: src="../docker/{{ name }}"
+            dest="/home/{{ user }}/docker"
+
+    - name: make boostrap file executable
+      command: chmod +x /home/{{ user }}/docker/{{ name }}/bootstrap.sh
+
+    - name: build {{ name }}
+      command: docker build -t {{ name }} /home/{{ user }}/docker/{{ name }}/.
+
+    - name: tag docker img {{ name }}
+      command: docker tag -f {{ name }} docker-registry.service.consul:5000/{{ name }}
+   
+    - name: push img {{ name }}
+      command: docker push docker-registry.service.consul:5000/{{ name }}
