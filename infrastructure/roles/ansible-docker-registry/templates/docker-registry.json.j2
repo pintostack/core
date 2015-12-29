@@ -1,0 +1,12 @@
+{
+"service": {
+    "Name": "docker-registry",
+    "ID": "docker-registry",
+    "Address": "{{ docker_registry_ip }}", 
+    "Port": {{ docker_registry_port }},
+    "Check": {
+       "Script": "nc -w 5 -z {{ docker_registry_ip }} {{ docker_registry_port }} >/dev/null",
+       "Interval": "20s"
+             }
+           }
+}

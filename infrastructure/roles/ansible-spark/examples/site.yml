@@ -1,0 +1,12 @@
+---
+- hosts: all
+
+  vars:
+    java_version: "7u51-2.4.*"
+
+  pre_tasks:
+    - name: Update APT cache
+      apt: update_cache=yes
+
+  roles:
+    - { role: "azavea.spark" }

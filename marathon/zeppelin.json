@@ -1,0 +1,89 @@
+{
+    "id": "/zeppelin",
+    "cpus": 1,
+    "mem": 768.0,
+    "requirePorts": false,
+    "instances": 1,
+    "cmd": "./bootstrap.sh",
+    "container": {
+        "type": "DOCKER",
+        "docker": {
+            "image": "docker-registry.service.consul:5000/zeppelin",
+            "forcePullImage": true,
+            "network": "BRIDGE",
+            "portMappings": [
+                {
+                    "containerPort": 31080,
+                    "hostPort": 31080,
+                    "protocol": "tcp"
+                },
+                {
+                    "containerPort": 0,
+                    "hostPort": 0,
+                    "protocol": "tcp"
+                },
+                {
+                    "containerPort": 0,
+                    "hostPort": 0,
+                    "protocol": "tcp"
+                },
+                {
+                    "containerPort": 0,
+                    "hostPort": 0,
+                    "protocol": "tcp"
+                },
+                {
+                    "containerPort": 0,
+                    "hostPort": 0,
+                    "protocol": "tcp"
+                },
+                {
+                    "containerPort": 0,
+                    "hostPort": 0,
+                    "protocol": "tcp"
+                },
+                {
+                    "containerPort": 0,
+                    "hostPort": 0,
+                    "protocol": "tcp"
+                },
+                {
+                    "containerPort": 0,
+                    "hostPort": 0,
+                    "protocol": "tcp"
+                }
+            ],
+            "privileged": false
+        },
+        "volumes": [
+            {
+                "containerPath": "/data",
+                "hostPath": "/var/data/zeppelin/data",
+                "mode": "RW"    
+            },
+            {
+                "containerPath": "/log",
+                "hostPath": "/var/data/zeppelin/log",
+                "mode": "RW"
+            }
+        ]
+    },
+    "constraints": [["hostname", "UNIQUE"]],
+    "healthChecks": [
+        {
+            "protocol": "TCP",
+            "gracePeriodSeconds": 60,
+            "intervalSeconds": 5,
+            "portIndex": 0,
+            "timeoutSeconds": 5,
+            "maxConsecutiveFailures": 3
+        }
+    ],
+    "backoffSeconds": 1,
+    "backoffFactor": 1.15,
+    "maxLaunchDelaySeconds": 3600,
+    "upgradeStrategy": {
+        "minimumHealthCapacity": 0.5,
+        "maximumOverCapacity": 0.2
+    }
+}

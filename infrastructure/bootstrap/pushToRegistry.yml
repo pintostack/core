@@ -1,0 +1,32 @@
+ - hosts: docker-registry
+   user: "{{ user }}"
+   sudo: yes
+   vars: 
+     docker_registry_port: 5000
+     path_to_docker: ~/docker
+   tasks: 
+    - name: mkdir ~/docker{{ name }}
+      file: path="/home/{{ user }}/docker/{{ name }}" state=directory
+            owner={{ user }} 
+            mode=666
+      
+    - name: cp "{{ name }}" to registry
+      copy: src="{{ path_to_docker }}/{{ name }}"
+                   dest="/home/{{ user }}/docker"
+    
+    - name: build {{ name }}
+      command: docker build -t {{ name }} /home/{{ user }}/docker/{{ name }}/.
+      
+    - name: tag docker img {{ name }}
+      command: docker tag {{ name }} docker-registry.service.consul:{{ docker_registry_port }}/{{ name }}
+   
+    - name: push img {{ name }}
+      command: docker push docker-registry.service.consul:{{ docker_registry_port}}/{{ name }}
+
+   
+   
+   
+   
+   
+   
+   

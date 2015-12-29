@@ -1,0 +1,16 @@
+---
+- include_vars: "{{ ansible_os_family }}.yml"
+
+- include: Debian.yml
+  when: ansible_os_family == "Debian"
+
+- include: RedHat.yml
+  when: ansible_os_family == "RedHat"
+
+- include: conf.yml
+
+#- include: haproxy.yml
+#  when: haproxy_script_location != ""
+
+- name: Start Marathon service
+  service: name=marathon state=restarted enabled=yes 

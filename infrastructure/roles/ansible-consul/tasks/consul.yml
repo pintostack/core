@@ -1,0 +1,54 @@
+---
+
+- name: Create group
+  group: name={{ consul_group }} state=present system=true
+
+- name: Create user
+  user: name={{ consul_user }} state=present group={{ consul_group }} system=true comment='System user for running Consul'
+
+- name: Create folders
+  file: path={{ item.path }} state=directory owner={{ item.owner }} group={{ item.group }} mode=0755
+  with_items:
+    - { path: "{{ consul_data_path }}", owner: "{{ consul_user }}", group: "{{ consul_group }}" }
+    - { path: "{{ consul_config_path }}", owner: root, group: root }
+    - { path: '/opt/src', owner: root, group: root }
+
+- name: Download
+  get_url: url={{ consul_package_url }} sha256sum={{ consul_package_checksum }} dest=/opt/src/{{ consul_package_name }}
+
+- name: Unarchive
+  unarchive: copy=no src=/opt/src/{{ consul_package_name }} dest={{ consul_install_path }} owner=root group=root mode=0755
+
+- name: Elevate
+  capabilities: path={{ consul_install_path }}/consul capability=cap_net_bind_service+ep state=present
+  notify:
+    - Restart consul
+
+  # Consul loads the configuration files in lexical order.
+  # Using `00` prefix to make sure defaults are first. 
+  # See http://www.consul.io/docs/agent/options.html
+- name: Configure
+  template: src=00-defaults.json.j2 dest={{ consul_config_path }}/00-defaults.json
+  notify:
+    - Restart consul
+
+- name: Upstart check
+  stat: path=/etc/init/
+  register: etc_init
+
+- name: systemd check
+  stat: path=/usr/lib/systemd/system/
+  register: systemd_check
+
+- name: Upstart script
+  template: src=init-consul.j2 dest=/etc/init/consul.conf
+  when: etc_init.stat.exists == true and systemd_check.stat.exists == false
+  notify:
+    - Restart consul
+  
+- name: systemd script
+  template: src=consul.service.j2 dest=/usr/lib/systemd/system/consul.service
+  when: systemd_check.stat.exists == true and etc_init.stat.exists == false
+  notify:
+    - Restart consul
+

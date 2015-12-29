@@ -1,0 +1,7 @@
+---
+
+- name: Install os packages
+  yum: name={{item}} state=present
+  with_items:
+    - unzip
+

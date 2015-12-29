@@ -1,0 +1,56 @@
+- name: install -r req (apt)
+  apt: name={{item}} state=present update_cache=yes
+  with_items:
+     - build-essential
+     - libevent-dev
+     - libssl-dev
+     - liblzma-dev
+     - python-dev
+     - python-pip
+     - python-passlib
+     - swig
+     - selinux-utils
+     - docker.io
+
+- name: install -r req (pip)
+  pip: name={{item}} state=present
+  with_items:
+     - blinker==1.3
+     - Flask==0.10.1
+     - gevent==1.0.1
+     - gunicorn==19.1.1
+     - PyYAML==3.11
+     - requests==2.3.0
+     - M2Crypto==0.22.3
+     - sqlalchemy==0.9.4
+     - setuptools==5.8
+     - docker-registry
+
+- name: create folder
+  shell: /bin/mkdir -p /var/docker-registry && /bin/mkdir -p /var/log/docker-registry
+
+- name: cp config
+  copy: src=config.yml dest=/usr/local/lib/python2.7/dist-packages/docker_registry/lib/../../config/config.yml
+        mode=666
+
+- name: cp upstart script
+  template: src=docker-registry.conf.j2 dest=/etc/init/docker-registry.conf
+            mode=666
+
+- name: run 
+  shell: sudo service docker-registry restart
+  
+- name: register in consul service
+  template: src=docker-registry.json.j2 
+            dest=/etc/consul.d/docker-registry.json
+            mode=666
+  
+- name: register in consul 
+  template: src=docker-registry_tmp.j2 
+            dest=/tmp/docker-registry.json
+            mode=666
+            
+- name: registry in consul
+  shell: curl -X PUT -d @/tmp/docker-registry.json {{ go_to }}
+
+

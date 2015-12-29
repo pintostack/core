@@ -1,0 +1,6 @@
+---
+
+- name: Apt install required system packages.
+  apt: pkg={{item}} state=installed
+  with_items:
+    - zip

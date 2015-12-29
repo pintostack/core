@@ -1,0 +1,48 @@
+{
+    "id": "/docker",
+    "cpus": 0.25,
+    "mem": 512.0,
+    "requirePorts": false,
+    "instances": 1,
+    "container": {
+        "type": "DOCKER",
+        "docker": {
+            "image": "registry:2",
+            "network": "BRIDGE",
+            "portMappings": [
+                {
+                    "containerPort": 5000,
+                    "servicePort" : 5000,
+                    "hostPort": 31500,
+                    "protocol": "tcp"
+                }
+            ],
+            "privileged": false
+        },
+        "volumes": [
+            {
+                "containerPath": "/var/lib/registry",
+                "hostPath": "/var/data/docker",
+                "mode": "RW"
+            }
+        ]
+    },
+    "constraints": [["hostname", "LIKE", "mesos-slave-1"]],
+    "healthChecks": [
+        {
+            "protocol": "TCP",
+            "gracePeriodSeconds": 60,
+            "intervalSeconds": 5,
+            "portIndex": 0,
+            "timeoutSeconds": 5,
+            "maxConsecutiveFailures": 3
+        }
+    ],
+    "backoffSeconds": 1,
+    "backoffFactor": 1.15,
+    "maxLaunchDelaySeconds": 3600,
+    "upgradeStrategy": {
+        "minimumHealthCapacity": 0.5,
+        "maximumOverCapacity": 0.2
+    }
+}

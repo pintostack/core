@@ -1,0 +1,15 @@
+# {{ ansible_managed }}
+{% if dns_domain is defined %}
+domain {{dns_domain}}
+{% endif %}
+{% if consul_is_server == true %}
+nameserver {{ consul_client_address }}
+{% endif %}
+{% if consul_is_server == true %}
+{% for nameserver in consul_servers %}
+nameserver {{ nameserver }}
+{% endfor %}
+{% endif %}
+{% if dns_searchs is defined %}
+search {% for name in dns_searchs %}{{name}} {% endfor %}
+{% endif %}

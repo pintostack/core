@@ -1,0 +1,47 @@
+# About
+This folder contains infrastructure provision and bootstrap scripts in ansible.
+
+Cluster deployment process could be logically and physically split into two separate steps:
+* Provisioning (new master, slave and docker-registry machines are created)
+* Boostrapping (machines are configured to run in cluster)
+
+First step creates virtual resources that are later used by bootstrap phase. After this stage completes you can access list of resources in provider and see new virtual machines.
+It's important to notice that provisioning depends on the resource provider, and requires additional settings to be done on provider side.
+Bootstrap stage however less dependant, and uses ansible to deploy packages, configure software settings.
+
+# Notes
+It is suggested to run ansible script from the same VPC where you will be deploying your cluster. Call it soft-cluster-launchpad for example.
+
+# Prerequisite
+
+Depending on your virtual resource provider, it might be required to install additional software, section below defines common prerequisites.
+
+## Prerequisite. Ansible
+Download and install Ansible 2.1 from http://releases.ansible.com/ansible/ansible-latest.tar.gz
+Other options to obtain fresh Ansible are to use pip (to get freshest version from github ```pip install git+https://github.com/ansible/ansible.git ```, next metod do not work now on some platforms ```pip install ansible``` ), mac users can use brew (```brew install ansible```).
+Depending on system configuration it might be required to run installation command as super user.
+
+NOTE: Version > 2.1 strictly required. This way is recomended now ```pip install git+https://github.com/ansible/ansible.git```
+
+# Provisioning cluster machines
+
+The package is designed to behave in a same way in all providers, however there are differences in what configuration variables are required for various providers.
+
+## Azure
+[Please follow the link for detailed instructions.](README.azure.md)
+
+## Vagrant
+[Please follow the link for detailed instructions.](README.vagrant.md)
+
+### DigitalOcean
+[Please follow the link for detailed instructions.](README.digitalocean.md)
+
+### AWS
+[Please follow the link for detailed instructions.](README.ec2.md)
+
+## Bootstrap
+In order to boostrap the cluster run ```bootstrap-master.sh```, ```bootstrap-slave.sh``` and ```bootstrap-docker-registry.sh``` this will install and configure all newely provisioned machines and ensure the state of the existing ones, this step may take a while and several times console can freez for several minutes, please be patient.
+
+NOTE: Now after successful bootstrap you can find an ip address of master-1 host in your provider web console and open in browser http://<MASTER-1_IP>:5050 and http://<MASTER-1_IP>:8080 to see the cluster managment interfaces. If everithing works like expected you can proceed installing bundled application on this platform with ```./docker-push.sh <DOCKER DIR NAME>``` and ```./marathon-push.sh <DOCKER IMAGE MRATHON DESC>.json```.
+
+

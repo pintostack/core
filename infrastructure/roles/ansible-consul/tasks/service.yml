@@ -1,0 +1,12 @@
+- name: cp ping check
+  template: >
+       src=ping.json.j2
+       dest=/etc/consul.d/ping.json
+       owner={{consul_user}}
+       group={{consul_group}}
+       mode=0666
+
+- service: >
+    name=consul
+    state=running
+    enabled=yes

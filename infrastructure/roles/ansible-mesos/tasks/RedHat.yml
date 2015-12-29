@@ -1,0 +1,17 @@
+---
+- name: Add mesosphere repo
+  yum: name={{ mesosphere_repo }} state=present
+
+- name: Downloading and enable the EPEL repository definitions.
+  yum: name={{ epel_repo }} state=present
+
+- name: Install os packages
+  yum: name={{item}} state=present
+  with_items:
+    - wget
+    - curl
+    - unzip
+    - libselinux-python 
+    - python-setuptools
+    - mesos-{{mesos_version}}
+    

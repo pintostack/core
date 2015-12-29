@@ -1,0 +1,50 @@
+{
+    "id": "/postgres",
+    "cpus": 1,
+    "mem": 128,
+    "cmd": "./entrypoint.sh postgres",
+    "requirePorts": false,
+    "instances": 1,
+    "container": {
+        "type": "DOCKER",
+        "docker": {
+            "image": "docker-registry.service.consul:5000/postgres",
+            "forcePullImage": true,
+            "network": "BRIDGE",
+            "portMappings": [
+                {
+                    "containerPort": 0,
+                    "servicePort" : 0,
+                    "hostPort": 0,
+                    "protocol": "tcp"
+                }
+            ],
+            "privileged": false
+        },
+        "volumes": [
+            {
+                "containerPath": "/var/data/postgres",
+                "hostPath": "/var/data/postgres",
+                "mode": "RW"
+            }
+        ]
+    },
+    "constraints": [["hostname", "UNIQUE"]],
+    "healthChecks": [
+        {
+            "protocol": "TCP",
+            "gracePeriodSeconds": 60,
+            "intervalSeconds": 5,
+            "portIndex": 0,
+            "timeoutSeconds": 5,
+            "maxConsecutiveFailures": 3
+        }
+    ],
+    "backoffSeconds": 1,
+    "backoffFactor": 1.15,
+    "maxLaunchDelaySeconds": 3600,
+    "upgradeStrategy": {
+        "minimumHealthCapacity": 0.5,
+        "maximumOverCapacity": 0.2
+    }
+}

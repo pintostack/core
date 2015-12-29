@@ -1,0 +1,52 @@
+---
+consul_version: 0.5.2
+consul_archive: "{{ consul_version }}_linux_amd64.zip"
+consul_ui_archive: "{{ consul_version }}_web_ui.zip"
+consul_download: "https://dl.bintray.com/mitchellh/consul/{{ consul_archive }}"
+consul_ui_download: "https://dl.bintray.com/mitchellh/consul/{{ consul_ui_archive }}"
+consul_download_folder: /tmp
+consul_home: /opt/consul
+consul_config_dir: /etc/consul.d
+consul_config_file: /etc/consul.conf
+consul_log_file: /var/log/consul
+consul_data_dir: "{{ consul_home }}/data"
+consul_ui_dir: "{{ consul_home }}/dist"
+consul_binary: consul
+consul_user: consul
+consul_group: sudo
+consul_domain: node.consul.
+consul_is_server: true
+install_bind: false
+consul_is_ui: false
+consul_servers:  
+consul_log_level: "INFO"
+consul_syslog: false
+consul_rejoin_after_leave: true
+consul_leave_on_terminate: false
+consul_bind_address: 
+consul_client_address: "127.0.0.1"
+consul_datacenter: "dc1"
+consul_ui_server_name: "{{ ansible_fqdn }}"
+consul_ui_require_auth: false
+consul_ui_auth_user_file: /etc/htpasswd/consul
+consul_enable_nginx_config: false
+consul_disable_remote_exec: false
+consul_install_dnsmasq: false
+consul_port_dns: 8600
+consul_port_rpc: 8400
+consul_port_serf_lan: 8301
+consul_port_serf_wan: 8302
+consul_port_server: 8300
+dns_nameservers: ['8.8.8.8', '8.8.4.4']
+dns_remove_resolvconf: true
+dns_domain: node.consul
+dns_searchs: 
+   - "{{dns_domain}}"
+dns_dhclient_rule: "supersede" # can be supersede or prepend
+
+dns_dhclient_file: "/etc/dhcp/dhclient.conf"
+dns_forced_in_dhclientconf: "{{ansible_os_family == 'Debian' or ansible_os_family == 'Redhat'}}"
+
+
+
+

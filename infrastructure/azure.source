@@ -1,0 +1,12 @@
+MASTER_PORTS=22,80,5050,8080
+SLAVE_PORTS=22,80
+DOCKER_PORTS=22,80
+CER_FILE=~/.ssh/azure.cer
+PEM_FILE=~/.ssh/azure.pem
+PASSWD=Passw0+rd1
+STORAGE_NAME=changeme
+CLUSTER=changeme-cluster
+LOCATION="Central US"
+BOXUSERNAME=ubuntu
+VERBOSITY=-vvvv
+

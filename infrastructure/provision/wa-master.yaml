@@ -1,0 +1,15 @@
+- hosts: localhost
+  tasks:
+  - azure:
+      name: "{{ cluster }}-master-{{ master_id }}"
+      role_size: Small
+      image: b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu-14_04_3-LTS-amd64-server-20150805-en-us-30GB
+      location: "{{ location }}"
+      user: "{{ username }}"
+      ssh_cert_path: "{{ pem_file }}"
+      password: "{{ password }}"
+      storage_account: "{{ storage }}"
+      virtual_network_name: "{{ cluster }}"
+      endpoints: "{{ ports }}"
+      wait: yes
+
