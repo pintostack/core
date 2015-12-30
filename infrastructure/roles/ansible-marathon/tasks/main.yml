@@ -9,8 +9,5 @@
 
 - include: conf.yml
 
-#- include: haproxy.yml
-#  when: haproxy_script_location != ""
-
 - name: Start Marathon service
   service: name=marathon state=restarted enabled=yes 

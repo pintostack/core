@@ -2,6 +2,7 @@
 marathon_playbook_version: "0.3.1"
 
 marathon_hostname: "{{ inventory_hostname }}"
+marathon_ip:
 marathon_version: "0.8.1"
 marathon_port: 8080
 marathon_env_java_opts: '-Xmx512m'
@@ -21,5 +22,3 @@ haproxy_script_location: "/usr/local/bin"
 # optional
 artifact_store: ""
 checkpoint: "true"
-go_to: "http://localhost:8500/v1/agent/service/register"
-curl: "Content-Type: application/json"

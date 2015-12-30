@@ -1,10 +1,10 @@
 {
     "Name": "marathon",
     "ID": "marathon{{ my_zoo_id }}",
-    "Address": "{{ marathon_hostname }}", 
+    "Address": "{{ marathon_ip }}",
     "Port": {{ marathon_port }},
     "Check": {
-       "Script": "nc -w 5 -z {{ marathon_hostname }} {{ marathon_port }} >/dev/null",
+       "Script": "nc -w 5 -z {{ marathon_ip }} {{ marathon_port }} >/dev/null",
        "Interval": "20s"
              }
 }

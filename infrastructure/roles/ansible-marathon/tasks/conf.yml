@@ -62,10 +62,8 @@
             mode=666
 
 - name: register in consul
-  template: src=marathon_tmp.j2 
-            dest=/tmp/marathon.json
-            mode=666
-            
-- name: curl
-  shell:  curl -X PUT -d @/tmp/marathon.json {{ go_to }}
-
+  uri: 
+    url: http://localhost:8500/v1/agent/service/register 
+    method: PUT
+    body: "{{ lookup('template', '../templates/marathon_register.j2') }}" 
+    body_format: json  
