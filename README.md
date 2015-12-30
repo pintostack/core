@@ -1,17 +1,22 @@
 # PintoStack
 
-The core principle of PintoStack is infrastructure immutability and separation of services and infrastructure. This is a paradigm shift from how we used to run and manage distributed systems. The industry is leaning towards this approach to improve efficiency of deployments, service isolation and orchestration.
-> NOTE: If you are new to cluster systems you can get an kick-start end-to-end tutorial in [README.ipython-spark-hdfs.md](./README.ipython-spark-hdfs.md) 
+Platform as a Service for brave and true. A paradigm shift from how we used to run and manage distributed systems.
 
+The core principle of PintoStack are:
+- infrastructure immutability
+- separation of services and infrastructure
+- controlleable deployments
+- service isolation and orchestration.
 
-In order to achieve immutability of infrastructure and abstract services from infrastructure we are using the following components:
+> NOTE: Want to spin a cluster and cruch some puilc data and tear it down afterwards? Try our IPython+Spark tutorial on top of UK Road Accidents data [here](./README.ipython-spark-hdfs.md) 
 
-- **Containerization.** Every service in our cluster is a container. We use containers for HDFS nodes, databases, web applications. We are using Docker for containerization, and deploying Docker Registry as the part of the cluster to store the images of all services we’ll be running. 
-- **Resource management.** Apache Mesos is used to abstract CPU, memory, storage, and other compute resources away from machines (physical or virtual), enabling fault-tolerant and elastic distributed systems to easily be built and run effectively. We are using Mesos to deploy our payload, which comes in the form of Docker containers as per #1.
-- **Scheduling.** While mesos provides resource abstraction, our services need to be deployed, monitored and scaled. We are using Marathon from Mesosphere, to define services in form of JSON which links to a Docker image that is stored in a Docker registry.
-- **Service Discovery.** Some services depend on others. We want our infrastructure to be immutable, hence we need service discovery. We are using Consul from Hashicorp. Consul is deployed on each host node and is accessible from every container. You can query Consul to register your service and get information about other services registered in the cluster. These queries are performed of RESTful API and can be done either programmatically, or using curl in shell script of your container’s entrypoint to initialize environment variables or update config files. We also integrated Consul DNS into a cluster wide DNS service which allows to resolve service URI’s into IP addresses. For example mysql-0.service will resolve into an IP address of a machine where mysql-0 service is running. 
-- **[TBD] Logging.** Our stack contains ELK containers and Marathon jobs allowing to run ELK for logging. Having ELK containerized allows to run it at scale in the same cluster. Each machine is running ELK’s Beats agent, shipping /var/log to Elasticsearch. This way you can enquire about logs of a particular container or a job through Elasticsearch API or Kibana UI.
-- **Infrastructure.** Machines are provisioned and bootstrapped using Ansible. Ansible scripts are used to create/remove machines in the cluster and deploy services to make them functional within a cluster. Ansible provides an abstraction layer over cloud environment allowing to deploy PintoStack into AWS, Azure, DigitalOcean as well as to run it on a local machine using Vagrant.
+In our PaaS we are using the following fundamental components:
+- **Containerization.** Every service in our cluster is a container. We use containers for HDFS nodes, databases, web applications. We are using Docker for containerization, and deploying Docker Registry as the part of the cluster to store the images of all services and applications you'll be running.
+- **Resource management.** Apache Mesos is used to abstract CPU, memory, storage, and other resources away from machines (physical or virtual), enabling fault-tolerant and elastic distributed systems to easily be built and run effectively. We are using Mesos to deploy our payload, which comes in the form of Docker containers as per.
+- **Scheduling.** While Mesos provides resource abstraction, our services and applications need to be deployed, monitored and scaled. We are using Marathon from Mesosphere to define services in form of JSON files which link to Docker images in local registry.
+- **Service Discovery.** Some services depend on others. We want our infrastructure to be immutable, hence we need service discovery. We are using Consul from Hashicorp. Consul is deployed on each host node and is accessible from every container. You can query Consul to register your service and get information about other services registered in the cluster. Service discovery is available through RESTful API and can be easily integrated into your applications and scripts. Service discovery is also available through a cluster-wide DNS service which allows to resolve service URI’s into IP addresses. For example mysql-0.service will resolve into an IP address of a machine where mysql-0 service is running. 
+- **Logging.** We are using Elasticsearch Logstash and Kibana (ELK) for log aggreation and analysis. As everything in our cluster, ELK comes in the form of container availeble for deployment through Marathon. Having ELK containerized allows to run it at scale on the same cluster. All services and containers are shipping their logs into ELK providing you with a consolidated view of a distriubuted system. 
+- **Run everywhere.** PintoStack infrastructure provisioned and bootstrapped using Vagrant and Ansible. Your applications and services are running in containers. This combination creates an abstraction from cloud or virtualization provider. You can tune PintoStack to run on DigitalOcean, AWS, GCE, Azure or private cloud running OpenStack or just KVM or xen.
 
 ***
 
