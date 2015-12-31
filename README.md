@@ -19,17 +19,18 @@ In our PaaS we are using the following fundamental components:
 - **Run everywhere.** PintoStack infrastructure provisioned and bootstrapped using Vagrant and Ansible. Your applications and services are running in containers. This combination creates an abstraction from cloud or virtualization provider. You can tune PintoStack to run on DigitalOcean, AWS, GCE, Azure or private cloud running OpenStack or just KVM or xen.
 
 # Running the Cluster
-1. Provision and machines in cloud or virtualization provider of choice using Vagrant. Edit cloud.yml to match your environment. This will give you clean machines to build on top of. Run ```(shell)MATERS=N SLAVES=M vagrant up --provider [aws|do|gce]```. This will bring necessery instances up and run bootstrap scripts giving you a ready to use environment in the end.
-2. Build service containers and push them into registry. For example to build HDFS 2.6 run ```(shell)docker-build hdfs```
-3. Push Marathon job ```(shell)marathon-push.sh hdfs-nn.json``` to run container in PintoStack.
-4. Discover services through consul REST API running on each node or DNS.
+1. Provision and machines in cloud or virtualization provider of choice using Vagrant. Edit cloud.yml to match your environment. This will give you clean machines to build on top of. ```MATERS=N SLAVES=M vagrant up --provider [aws|do|gce]```
+This will bring necessery instances up and run bootstrap scripts giving you a ready to use environment in the end.
+2. Build service containers and push them into registry. For example to build HDFS 2.6 that comes with PintoStack by running ```docker-build hdfs```
+3. Push Marathon jobs ```marathon-push.sh hdfs-nn.json``` and ```marathon-push.sh hdfs-dn.json``` to run HDFS DataNode and NameNode in PintoStack.
+4. Discover services through consul REST API running ```curl http://$HOST/v1/catalog/service/cassandra-dev``` on each node or resolve through DNS as ```cassandra-dev.service.consul```.
 
 Find out more in this [step by step guide](./infrastructure/README.md) 
 
 # Building Docker Images
 You can start with one of existing images available in docker registry as an example, or start a new one.
 Once you are done with your image configuration feel free to push it into the docker registry by runnging
-```(shell) ./docker-push <image directory name> ```
+```./docker-push <image directory name> ```
 Command will create docker image and push it into local cluster registry.
 
 # Starting Tasks
@@ -38,9 +39,9 @@ Create a copy of a file containing existing task definition, change docker image
 You probably want to edit number of ports task scheduler framework will book for you, healthcheck parameters.
 Starting your task is easy, just enter the command into the shell:
 
-```(shell) ./marathon-push.sh <marathon task file name with json> ```
+```./marathon-push.sh <marathon task file name with json> ```
 
-For instance ```(shell) ./marathon-push.sh kafka.json ```.
+For instance ```./marathon-push.sh kafka.json ```.
 
 No you can open marathon on your master machine and see how task is deployed to the slave machine.
 Typically marathon web ui available on port 8080, and mesos information on 5050. 
