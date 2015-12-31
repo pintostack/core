@@ -9,8 +9,7 @@ First step creates virtual resources that are later used by bootstrap phase. Aft
 It's important to notice that provisioning depends on the resource provider, and requires additional settings to be done on provider side.
 Bootstrap stage however less dependant, and uses ansible to deploy packages, configure software settings.
 
-# Notes
-It is suggested to run ansible script from the same VPC where you will be deploying your cluster. Call it soft-cluster-launchpad for example.
+> NOTE: It is suggested to run ansible script from the same VPC where you will be deploying your cluster. Call it soft-cluster-launchpad for example.
 
 # Prerequisite
 
