@@ -10,7 +10,7 @@ Completing this tutorial you will get you:
 
 This document contains an easy to use solution for Data Scientists, Data Analysts and those curious in data processing to get a disposable environment on-demand. 
 
-> NOTE: This tutorial was verified on PC running Ubuntu 14.0.4 LTS and Mac running OSX 10.9 with Digital Ocean account.
+> NOTE: This tutorial was verified on PC running Ubuntu 14.04 LTS and Mac running OSX 10.9 with Digital Ocean account.
 
 ## Prerequisites 
 * Linux, FreeBSD, OSX, or other unix-like OS (Ubuntu 14.04 LTS or OSX 10.9+ recommended)
