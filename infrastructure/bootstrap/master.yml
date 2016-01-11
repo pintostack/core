@@ -78,4 +78,4 @@
       marathon_hostname: "{{ ansible_hostname }}"
 #      go_to: "http://{{local_ip}}:8500/v1/agent/service/register
   post_tasks:
-    - shell: wget -O /var/www/masters-share/htdocs/spark-1.5.2-bin-hadoop2.6.tgz -c http://www.eu.apache.org/dist/spark/spark-1.5.2/spark-1.5.2-bin-hadoop2.6.tgz
+    - shell: wget -O /var/www/masters-share/htdocs/spark-1.5.2-bin-hadoop2.6.tgz -q -c http://www.eu.apache.org/dist/spark/spark-1.5.2/spark-1.5.2-bin-hadoop2.6.tgz
