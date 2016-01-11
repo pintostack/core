@@ -12,8 +12,9 @@
             dest="/home/{{ user }}/docker"
 
     - name: make boostrap file executable
-      command: chmod +x /home/{{ user }}/docker/{{ name }}/bootstrap.sh
-
+      file: path=/home/{{ user }}/docker/{{ name }}/bootstrap.sh
+            state=touch
+            mode="a+x"
     - name: build {{ name }}
       command: docker build -t {{ name }} /home/{{ user }}/docker/{{ name }}/.
 

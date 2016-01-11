@@ -1,34 +1,42 @@
-- name: Get uname
-  command: uname -r
-  register: os_uname
+- name: get entries
+  shell: lsb_release -d | awk '{print $3}' | cut -c 1-5
+  register: entries 
+  ignore_errors: True
 
-# would rather have used ansible apt-key...
-- name: Add specific key
-  command: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys {{docker_repo_key}}
+- set_fact:
+     release: "{{ entries.stdout_lines[0] }}"
 
-- name: Update
+- name: Add docker key
+  apt_key: keyserver=p80.pool.sks-keyservers.net id=58118E89F3A912897C070ADBF76221572C52609D
+
+- name: Add sources list for Ubuntu 12.04
+  apt_repository: repo="deb https://apt.dockerproject.org/repo ubuntu-precise main" state=present
+  when: release == "12.04"
+
+- name: Add sources list for Ubuntu 14.04
+  apt_repository: repo="deb https://apt.dockerproject.org/repo ubuntu-trusty main" state=present
+  when: release == "14.04"
+  
+- name: Add sources list for Ubuntu 15.04
+  apt_repository: repo="deb https://apt.dockerproject.org/repo ubuntu-vivid main" state=present
+  when: release == "15.04"
+
+- name: Add sources list for Ubuntu 15.10
+  apt_repository: repo="deb https://apt.dockerproject.org/repo ubuntu-wily main" state=present
+  when: release == "15.10"
+
+- name: apt-get update 
   apt: update_cache=yes
 
-- name: Install https apt transport package
-  apt: pkg=apt-transport-https state=present
-
-- name: Add docker repo
-  command: sudo sh -c "echo deb {{docker_repo}} docker main > /etc/apt/sources.list.d/docker.list"
-
-- name: Install lxc-docker package
-  apt: pkg={{item}} state=present update_cache=yes
+- name: Install recommended package
+  apt: name="{{item}}" state=present update_cache=no
   with_items:
-    - lxc-docker
+     - "linux-image-extra-{{ ansible_kernel }}"
+     - docker.io
 
-# consider seperate role here
-- name: Change ufw forward policy to ACCEPT
-  command: sed -i 's/DEFAULT_FORWARD_POLICY="DROP"/DEFAULT_FORWARD_POLICY="ACCEPT"/g' /etc/default/ufw
-  when: docker_listen_tcp == True
-
-- name: Reload ufw
-  command: ufw reload
-  when: docker_listen_tcp == True
-
-- name: Allow incomming tcp traffic on {{docker_listen_port}}
-  command: ufw allow {{docker_listen_port}}/tcp
-  when: docker_listen_tcp == True
+- name: set docker opts
+  template: >
+    src=docker.j2
+    dest=/etc/default/docker
+  notify: 
+    - Restart Docker
