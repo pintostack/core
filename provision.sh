@@ -62,7 +62,7 @@ function provision_virtualbox() {
 
     sed -i.bak "s|__masters_count|${1}|g;s|__slaves_count|${2}|g;s|__vbox_size|${VBOX_SIZE}|g;s|__ssh_key_path|${SSH_KEY_FILE}|g;" Vagrantfile
 
-    echo vagrant up --provider=virtualbox
+    vagrant up --provider=virtualbox
 
     #bootstrap-*.sh
     sed -i.bak "s|__inv_file|${INVENTORY_FILE}|g;s|__adds|-vvv|g;s|__iface|eth1|g;s|__username|vagrant|g" bootstrap-*.sh
