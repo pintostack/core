@@ -8,7 +8,7 @@ The core principles of PintoStack are:
 - determenistic deployments
 - service isolation and discovery
 
-> NOTE: Want to spin a cluster and cruch some puilc data and tear it down afterwards? Try our IPython+Spark tutorial on top of UK Road Accidents data on DigitalOcean [here](./README.ipython-spark-hdfs.md) 
+> NOTE: Want to spin a cluster and cruch some puilc data and tear it down afterwards? Try our IPython+Spark tutorial on top of UK Road Accidents data on DigitalOcean [here](docs/README.ipython-spark-hdfs.md) 
 
 In our PaaS we are using the following fundamental components:
 - **Containerization.** Every service in our cluster is a container. We use containers for DFS nodes, KV storages, web applications. We are using Docker for containerization, and deploying Docker Registry as the part of the cluster to store the images of all services and applications you'll be running.
@@ -25,7 +25,7 @@ This will bring necessery instances up and run bootstrap scripts giving you a re
 3. Push Marathon jobs ```marathon-push.sh hdfs-nn.json``` and ```marathon-push.sh hdfs-dn.json``` to run HDFS DataNode and NameNode in PintoStack.
 4. Discover services through consul REST API running ```curl http://$HOST/v1/catalog/service/cassandra-dev``` on each node or resolve through DNS as ```cassandra-dev.service.consul```.
 
-Find out more in this [step by step guide](./infrastructure/README.md) 
+Find out more in this [step by step guide](./README.install.md) 
 
 # Building Docker Images
 You can start with one of existing images available in docker registry as an example, or start a new one.

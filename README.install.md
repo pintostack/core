@@ -27,16 +27,16 @@ Depending on system configuration it might be required to run installation comma
 The package is designed to behave in a same way in all providers, however there are differences in what configuration variables are required for various providers.
 
 ## Azure
-[Please follow the link for detailed instructions.](README.azure.md)
+[Please follow the link for detailed instructions.](docs/README.azure.md)
 
 ## Vagrant
-[Please follow the link for detailed instructions.](README.vagrant.md)
+[Please follow the link for detailed instructions.](docs/README.virtualbox.md)
 
 ### DigitalOcean
-[Please follow the link for detailed instructions.](README.digitalocean.md)
+[Please follow the link for detailed instructions.](docs/README.digital_ocean.md)
 
 ### AWS
-[Please follow the link for detailed instructions.](README.ec2.md)
+[Please follow the link for detailed instructions.](docs/README.aws.md)
 
 ## Bootstrap
 In order to boostrap the cluster run ```bootstrap-master.sh```, ```bootstrap-slave.sh``` and ```bootstrap-docker-registry.sh``` this will install and configure all newely provisioned machines and ensure the state of the existing ones, this step may take a while and several times console can freez for several minutes, please be patient.

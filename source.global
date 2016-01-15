@@ -1,0 +1,8 @@
+# Global configuration
+# For more information refere to https://github.com/pintostack/core
+
+MASTERS=1
+SLAVES=3
+
+# Defaults do not overwrite variables below
+SSH_KEY_FILE='~/.ssh/id_rsa'
