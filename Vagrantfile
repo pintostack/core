@@ -5,8 +5,7 @@
 print "
 ==================================================================
 To change provisioning options please use source.[provider] files.
-For more information refere to https://github.com/pintostack/core
-"
+For more information refere to https://github.com/pintostack/core"
 system("ls source.*")
 print "Usage:
 vagrant up --provider=[virtualbox|aws|digital_ocean]
@@ -97,7 +96,6 @@ Vagrant.configure(2) do |config|
             }
           end
   end
-
   config.vm.provider :virtualbox do |virtualbox|
           virtualbox.gui = false
           virtualbox.memory = %x( bash -c "source source.virtualbox && echo \\$VBOX_SIZE").strip
