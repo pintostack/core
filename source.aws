@@ -1,18 +1,17 @@
-###__aws_key_id
+### Amazon AWS Account Parametrs
+# For more information refere to https://github.com/pintostack/core
+
+source source.global
+
+# All variables add below
+
+#SSH_KEY_FILE='~/Downloads/AWS_KEYPAIR_NAME.pem'
+
 AWS_KEY_ID='Change me'
-###__aws_access_key
 AWS_ACCESS_KEY='Change me'
-###__aws_keypair_name
 AWS_KEYPAIR_NAME='PintoStack'
-###__aws_ami
 AWS_AMI='ami-5189a661'
-###__aws_instance_type
 AWS_INSTANCE_TYPE='m4.large'
-###__aws_region
 AWS_REGION='us-west-2'
-###__aws_security_groups
 AWS_SECURITY_GROUPS="'default','allow-ssh'"
-###__aws_username
 AWS_USERNAME='ubuntu'
-###__ssh_key_path
-SSH_KEY_FILE='~/Downloads/AWS_KEYPAIR_NAME.pem'

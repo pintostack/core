@@ -1,2 +1,10 @@
-###__vbox_size
-VBOX_SIZE=2048
+### VirtualBox Parametrs
+# For more information refere to https://github.com/pintostack/core
+
+source source.global
+
+# All variables add below
+
+#SSH_KEY_FILE='~/.ssh/id_rsa'
+
+VBOX_SIZE=512
