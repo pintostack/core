@@ -32,7 +32,7 @@ Depending on system configuration it might be required to run installation comma
 # Provisioning cluster machines
 
 The package is designed to behave in a same way in all providers, however there are differences in what configuration variables are required for various providers.
-## Edit source.<provider> file
+## Edit source.provider files
 ### Virtualbox (local)
 [Please follow the link for detailed instructions.](docs/README.virtualbox.md)
 
