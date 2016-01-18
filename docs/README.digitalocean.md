@@ -2,29 +2,63 @@
 
 This is detailed description on how to deploy cluster in Digital Ocean.
 
-## Pre-requisites
 
-We assume you already read [Pre-requisites in README.md](README.md#prerequisite) You would need several libraries installed on machine to work with digital ocean provider. For most of Mac users [python 2.7-or later required](https://www.python.org/downloads/mac-osx/), do not forget to close the terminal window and open a new one after installation. For Ubuntu 14.0.4 LTS Python 2.7 recomended but not necessary. Other requirments you can install with pip as described below.
-
+## Prerequisites 
+* Linux, FreeBSD, OSX, or other unix-like OS (Ubuntu 14.04 LTS or OSX 10.9+ recommended)
+* Python 2.7
+* Digital Ocean account and API key
+* Vagrant 1.8 or later
+* Ansible 2.1. At the time of writing of this document, Ansible 2.0 was still in beta. Latest version can be installed directly from master branch: ```pip install git+https://github.com/ansible/ansible.git```). 
+* Following dependencies to run Ansible tasks:
+```bash
+apt-get install -y python-pip # You can skip this on your mac
+pip install pyopenssl ndg-httpsclient pyasn1
+pip install mock --upgrade
+pip install six --upgrade
+pip install dopy --upgrade
 ```
-# apt-get install -y python-pip # You can skip this on your mac
-# pip install pyopenssl ndg-httpsclient pyasn1
-# pip install mock --upgrade
-# pip install six --upgrade
-# pip install dopy --upgrade
+> NOTE: Depending on system configuration it might be required to run installation commands as super user. 
+
+## Configuring Digital Ocean Account
+
+### API Token
+It's time to open digital ocean management [portal](https://cloud.digitalocean.com/settings/applications). On this page you need to create new token id, which will be used later . Edit file ```source.digital_ocean``` and put this one line tokent to ```DO_TOKEN="..."```.
+
+### SSH Keys
+For machines we are going to create we'll need SSH keys. In order to create a new ssh key pair follow [GitHub instructions](https://help.github.com/articles/generating-ssh-keys/). Now you should upload content of your public key file (usualy ~/.ssh/id_rsa.pub) with key name ```soft-cluster-key``` to the [digital ocean web site](https://cloud.digitalocean.com/settings/security).
+
+> NOTE: Veify that you now have API key and SSH keys provisioned into Digital Ocean.
+
+## Deployment
+
+### Configure VPC details
+
+Edit file ```source.digital_ocean```:
+* ```SSH_KEY_FILE=<FULL PATH TO SSH PRIVATE KEY FILE>``` (ususaly ~/.ssh/id_rsa), containing private key corresponding to the public key uploaded to digital ocean web site.
+* ```DO_SIZE=<DROPLET MEMORY SIZE>``` (8gb recomended, but do not use less than 4gb for this tutorial). Available options are listed [here](https://www.digitalocean.com/pricing/)
+* ```DO_REGION=<PREFERED DATACENTER FOR YOUR DROPLETS>```, (default is ams3 in Amsterdam). Available options are listed [here](https://www.digitalocean.com/features/reliability/)
+* ```DO_IMAGE=<INSTALLATION IMAGE FOR DROPLET>``` Default is ubuntu-14-04-x64. Do not change this until you know what you are doing. 
+
+Here is an example of ```infrastructure/do.source```:
+```bash
+### Digital Ocean Account Parametrs
+# For more information refere to https://github.com/pintostack/core
+
+source source.global
+
+# All variables add below
+
+#SSH_KEY_FILE='~/.ssh/id_rsa'
+
+DO_TOKEN='Change me'
+DO_IMAGE='ubuntu-14-04-x64'
+DO_REGION=ams3
+DO_SIZE='8gb'
 ```
 
-## Configuring Digital Ocean for your cluster
 
-> Token id
 
-It's time to open digital ocean management [portal](https://cloud.digitalocean.com/settings/applications). On this page you need to create new token id, which is later used by ansible. Store this one line token in a save place you will need it while folowing this instruction and later.
 
-> SSH Keys
-
-SSH keys are used in order to perform authentication on the droplets. In order to create a new ssh key pair you might follow [this](https://help.github.com/articles/generating-ssh-keys/) link. Now you should upload content of your public key file (usualy ~/.ssh/id_rsa.pub) to the [digital ocean web site](https://cloud.digitalocean.com/settings/security) remembering key name.
-
-NOTE: After cluster will be created you will be able to login into the droplets: ```ssh -i <path to your private key part> <user name>@<machine ip>``` 
 
 ## Configure VPC details
 
@@ -32,40 +66,36 @@ NOTE: After cluster will be created you will be able to login into the droplets:
 
 You can find the file under <software root>/infrastructure/do.source. File structure is very simple.
 
-Next items could be changed from do.source and corresponding yml files (./infrastructure/provision/do-*.yml):
-* ```SSH_KEY_ID=<NUMERIC KEY ID>``` , you can get your key id by running ```./infrastructure/digital_ocean.py --ssh-keys -p -a <ONE LINE TOKEN YOU CREATED BEFORE> | grep -B1 <KEY NAME YOU ENTERED IN WEB CONSOLE>```  and searching your key id in a list. This numeric key id identifies ssh key that will be used later to login to the droplets.
 * ```SSH_KEY_FILE=<FULL PATH TO SSH KEY FILE YOU CREATED BEFORE>``` (ususaly ~/.ssh/id_rsa), containing private key corresponding to the public key uploaded to digital ocean web site.
-* ```SIZE=<DROPLET MEMORY SIZE>``` (8gb recomended), all available options see [here](https://www.digitalocean.com/pricing/) 8gb, 4gb, ...
-* ```LOCATION=<PREFERED DATACENTER FOR YOUR DROPLETS```, (default is ams3)all available options see [here](https://www.digitalocean.com/features/reliability/) nyc1, nyc2, ... or by running ```./infrastructure/digital_ocean.py --regions -p -a <ONE LINE API TOKEN>``` and finding slug.
-* ```IMAGE_NAME=<INSTALLATION IMAGE FOR DROPLET>``` (default is ubuntu-14-04-x64, do not change this until you know what you are doing) that image will be installed on your droplets
+* ```DO_SIZE=<DROPLET MEMORY SIZE>``` (8gb recomended), all available options see [here](https://www.digitalocean.com/pricing/) 8gb, 4gb, ...
+* ```DO_REGION=<PREFERED DATACENTER FOR YOUR DROPLETS```, (default is ams3)all available options see [here](https://www.digitalocean.com/features/reliability/) nyc1, nyc2, ...
+* ```DO_IMAGE=<INSTALLATION IMAGE FOR DROPLET>``` (default is ```ubuntu-14-04-x64```, do not change this until you know what you are doing) that image will be installed on your droplets
 
-After all your ```infrastructure/do.source``` file should look like this:
-```
-# Digital Ocean Account Parametrs
-SSH_KEY_ID=1234567
-SSH_KEY_FILE=~/.ssh/id_rsa
-SIZE=8gb
-LOCATION=ams3
-# Do not change this until you know what you are doing
-IMAGE_NAME=ubuntu-14-04-x64
+After all your ```source.digital_ocean``` file should look like this:
+```bash
+### Digital Ocean Account Parametrs
+# For more information refere to https://github.com/pintostack/core
+
+source source.global
+
+# All variables add below
+
+#SSH_KEY_FILE='~/.ssh/id_rsa'
+
+DO_TOKEN='Change me'
+DO_IMAGE='ubuntu-14-04-x64'
+DO_REGION=ams3
+DO_SIZE='8gb'
 ```
 
 ## Provisioning
 
-Open terminal window and define environment variable for your session:
+Run
 ```
-$ export DO_API_TOKEN=<ONE LINE API TOKEN, created before>
-```
-now it's time to run provisioning for your droplets, in same terminal window run 
-```
-$ cd <SOFTWARE ROOT DIRECTORY>
-```
-and
-```
-$ ./provision.sh --target=do --master=3 --slave=11
+$ vagrant up --provider=digital_ocean
 ```
 
-This may take a several minutes but after command completes you should be able to find 15 new droplets in your digital ocean web site [console](https://cloud.digitalocean.com/droplets). Checkout that 3 for masters, 11 for slaves, and 1 for docker-registry droplets was created and are running. Also you can try to ssh to one of those new droplets by copying ip addres and running ```ssh -i <PATH TO PRIVATE KEY  usualy /$HOME/.ssh/id_dsa> root@<DROPLET_IP>```
+This may take a several minutes but after command completes you should be able to find new droplets in your digital ocean web site [console](https://cloud.digitalocean.com/droplets).  Also you can try to ssh to one of those new droplets by running ```vagrant ssh master-1```
 
 ## Infrastructure ready, lets bootstrap software
 
