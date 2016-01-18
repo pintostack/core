@@ -19,9 +19,10 @@ In our PaaS we are using the following fundamental components:
 - **Run everywhere.** PintoStack infrastructure provisioned and bootstrapped using Vagrant and Ansible. Your applications and services are running in containers. This combination creates an abstraction from cloud or virtualization provider. You can tune PintoStack to run on DigitalOcean, AWS, GCE, Azure or private cloud running OpenStack or just KVM or xen.
 
 # Running the Cluster
-1. Provision and machines in cloud or virtualization provider of choice using Vagrant. Edit cloud.yml to match your environment. This will give you clean machines to build on top of. ```MATERS=N SLAVES=M vagrant up --provider [aws|do|gce]```
+1. Provision and machines in cloud or virtualization provider of choice using Vagrant. Edit ```source.global``` to match your environment. This will give you clean machines to build on top of. 
+```MATERS=N SLAVES=M ``` thrn run ```vagrant up --provider [aws|digital_ocean|virtualbox]```
 This will bring necessery instances up and run bootstrap scripts giving you a ready to use environment in the end.
-2. Build service containers and push them into registry. For example to build HDFS 2.6 that comes with PintoStack by running ```docker-build hdfs```
+2. Build service containers and push them into registry. For example to build HDFS 2.6 that comes with PintoStack by running ```docker-build.sh hdfs```
 3. Push Marathon jobs ```marathon-push.sh hdfs-nn.json``` and ```marathon-push.sh hdfs-dn.json``` to run HDFS DataNode and NameNode in PintoStack.
 4. Discover services through consul REST API running ```curl http://$HOST/v1/catalog/service/cassandra-dev``` on each node or resolve through DNS as ```cassandra-dev.service.consul```.
 
@@ -30,7 +31,7 @@ Find out more in this [step by step guide](./README.install.md)
 # Building Docker Images
 You can start with one of existing images available in docker registry as an example, or start a new one.
 Once you are done with your image configuration feel free to push it into the docker registry by runnging
-```./docker-push <image directory name> ```
+```./docker-duild.sh <image directory name> ```
 Command will create docker image and push it into local cluster registry.
 
 # Starting Tasks

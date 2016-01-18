@@ -1,6 +1,6 @@
 # About
 
-This is detailed description on how to deploy cluster in EC2 Cloud.
+This is detailed description on how to deploy cluster in Amason AWS Cloud.
 
 ## Pre-requisites
 
@@ -12,12 +12,12 @@ pip install boto
 
 ## Configuring EC2 for your cluster
 
-> Region
+### Region
 
 Before starting the deployment process you might select a region where it would reside. EC2 allows you to select from number of available regions.
 Configuration would require from you the name of region you selected, lilke, us-west-1, or eu-east-2.
 
-> SSH Keys
+### SSH Keys
 
 The keys are used to replace password based authentication. EC2 requires you to setup a keypair in management console, to read more please follow the [link](http://docs.aws.amazon.com/opsworks/latest/userguide/security-ssh-access.html). If you do not have keypair, it's easy to create new one from AWS Console; in case there are existing key pairs in your aws account you can use it as well.
 Please note that keypairs are region specific.
