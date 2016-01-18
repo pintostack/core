@@ -5,7 +5,8 @@
 print "
 ==================================================================
 To change provisioning options please use source.[provider] files.
-For more information refere to https://github.com/pintostack/core"
+For more information refere to https://github.com/pintostack/core
+"
 system("ls source.*")
 print "Usage:
 vagrant up --provider=[virtualbox|aws|digital_ocean]
@@ -16,12 +17,11 @@ here http://docs.vagrantup.com/v2/cli/index.html
 "
 SLAVES = %x( bash -c "source source.global && echo \\$SLAVES" ).strip
 MASTERS = %x( bash -c "source source.global && echo \\$MASTERS" ).strip
+
 #Vagrant.require_plugin 'vagrant-aws'
 #Vagrant.require_plugin 'vagrant-digital_ocean'
 #Vagrant.require_plugin 'vagrant-cachier'
 
-#puts MASTERS.to_i
-#exit
 ALL_HOSTS=[]
 (1..MASTERS.to_i).each do |i|
    m_host = "master-#{i}"
@@ -38,8 +38,6 @@ Vagrant.configure(2) do |config|
   config.vm.hostname = 'default-host-delete-me'
   config.vm.box = "ubuntu/trusty64"
   config.vm.synced_folder ".", "/vagrant", disabled: true
-
-
   config.vm.provider :digital_ocean do |digital_ocean, override|
           digital_ocean.token = %x( bash -c "source source.digital_ocean && echo \\$DO_TOKEN").strip
           digital_ocean.image = %x( bash -c "source source.digital_ocean && echo \\$DO_IMAGE").strip
@@ -73,7 +71,7 @@ Vagrant.configure(2) do |config|
     name = "#{i}"
     config.vm.define name do |instance|
 	instance.vm.hostname = name # Name in web console DO
-	if name == "docker-registry"
+	if name == "docker-registry" # Run ansible after last host provision
 	instance.vm.provision :ansible do |ansible|
 	    ansible.playbook = "provisioning/world-playbook.yml"
     	    ansible.limit = 'all'
@@ -92,7 +90,7 @@ Vagrant.configure(2) do |config|
 	end
        instance.vm.provider :aws do |aws, override|
          aws.tags={ 'Name' => name }
-	 if name == "docker-registry"
+	 if name == "docker-registry" # Run ansible after last host provision
 	 override.vm.provision :ansible do |ansible|
             ansible.playbook = "provisioning/world-playbook.yml"
             ansible.limit = 'all'

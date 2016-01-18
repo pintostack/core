@@ -51,7 +51,7 @@
       nginx_sites:
       - id: masters-share
         add_webroot: yes
-        name: "service.consup.service"
+        name: "service.consul.service"
 
     - role: ansible-consul
       dns_nameservers: ['127.0.0.1', '8.8.8.8', '8.8.4.4']
