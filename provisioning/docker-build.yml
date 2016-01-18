@@ -22,3 +22,4 @@
    
     - name: push img {{ name }}
       command: docker push docker-registry.service.consul:5000/{{ name }}
+
