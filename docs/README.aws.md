@@ -28,6 +28,7 @@ Create VPC and subnet for your cluster, or choose of any existing that suits you
 ### Security group
 
 Create default security group for your cluster with name ```PintoStack```. It's still possible to amend security settings later, once you'll identify fine-grained security constraints for your machines.
+> NOTICE: Remember security groups you want to apply to your new instances should be listed in source.digitall_ocean file in ASW_SECURITY_GROUPS
 
 ### Access key and secret
 
