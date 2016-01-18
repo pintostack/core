@@ -21,8 +21,8 @@ pip install dopy --upgrade
 
 ## Configuring Digital Ocean Account
 
-### API Key
-It's time to open digital ocean management [portal](https://cloud.digitalocean.com/settings/applications). On this page you'll need to create new API key, which will be used later. Simpy copy it into a safe place, we'll use it later.
+### API Token
+It's time to open digital ocean management [portal](https://cloud.digitalocean.com/settings/applications). On this page you need to create new token id, which will be used later . Edit file ```source.digital_ocean``` and put this one line tokent to ```DO_TOKEN="..."```.
 
 ### SSH Keys
 For machines we are going to create we'll need SSH keys. In order to create a new ssh key pair follow [GitHub instructions](https://help.github.com/articles/generating-ssh-keys/). Now you should upload content of your public key file (usualy ~/.ssh/id_rsa.pub) with key name ```soft-cluster-key``` to the [digital ocean web site](https://cloud.digitalocean.com/settings/security).
@@ -34,11 +34,10 @@ For machines we are going to create we'll need SSH keys. In order to create a ne
 ### Configure VPC details
 
 Edit file ```source.digital_ocean```:
-* ```SSH_KEY_ID=<NUMERIC KEY ID>``` , to get your key id you'll need API token. Run ```./infrastructure/digital_ocean.py --ssh-keys -p -a <ONE LINE API TOKEN> | grep -B1 soft-cluster-key```, searching your key id in a list ``` "id" : 1234567 ```. This numeric key id identifies ssh key that will be using later to login to the droplets.
 * ```SSH_KEY_FILE=<FULL PATH TO SSH PRIVATE KEY FILE>``` (ususaly ~/.ssh/id_rsa), containing private key corresponding to the public key uploaded to digital ocean web site.
-* ```SIZE=<DROPLET MEMORY SIZE>``` (8gb recomended, but do not use less than 4gb for this tutorial). Available options are listed [here](https://www.digitalocean.com/pricing/)
-* ```LOCATION=<PREFERED DATACENTER FOR YOUR DROPLETS>```, (default is ams3 in Amsterdam). Available options are listed [here](https://www.digitalocean.com/features/reliability/) You can also get them by running ```./infrastructure/digital_ocean.py --regions -p -a <API_TOKEN>```.
-* ```IMAGE_NAME=<INSTALLATION IMAGE FOR DROPLET>``` Default is ubuntu-14-04-x64. Do not change this until you know what you are doing. 
+* ```DO_SIZE=<DROPLET MEMORY SIZE>``` (8gb recomended, but do not use less than 4gb for this tutorial). Available options are listed [here](https://www.digitalocean.com/pricing/)
+* ```DO_REGION=<PREFERED DATACENTER FOR YOUR DROPLETS>```, (default is ams3 in Amsterdam). Available options are listed [here](https://www.digitalocean.com/features/reliability/)
+* ```DO_IMAGE=<INSTALLATION IMAGE FOR DROPLET>``` Default is ubuntu-14-04-x64. Do not change this until you know what you are doing. 
 
 Here is an example of ```infrastructure/do.source```:
 ```bash
