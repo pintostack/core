@@ -1,14 +1,14 @@
 - hosts: ~.*master-1
-  user: "{{ user }}"
+  user: "{{ ansible_ssh_user }}"
   tasks:
     - name: prepare directory on master host
-      file: path="/home/{{ user }}/marathon" state=directory
-            owner={{ user }}
+      file: path="/home/{{ ansible_ssh_user }}/marathon" state=directory
+            owner={{ ansible_ssh_user }}
             mode=777
 
     - name: cp "{{ name }}" to master host
       copy: src="../marathon/{{ name }}"
-            dest="/home/{{ user }}/marathon"
+            dest="/home/{{ ansible_ssh_user }}/marathon"
 
     - name: deploy {{ name }} to marathon
-      command: curl -X POST -H "Content-Type{{':'}} application/json" -d @/home/{{ user }}/marathon/{{ name }} http://consul.service.consul:8080/v2/apps
+      command: curl -X POST -H "Content-Type{{':'}} application/json" -d @/home/{{ ansible_ssh_user }}/marathon/{{ name }} http://consul.service.consul:8080/v2/apps
