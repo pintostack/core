@@ -58,7 +58,7 @@ AWS_AMI=the ami name
 AWS_SSH_KEY_NAME=the name of key that should be installed as auth on machine
 
 SSH_KEY_PATH=full path to the key on your local machine
-
+Finally it should look like:
 ```
 ### Amazon AWS Account Parametrs
 # For more information refere to https://github.com/pintostack/core
