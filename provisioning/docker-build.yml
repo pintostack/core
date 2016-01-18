@@ -1,4 +1,4 @@
-- hosts: docker-registry
+- hosts: dockers
   user: "{{ ansible_ssh_user }}"
   sudo: yes
   tasks:

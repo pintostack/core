@@ -39,21 +39,6 @@ Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu/trusty64"
   config.vm.synced_folder ".", "/vagrant", disabled: true
 
-  config.vm.provision :ansible do |ansible|
-        ansible.playbook = "provisioning/world-playbook.yml"
-        ansible.limit = 'all'
-        ansible.force_remote_user = true
-        ansible.host_vars={}
-        ALL_HOSTS.each do |each_host|
-          ansible.host_vars["#{each_host}"] = {"vpc_if" => "eth1"}
-        end
-        ansible.groups = {
-              "masters" => ["master-[1:#{MASTERS.to_i}]"],
-              "slaves" => ["slave-[1:#{SLAVES.to_i}]"],
-              "dockers" => ["docker-registry"],
-              "all-hosts" => ["master-[1:#{MASTERS.to_i}]","slave-[1:#{SLAVES.to_i}]","docker-registry"]
-        }
-  end
 
   config.vm.provider :digital_ocean do |digital_ocean, override|
           digital_ocean.token = %x( bash -c "source source.digital_ocean && echo \\$DO_TOKEN").strip
@@ -69,9 +54,6 @@ Vagrant.configure(2) do |config|
           aws.access_key_id = %x( bash -c "source source.aws && echo \\$AWS_KEY_ID").strip
           aws.secret_access_key = %x( bash -c "source source.aws && echo \\$AWS_ACCESS_KEY").strip
           aws.keypair_name = %x( bash -c "source source.aws && echo \\$AWS_KEYPAIR_NAME").strip
-          aws.tags = {
-            'Description' => 'This instance is a part of PintoStack installation you can find https://github.com/pintostack/core.'
-          }
           aws.ami = %x( bash -c "source source.aws && echo \\$AWS_AMI").strip
           aws.instance_type = %x( bash -c "source source.aws && echo \\$AWS_INSTANCE_TYPE").strip
           aws.region = %x( bash -c "source source.aws && echo \\$AWS_REGION").strip
@@ -80,21 +62,6 @@ Vagrant.configure(2) do |config|
           override.vm.box = aws
           override.vm.box_url ="https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
           override.ssh.private_key_path = %x( bash -c "source source.aws && echo \\$SSH_KEY_FILE").strip
-          override.vm.provision :ansible do |ansible|
-            ansible.playbook = "provisioning/world-playbook.yml"
-            ansible.limit = 'all'
-            ansible.force_remote_user = true
-            ansible.host_vars={}
-            ALL_HOSTS.each do |each_host|
-              ansible.host_vars["#{each_host}"] = {"vpc_if" => "eth1"}
-            end
-            ansible.groups = {
-              "masters" => ["master-[1:#{MASTERS.to_i}]"],
-              "slaves" => ["slave-[1:#{SLAVES.to_i}]"],
-              "dockers" => ["docker-registry"],
-              "all-hosts" => ["master-[1:#{MASTERS.to_i}]","slave-[1:#{SLAVES.to_i}]","docker-registry"]
-            }
-          end
   end
   config.vm.provider :virtualbox do |virtualbox|
           virtualbox.gui = false
@@ -105,11 +72,43 @@ Vagrant.configure(2) do |config|
   ALL_HOSTS.each do |i|
     name = "#{i}"
     config.vm.define name do |instance|
-       instance.vm.hostname = name # Name in web console DO
+	instance.vm.hostname = name # Name in web console DO
+	if name == "docker-registry"
+	instance.vm.provision :ansible do |ansible|
+	    ansible.playbook = "provisioning/world-playbook.yml"
+    	    ansible.limit = 'all'
+    	    ansible.force_remote_user = true
+    	    ansible.host_vars={}
+    	    ALL_HOSTS.each do |each_host|
+        	ansible.host_vars["#{each_host}"] = {"vpc_if" => "eth1"}
+    	    end
+    	    ansible.groups = {
+              "masters" => ["master-[1:#{MASTERS.to_i}]"],
+              "slaves" => ["slave-[1:#{SLAVES.to_i}]"],
+              "dockers" => ["docker-registry"],
+              "all-hosts" => ["master-[1:#{MASTERS.to_i}]","slave-[1:#{SLAVES.to_i}]","docker-registry"]
+    	    }
+	end
+	end
        instance.vm.provider :aws do |aws, override|
-          aws.tags = {
-          'Name' => name
-          }
+         aws.tags={ 'Name' => name }
+	 if name == "docker-registry"
+	 override.vm.provision :ansible do |ansible|
+            ansible.playbook = "provisioning/world-playbook.yml"
+            ansible.limit = 'all'
+            ansible.force_remote_user = true
+            ansible.host_vars={}
+            ALL_HOSTS.each do |each_host|
+              ansible.host_vars["#{each_host}"] = {"vpc_if" => "eth0"}
+            end
+            ansible.groups = {
+              "masters" => ["master-[1:#{MASTERS.to_i}]"],
+              "slaves" => ["slave-[1:#{SLAVES.to_i}]"],
+              "dockers" => ["docker-registry"],
+              "all-hosts" => ["master-[1:#{MASTERS.to_i}]","slave-[1:#{SLAVES.to_i}]","docker-registry"]
+            }
+         end
+	 end
        end
        instance.vm.provider :virtualbox do |virtualbox|
           virtualbox.name = name

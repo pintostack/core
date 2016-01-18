@@ -143,7 +143,7 @@
     - lineinfile: dest=/etc/environment line="JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64"
 
 
-- hosts: docker-registry
+- hosts: dockers
   gather_facts: true
   user: "{{ ansible_ssh_user }}"
   sudo: yes
