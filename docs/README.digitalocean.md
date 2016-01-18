@@ -2,29 +2,69 @@
 
 This is detailed description on how to deploy cluster in Digital Ocean.
 
-## Pre-requisites
 
-We assume you already read [Pre-requisites in README.md](README.md#prerequisite) You would need several libraries installed on machine to work with digital ocean provider. For most of Mac users [python 2.7-or later required](https://www.python.org/downloads/mac-osx/), do not forget to close the terminal window and open a new one after installation. For Ubuntu 14.0.4 LTS Python 2.7 recomended but not necessary. Other requirments you can install with pip as described below.
 
+
+## Prerequisites 
+* Linux, FreeBSD, OSX, or other unix-like OS (Ubuntu 14.04 LTS or OSX 10.9+ recommended)
+* Python 2.7
+* Digital Ocean account and API key
+* Ansible 2.0. At the time of writing of this document, Ansible 2.0 was still in beta. Latest version can be installed directly from master branch: ```pip install git+https://github.com/ansible/ansible.git```). 
+* Following dependencies to run Ansible tasks:
+```bash
+apt-get install -y python-pip # You can skip this on your mac
+pip install pyopenssl ndg-httpsclient pyasn1
+pip install mock --upgrade
+pip install six --upgrade
+pip install dopy --upgrade
 ```
-# apt-get install -y python-pip # You can skip this on your mac
-# pip install pyopenssl ndg-httpsclient pyasn1
-# pip install mock --upgrade
-# pip install six --upgrade
-# pip install dopy --upgrade
+> NOTE: Depending on system configuration it might be required to run installation commands as super user. 
+
+## Configuring Digital Ocean Account
+
+### API Key
+It's time to open digital ocean management [portal](https://cloud.digitalocean.com/settings/applications). On this page you'll need to create new API key, which will be used later. Simpy copy it into a safe place, we'll use it later.
+
+### SSH Keys
+For machines we are going to create we'll need SSH keys. In order to create a new ssh key pair follow [GitHub instructions](https://help.github.com/articles/generating-ssh-keys/). Now you should upload content of your public key file (usualy ~/.ssh/id_rsa.pub) with key name ```soft-cluster-key``` to the [digital ocean web site](https://cloud.digitalocean.com/settings/security).
+
+> NOTE: Veify that you now have API key and SSH keys provisioned into Digital Ocean.
+
+## Deployment
+### Getting PintoStack
+Getting the snapshot from repository with command line GIT:
+```
+    $ git clone https://github.com/pintostack/core.git
+    $ cd core
 ```
 
-## Configuring Digital Ocean for your cluster
+### Configure VPC details
 
-> Token id
+Edit file ```infrastructure/do.source```:
+* ```SSH_KEY_ID=<NUMERIC KEY ID>``` , to get your key id you'll need API token. Run ```./infrastructure/digital_ocean.py --ssh-keys -p -a <ONE LINE API TOKEN> | grep -B1 soft-cluster-key```, searching your key id in a list ``` "id" : 1234567 ```. This numeric key id identifies ssh key that will be using later to login to the droplets.
+* ```SSH_KEY_FILE=<FULL PATH TO SSH PRIVATE KEY FILE>``` (ususaly ~/.ssh/id_rsa), containing private key corresponding to the public key uploaded to digital ocean web site.
+* ```SIZE=<DROPLET MEMORY SIZE>``` (8gb recomended, but do not use less than 4gb for this tutorial). Available options are listed [here](https://www.digitalocean.com/pricing/)
+* ```LOCATION=<PREFERED DATACENTER FOR YOUR DROPLETS>```, (default is ams3 in Amsterdam). Available options are listed [here](https://www.digitalocean.com/features/reliability/) You can also get them by running ```./infrastructure/digital_ocean.py --regions -p -a <API_TOKEN>```.
+* ```IMAGE_NAME=<INSTALLATION IMAGE FOR DROPLET>``` Default is ubuntu-14-04-x64. Do not change this until you know what you are doing. 
 
-It's time to open digital ocean management [portal](https://cloud.digitalocean.com/settings/applications). On this page you need to create new token id, which is later used by ansible. Store this one line token in a save place you will need it while folowing this instruction and later.
+Here is an example of ```infrastructure/do.source```:
+```
+# Digital Ocean Account Parametrs
+# SSH_KEY_ID=<NUMERIC KEY ID>
+SSH_KEY_ID=1234567
+# SSH_KEY_FILE=<FULL PATH TO SSH PRIVATE KEY FILE ususaly ~/.ssh/id_rsa>
+SSH_KEY_FILE=~/.ssh/id_rsa
+# SIZE=<DROPLET MEMORY SIZE do not use less than 4gb for this tutorial>
+SIZE=8gb
+# LOCATION=<PREFERED DATACENTER FOR YOUR DROPLETS ams3 in EU or nyc3 in US>
+LOCATION=ams3
+# Do not change this until you know what you are doing
+IMAGE_NAME=ubuntu-14-04-x64
+```
 
-> SSH Keys
 
-SSH keys are used in order to perform authentication on the droplets. In order to create a new ssh key pair you might follow [this](https://help.github.com/articles/generating-ssh-keys/) link. Now you should upload content of your public key file (usualy ~/.ssh/id_rsa.pub) to the [digital ocean web site](https://cloud.digitalocean.com/settings/security) remembering key name.
 
-NOTE: After cluster will be created you will be able to login into the droplets: ```ssh -i <path to your private key part> <user name>@<machine ip>``` 
+
 
 ## Configure VPC details
 
