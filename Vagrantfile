@@ -15,6 +15,22 @@ More information on vagrant it self you can find
 here http://docs.vagrantup.com/v2/cli/index.html
 ==================================================================
 "
+
+if ARGV[1] and \
+   (ARGV[1].split('=')[0] == "--provider" or ARGV[2])
+  provider = (ARGV[1].split('=')[1] || ARGV[2])
+else
+  provider = (ENV['VAGRANT_DEFAULT_PROVIDER'] || :virtualbox).to_sym
+end
+
+if  provider == "aws" 
+  vpc_if="eth0"
+else
+  vpc_if="eth1"
+end
+puts "Detected #{provider}..."
+puts "Setting VPC interface #{vpc_if}..."
+
 SLAVES = %x( bash -c "source source.global && echo \\$SLAVES" ).strip
 MASTERS = %x( bash -c "source source.global && echo \\$MASTERS" ).strip
 
@@ -55,9 +71,9 @@ Vagrant.configure(2) do |config|
           aws.ami = %x( bash -c "source source.aws && echo \\$AWS_AMI").strip
           aws.instance_type = %x( bash -c "source source.aws && echo \\$AWS_INSTANCE_TYPE").strip
           aws.region = %x( bash -c "source source.aws && echo \\$AWS_REGION").strip
-          aws.security_groups = %x( bash -c "source source.aws && echo \\$AWS_SEQURITY_GROUPS").strip
+          aws.security_groups = %x( bash -c "source source.aws && echo \\$AWS_SECURITY_GROUPS").strip.split(",")
           override.ssh.username = %x( bash -c "source source.aws && echo \\$AWS_SSH_USERNAME").strip
-          override.vm.box = aws
+          override.vm.box = 'aws'
           override.vm.box_url ="https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
           override.ssh.private_key_path = %x( bash -c "source source.aws && echo \\$SSH_KEY_FILE").strip
   end
@@ -70,47 +86,30 @@ Vagrant.configure(2) do |config|
   ALL_HOSTS.each do |i|
     name = "#{i}"
     config.vm.define name do |instance|
-	instance.vm.hostname = name # Name in web console DO
-	if name == "docker-registry" # Run ansible after last host provision
-	instance.vm.provision :ansible do |ansible|
-	    ansible.playbook = "provisioning/world-playbook.yml"
-    	    ansible.limit = 'all'
-    	    ansible.force_remote_user = true
-    	    ansible.host_vars={}
-    	    ALL_HOSTS.each do |each_host|
-        	ansible.host_vars["#{each_host}"] = {"vpc_if" => "eth1"}
-    	    end
-    	    ansible.groups = {
-              "masters" => ["master-[1:#{MASTERS.to_i}]"],
-              "slaves" => ["slave-[1:#{SLAVES.to_i}]"],
-              "dockers" => ["docker-registry"],
-              "all-hosts" => ["master-[1:#{MASTERS.to_i}]","slave-[1:#{SLAVES.to_i}]","docker-registry"]
-    	    }
-	end
-	end
-       instance.vm.provider :aws do |aws, override|
-         aws.tags={ 'Name' => name }
-	 if name == "docker-registry" # Run ansible after last host provision
-	 override.vm.provision :ansible do |ansible|
-            ansible.playbook = "provisioning/world-playbook.yml"
-            ansible.limit = 'all'
-            ansible.force_remote_user = true
-            ansible.host_vars={}
-            ALL_HOSTS.each do |each_host|
-              ansible.host_vars["#{each_host}"] = {"vpc_if" => "eth0"}
-            end
-            ansible.groups = {
-              "masters" => ["master-[1:#{MASTERS.to_i}]"],
-              "slaves" => ["slave-[1:#{SLAVES.to_i}]"],
-              "dockers" => ["docker-registry"],
-              "all-hosts" => ["master-[1:#{MASTERS.to_i}]","slave-[1:#{SLAVES.to_i}]","docker-registry"]
-            }
-         end
-	 end
-       end
-       instance.vm.provider :virtualbox do |virtualbox|
+	    instance.vm.hostname = name # Name in web console DO
+	    instance.vm.provider :aws do |aws, override|
+        aws.tags={ 'Name' => name }
+      end
+      instance.vm.provider :virtualbox do |virtualbox|
           virtualbox.name = name
-       end
+      end
+      if name == "docker-registry" # Run ansible after last host provision
+        instance.vm.provision :ansible do |ansible|
+          ansible.playbook = "provisioning/world-playbook.yml"
+          ansible.limit = 'all'
+          ansible.force_remote_user = true
+          ansible.host_vars={}
+          ALL_HOSTS.each do |each_host|
+            ansible.host_vars["#{each_host}"] = {"vpc_if" => "#{vpc_if}"}
+          end
+          ansible.groups = {
+              "masters" => ["master-[1:#{MASTERS.to_i}]"],
+              "slaves" => ["slave-[1:#{SLAVES.to_i}]"],
+              "dockers" => ["docker-registry"],
+              "all-hosts" => ["master-[1:#{MASTERS.to_i}]","slave-[1:#{SLAVES.to_i}]","docker-registry"]
+          }
+        end
+      end
     end
   end
 #END
