@@ -5,13 +5,13 @@ source source.global
 
 # All variables add below
 
-#SSH_KEY_FILE='~/Downloads/AWS_KEYPAIR_NAME.pem'
+#SSH_KEY_FILE='~/Downloads/PintoStack.pem.txt'
 
 AWS_KEY_ID='Change me'
 AWS_ACCESS_KEY='Change me'
 AWS_KEYPAIR_NAME='PintoStack'
 AWS_AMI='ami-5189a661'
-AWS_INSTANCE_TYPE='m4.large'
+AWS_INSTANCE_TYPE='t2.medium'
 AWS_REGION='us-west-2'
-AWS_SECURITY_GROUPS="'default','allow-ssh'"
-AWS_USERNAME='ubuntu'
+AWS_SECURITY_GROUPS="default,allow-ssh"
+AWS_SSH_USERNAME='ubuntu'
