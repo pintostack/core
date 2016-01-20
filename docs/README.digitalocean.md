@@ -100,4 +100,4 @@ This may take a several minutes but after command completes you should be able t
 ## Infrastructure ready, lets bootstrap software
 
 Once you finished provisioning droplets you can start deploying the cluster software on this new infrastructure.
-[Please follow instructions](README.md#bootstrap).
+[Please follow instructions](../README.install.md#bootstrap).

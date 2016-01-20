@@ -26,4 +26,4 @@ vagrant up --provider=virtualbox
 ## Infrastructure
 
 Once you finished provisioning virtual resources you can start deploying the cluster on it.
-[Please follow instructions](README.install.md#bootstrap).
+[Please follow instructions](../README.install.md#bootstrap).
