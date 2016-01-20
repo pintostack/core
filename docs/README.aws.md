@@ -40,45 +40,18 @@ AMI name is the name of image that is used as a source for your virtual instance
 
 ## Configure VPC details
 
-### File ```source.aws```
-
-You can find the file under in source directory.
-
-Here is detailed description of settings available:
-
-AWS_REGION=it's region id for your cluster
-
-AWS_ACCESS_KEY_ID=amazon ec2 console access key id
-
-AWS_SECRET_ACCESS_KEY=amazon ec2 console secret key
-
-AWS_VPC_SUBNET_ID=this is subnet id you created
-
-AWS_AMI=the ami name
-
-AWS_SSH_KEY_NAME=the name of key that should be installed as auth on machine
-
-SSH_KEY_PATH=full path to the key on your local machine
-Finally it should look like:
 ```
-### Amazon AWS Account Parametrs
-# For more information refere to https://github.com/pintostack/core
-
-source source.global
-
-# All variables add below
-
-#SSH_KEY_FILE='~/Downloads/AWS_KEYPAIR_NAME.pem'
-
-AWS_KEY_ID='Change me'
-AWS_ACCESS_KEY='Change me'
-AWS_KEYPAIR_NAME='PintoStack'
-AWS_AMI='ami-5189a661'
-AWS_INSTANCE_TYPE='m4.large'
-AWS_REGION='us-west-2'
-AWS_SECURITY_GROUPS="'default','allow-ssh'"
-AWS_USERNAME='ubuntu'
+AWS_KEY_ID='<KEY>'
+AWS_ACCESS_KEY='<ACCESS_KEY>'
+AWS_KEYPAIR_NAME='<KEY NAME>'
+AWS_AMI='<AMI>'
+AWS_INSTANCE_TYPE='t2.medium'
+AWS_REGION='us-west-1'
+AWS_SECURITY_GROUPS="default,<GROUP WHERE SSH IS ALLOWED"
+AWS_SSH_USERNAME='<USERNAME TO SSH TO VIRTUAL MACHINE'
+SSH_KEY_FILE=<FULL PATH TO PEM FILE>
 ```
+
 ## Provisioning
 
 Open terminal window and run provision sh file
