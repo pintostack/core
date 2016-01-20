@@ -2,13 +2,13 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-print "
+puts "
 ==================================================================
 To change provisioning options please use source.[provider] files.
 For more information refere to https://github.com/pintostack/core
 "
 system("ls source.*")
-print "Usage:
+puts "Usage:
 vagrant up --provider=[virtualbox|aws|digital_ocean]
 
 More information on vagrant it self you can find
@@ -114,3 +114,17 @@ Vagrant.configure(2) do |config|
   end
 #END
 end
+
+
+ANSIBLE_INVENTORY_FILE = %x( bash -c "source source.global && echo \\$ANSIBLE_INVENTORY_FILE" ).strip
+
+puts "
+==================================================================
+After vagrant up --provider=[provider] finished you can rerun 
+ansible script on your new cluster by executing:
+
+ansible-playbook -i #{ANSIBLE_INVENTORY_FILE} provisioning/world-playbook.yml
+
+"
+system("open_webui.sh")
+
