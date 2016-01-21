@@ -14,6 +14,13 @@ To install Vagrant plugin run:
 sudo vagrant plugin install aws
 ```
 
+Following dependencies to run Ansible tasks:
+```bash
+apt-get install -y python-pip # You can skip this on your mac
+pip install pyopenssl ndg-httpsclient pyasn1 mock six dopy --upgrade
+```
+
+
 ## Configuring EC2 for your cluster
 
 ### Region
