@@ -16,13 +16,20 @@
   user: "{{ ansible_ssh_user }}"
   sudo: yes
   gather_facts: true
+  vars:
+     masters_str: |
+        {% set comma = joiner(",") %}
+        {% set eth = "ansible_"+vpc_if %}
+        {% for item in groups["masters"] -%}
+            {{ comma() }}{{ hostvars[item][eth].ipv4.address }}
+        {%- endfor %}
   pre_tasks:
     - set_fact:
         a_vpc_if: "ansible_{{ vpc_if }}"
     - set_fact:
         local_ip: "{{ hostvars[inventory_hostname][a_vpc_if].ipv4.address }}"
     - set_fact:
-        masters : "{{ groups['masters']|map('extract', hostvars, [a_vpc_if,'ipv4','address'])|list }}"
+        masters : "{{ masters_str|trim|split(',') }}" 
     - set_fact:
         my_zoo_id : "{{ masters|index_of(local_ip) }}"
     - set_fact:
@@ -31,7 +38,12 @@
         my_quorum: "{{ (masters|length)//2+1 }}"
     - set_fact:
         my_hostname: "master-{{ my_zoo_id }}"
-    - debug: msg="my_zk_hostnames {{ my_zk_hostnames }} my_quorum {{ my_quorum }} zoo_id {{ my_zoo_id }}"
+    - debug:
+        msg: "my_zk_hostnames {{ my_zk_hostnames }}"
+    - debug:
+        msg: "my_quorum {{ my_quorum }}"
+    - debug:
+        msg: "zoo_id={{ my_zoo_id }}"
   roles:
     - role: ansible-nginx
       nginx_worker_processes: 1
@@ -78,15 +90,21 @@
   sudo: yes
   vars:
     public_dns : ["8.8.8.8", "8.8.4.4"]
+    masters_str: |
+        {% set comma = joiner(",") %}
+        {% set eth = "ansible_"+vpc_if %}
+        {% for item in groups["masters"] -%}
+            {{ comma() }}{{ hostvars[item][eth].ipv4.address }}
+        {%- endfor %}
   pre_tasks:
+    - set_fact:
+        masters : "{{ masters_str|trim|split(',') }}" 
+    - set_fact:
+        my_zk_hostnames: "{{masters|join(':2181,')}}:2181"
     - set_fact:
         a_vpc_if: "ansible_{{ vpc_if }}"
     - set_fact:
         local_ip: "{{ hostvars[inventory_hostname][a_vpc_if].ipv4.address }}"
-    - set_fact:
-        masters : "{{ groups['masters']|map('extract', hostvars, [a_vpc_if,'ipv4','address'])|list }}"
-    - set_fact:
-        my_zk_hostnames: "{{masters|join(':2181,')}}:2181"
   roles:
     - role: ansible-consul
       dns_nameservers: "{{ public_dns }}"
@@ -131,14 +149,21 @@
   sudo: yes
   vars:
     public_dns : ["8.8.8.8", "8.8.4.4"]
+  vars:
+    masters_str: |
+        {% set comma = joiner(",") %}
+        {% set eth = "ansible_"+vpc_if %}
+        {% for item in groups["masters"] -%}
+            {{ comma() }}{{ hostvars[item][eth].ipv4.address }}
+        {%- endfor %}
 
   pre_tasks:
+    - set_fact:
+        masters : "{{ masters_str|trim|split(',') }}"
     - set_fact:
         a_vpc_if: "ansible_{{ vpc_if }}"
     - set_fact:
         local_ip: "{{ hostvars[inventory_hostname][a_vpc_if].ipv4.address }}"
-    - set_fact:
-        masters : "{{ groups['masters']|map('extract', hostvars, [a_vpc_if,'ipv4','address'])|list }}"
 
   roles:
     - role: ansible-consul
