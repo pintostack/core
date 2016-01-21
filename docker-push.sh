@@ -1,14 +1,17 @@
-#!/bin/bash
+#!/usr/bin/env bash
+source source.global
 
 function print_usage (){
-  echo "Usage: ./pushDocker.sh image_name"
+    echo "
+Usage: $0 <image_name>
+All available images you can find in docker directory
+"
+    ls docker/
 }
 
 if [ $# = 0 ]; then
   print_usage
   exit
 else
-  cd infrastructure
-  ./docker-build.sh $1 
+    ansible-playbook -i $ANSIBLE_INVENTORY_FILE provisioning/docker-build.yml -e name=$1 $ANSIBLE_OPTS
 fi
-

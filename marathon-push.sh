@@ -1,14 +1,17 @@
-#!/bin/bash
+#!/usr/bin/env bash
+source source.global
 
 function print_usage (){
-  echo "Usage: ./marathon-push.sh <task-description.json>"
+    echo "
+Usage: $0 <task-description.json>
+All available tasks you can find in marathon directory
+"
+    ls marathon/
 }
 
 if [ $# = 0 ]; then
   print_usage
   exit
 else
-  cd infrastructure
-  ./marathon-deploy.sh $1
+    ansible-playbook -i $ANSIBLE_INVENTORY_FILE provisioning/marathon-deploy.yml -e name=$1 $ANSIBLE_OPTS
 fi
-

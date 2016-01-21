@@ -2,3 +2,5 @@
 .idea
 *.pyc
 infrastructure/*.sh
+source.*
+.vagrant

@@ -72,4 +72,4 @@ now it's time to run provision sh file
 ## Infrastructure
 
 Once you finished provisioning virtual resources you can start deploying the cluster on it.
-[Please follow instructions](README.md#bootstrap).
+[Please follow instructions](../README.install.md#bootstrap).
