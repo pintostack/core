@@ -53,7 +53,8 @@ Choose Download Credentials, and store the keys in the ```source.aws``` file in 
 AMI name is the name of image that is used as a source for your virtual instances. So if you chose a different region than we sugested in default ```source.aws``` like ```AWS_REGION='us-west-2'``` you need to change default ```AWS_AMI='ami-5189a661'```. To do so, open this [link](https://cloud-images.ubuntu.com/locator/ec2/) and type for example if you would like to find out the AMI-ID for the latest release of “LTS” Ubuntu to run on a “64″ bit “ebs” instance in the “us-east” region, you would search for ```lts 64 us-east ebs```.
 >NOTICE: You can try other options like [archlinux](https://www.uplinklabs.net/projects/arch-linux-on-ec2/), or even [BSD](http://www.daemonology.net/freebsd-on-ec2/) but it was not tested.
 
-## Configure VPC details
+## Checking your details
+
 After all your ```source.aws``` file would be like this:
 ```
 ### Amazon AWS Account Parametrs
@@ -82,8 +83,6 @@ Open terminal window and run provision
 ```
 vagrant up --provider=aws
 ```
-
-## Infrastructure
 
 Once you finished provisioning virtual resources you can start deploying the cluster on it.
 [Please follow instructions](../README.install.md#bootstrap).
