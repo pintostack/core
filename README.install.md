@@ -46,8 +46,7 @@ The package is designed to behave in a same way in all providers, however there 
 
 ## Bootstrap
 In order to boostrap the cluster run ```vagrant up --provider=[aws|digital_ocean|virtualbox]``` this will creates machines and install and configure all newely provisioned machines and ensure the state of the existing ones, this step may take a while and several times console can freez for several minutes, please be patient.
-
-NOTE: Now after successful bootstrap you can open a Web UI of your system executing ```./open-webui.sh``` or ssh to your to any of your machine by typing ```vagrant ssh master-1```. If everithing works like expected you can proceed installing bundled application on this platform.
+>NOTE: Now after successful bootstrap you can open a Web UI of your system executing ```./open-webui.sh``` or ssh to your to any of your machine by typing ```vagrant ssh master-1```. If everithing works like expected you can proceed installing bundled application on this platform.
 
 ## Running bundled applications
 If everithing works like expected you can run bundled application.
