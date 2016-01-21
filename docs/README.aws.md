@@ -63,7 +63,7 @@ source source.global
 
 # All variables add below
 
-#SSH_KEY_FILE='~/Downloads/PintoStack.pem.txt'
+SSH_KEY_FILE='~/Downloads/PintoStack.pem.txt'
 
 AWS_KEY_ID='Change me'
 AWS_ACCESS_KEY='Change me'
