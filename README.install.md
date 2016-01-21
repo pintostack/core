@@ -17,7 +17,7 @@ Bootstrap stage however less dependant, and uses ansible to deploy packages, con
 Depending on your virtual resource provider, it might be required to install additional software, section below defines common prerequisites.
 
 ## Prerequisite. Ansible
-Download and install Ansible 1.9.4.
+Download and install Ansible 2.0
 
 ## Prerequisite. Vagrant
 Download and install Vagrant 1.8 or later from https://www.vagrantup.com/downloads.html
