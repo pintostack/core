@@ -15,13 +15,14 @@ This is detailed description on how to deploy cluster in Amason AWS Cloud.
 
 Before starting the deployment process you might select a region where it would reside. EC2 allows you to select from number of available regions.
 Configuration would require from you the name of region you selected, lilke, us-west-1, or eu-east-2.
+> IMPORTANT: Remember that AMI_NAME and SEQURITY_GROUPS are region specific.
 
-### SSH Keys
+### SSH Keys or so called in AWS Console Network & Security Key Pairs
 
-The keys are used to replace password based authentication. EC2 requires you to setup a keypair in management console, to read more please follow the [link](http://docs.aws.amazon.com/opsworks/latest/userguide/security-ssh-access.html). If you do not have keypair, it's easy to create new one from AWS Console; in case there are existing key pairs in your aws account you can use it as well.
-Please note that keypairs are region specific.
+The keys are used to replace password based authentication. EC2 requires you to setup a keypair in management console, to read more please follow the [this link](http://docs.aws.amazon.com/opsworks/latest/userguide/security-ssh-access.html). If you do not have keypair, it's easy to create new one from AWS Console then Network & Security then Key Pairs; in case there are existing key pairs in your AWS account you can use it as well. We sugest you to name a new key pair ```PintoStack```. And save the key file in save place and put the path to you key file in ```source.aws``` for example it looks like this ```SSH_KEY_FILE='~/Downloads/PintoStack.pem.txt'```
+> IMPORTANT: Please note that keypairs are also region specific.
 
-### Network
+### Network and Firewall so called in AWS Console ```Network & Security > Security Groups```
 
 Create VPC and subnet for your cluster, or choose of any existing that suits your cluster requirement. Default EC2 settings are good for fresh start, but depending on your resource requirements it could happen that you would need bigger subnet. Please follow the [link](https://us-west-2.console.aws.amazon.com/vpc/home?region=us-west-2#) to open VPC dashboard. Later you would need to enter subnet id, so please remember it, or you can find later get it from dashboard.
 
