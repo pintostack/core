@@ -9,7 +9,13 @@ This is detailed description on how to deploy cluster in Digital Ocean.
 * Digital Ocean account and API key
 * Vagrant 1.8 or later
 * Ansible 2.1. At the time of writing of this document, Ansible 2.0 was still in beta. Latest version can be installed directly from master branch: ```pip install git+https://github.com/ansible/ansible.git```). 
-* Following dependencies to run Ansible tasks:
+* Vagrant 1.8 or later with ```digital_ocean``` plugin
+
+To install Vagrant plugin run:
+```
+sudo vagrant plugin install digital_ocean
+```
+Following dependencies to run Ansible tasks:
 ```bash
 apt-get install -y python-pip # You can skip this on your mac
 pip install pyopenssl ndg-httpsclient pyasn1 mock six dopy --upgrade
