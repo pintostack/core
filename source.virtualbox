@@ -7,4 +7,4 @@ source source.global
 
 #SSH_KEY_FILE='~/.ssh/id_rsa'
 
-VBOX_SIZE=512
+VBOX_SIZE=1024
