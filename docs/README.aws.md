@@ -19,11 +19,12 @@ Configuration would require from you the name of region you selected, lilke, us-
 
 ### SSH Keys or so called in AWS Console ```[Network & Security] > [Key Pairs]```
 
-The keys are used to replace password based authentication. EC2 requires you to setup a keypair in management console, to read more please follow the [this link](http://docs.aws.amazon.com/opsworks/latest/userguide/security-ssh-access.html). If you do not have keypair, it's easy to create new one from AWS Console then Network & Security then Key Pairs; in case there are existing key pairs in your AWS account you can use it as well. We sugest you to name a new key pair ```PintoStack```. And save the key file in save place and put the path to you key file in ```source.aws``` for example it looks like this ```SSH_KEY_FILE='~/Downloads/PintoStack.pem.txt'```
-> IMPORTANT: Please note that keypairs are also region specific.
+The keys are used to replace password based authentication. EC2 requires you to setup a keypair in management console. If you do not have keypair, it's easy to create new one open ```[AWS Console] > [EC2]``` then in left pane ```[Network & Security] > [Key Pairs]``` in case there are existing key pairs in your AWS account you can use it as well. We sugest you to name a new key pair ```PintoStack```. And save the key file in save place and put the path to you key file in ```source.aws``` for example it looks like this ```SSH_KEY_FILE='~/Downloads/PintoStack.pem.txt'``` and ```AWS_KEYPAIR_NAME='PintoStack'```.
+> IMPORTANT: Please note that keypairs are also region specific and to read more please follow the [this link](http://docs.aws.amazon.com/opsworks/latest/userguide/security-ssh-access.html).
 
 ### Network and Firewall so called in AWS Console ```[Network & Security] > [Security Groups]```
-We sugest you create two default security groups for your cluster with names ```default``` and ```allow-ssh```. 
+
+We sugest you create two default security groups for your cluster with names ```default``` and ```allow-ssh``` to do so open ```[AWS Console] > [EC2]``` then in left pane ```[Network & Security] > [Security Groups]``` than create two with names ```default``` and ```allow-ssh```
 * After security groups has bin created copy ```Group ID``` of that one with name ```default``` and click edit and add the only one inbound rule to allow local traffic in VPC with ```Type: All traffic; Source: Custom IP [put here Group ID]``` and press ```save```.
 * Now chose the one named ```allow-ssh``` and the same way add three inbound rules to allow ```SSH ,TCP port 5050, TCP port 8080``` and save.
 
@@ -31,7 +32,7 @@ Remember security groups you want to apply to your new instances should be liste
 >NOTICE: For more information on AWS Security Groups look [here](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_SecurityGroups.html).
 
 
-### Access key and secret
+### API Access key and secret
 
  * Open [the IAM console](https://console.aws.amazon.com/iam/home?#home)
  * In the navigation pane, choose Users.
