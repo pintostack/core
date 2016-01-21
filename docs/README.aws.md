@@ -33,29 +33,51 @@ Remember security groups you want to apply to your new instances should be liste
 
 ### Access key and secret
 
-Access key ans secret part are used to authenticate scripts on amazon ec2, so you provide key and secret to the script, but not your login name and password. To get keys please read the detailed instruction on aws web [site](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html)
+ * Open [the IAM console](https://console.aws.amazon.com/iam/home?#home)
+ * In the navigation pane, choose Users.
+ * Choose your IAM user name (not the check box).
+ * Choose the Security Credentials tab and then choose Create Access Key.
+
+To see your access key, choose Show User Security Credentials. Your credentials will look something like this:
+```
+  Access Key ID: AKIAIOSFODNN7EXAMPLE
+  Secret Access Key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+```
+Choose Download Credentials, and store the keys in the ```source.aws``` file in ```AWS_KEY_ID='Change me'``` and ```AWS_ACCESS_KEY='Change me'```. 
+
+>NOTICE: For more information on Amazon Access keys look [here](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html)
+
 
 ### AMI and user name
-
-AMI name is the name of image that is used as a source for your virtual instances. Name of AMI depends on the region, and there are number of online tools that can help you to find the name, for instance https://cloud-images.ubuntu.com/locator/ec2/ for ubuntu, https://www.uplinklabs.net/projects/arch-linux-on-ec2/ for archlinux, and even bsd http://www.daemonology.net/freebsd-on-ec2/.
+AMI name is the name of image that is used as a source for your virtual instances. So if you chose a different region than we sugested in default ```source.aws``` like ```AWS_REGION='us-west-2'``` you need to change default ```AWS_AMI='ami-5189a661'```. To do so, open this [link](https://cloud-images.ubuntu.com/locator/ec2/) and type for example if you would like to find out the AMI-ID for the latest release of “LTS” Ubuntu to run on a “64″ bit “ebs” instance in the “us-east” region, you would search for ```lts 64 us-east ebs```.
+>NOTICE: You can try other options like [archlinux](https://www.uplinklabs.net/projects/arch-linux-on-ec2/), or even [BSD](http://www.daemonology.net/freebsd-on-ec2/) but it was not tested.
 
 ## Configure VPC details
-
+After all your ```source.aws``` file would be like this:
 ```
-AWS_KEY_ID='<KEY>'
-AWS_ACCESS_KEY='<ACCESS_KEY>'
-AWS_KEYPAIR_NAME='<KEY NAME>'
-AWS_AMI='<AMI>'
+### Amazon AWS Account Parametrs
+# For more information refere to https://github.com/pintostack/core
+
+source source.global
+
+# All variables add below
+
+#SSH_KEY_FILE='~/Downloads/PintoStack.pem.txt'
+
+AWS_KEY_ID='Change me'
+AWS_ACCESS_KEY='Change me'
+AWS_KEYPAIR_NAME='PintoStack'
+AWS_AMI='ami-5189a661'
 AWS_INSTANCE_TYPE='t2.medium'
-AWS_REGION='us-west-1'
-AWS_SECURITY_GROUPS="default,<GROUP WHERE SSH IS ALLOWED"
-AWS_SSH_USERNAME='<USERNAME TO SSH TO VIRTUAL MACHINE'
-SSH_KEY_FILE=<FULL PATH TO PEM FILE>
+AWS_REGION='us-west-2'
+AWS_SECURITY_GROUPS="default,allow-ssh"
+AWS_SSH_USERNAME='ubuntu'
 ```
 
 ## Provisioning
 
-Open terminal window and run provision sh file
+Open terminal window and run provision
+
 ```
 vagrant up --provider=aws
 ```
