@@ -25,9 +25,9 @@ pip install pyopenssl ndg-httpsclient pyasn1 mock six dopy --upgrade
 
 ### Region
 
-Before starting the deployment process you might select a region where it would reside. EC2 allows you to select from number of available regions.
-Configuration would require from you the name of region you selected, lilke, us-west-1, or eu-east-2.
-> IMPORTANT: Remember that AMI_NAME and SEQURITY_GROUPS are region specific.
+Before starting the deployment process you might select a region where it would reside we sugest you to use default one from ```source.aws``` file ```AWS_REGION='us-west-2'```. But EC2 allows you to select from number of available regions.
+Configuration would require from you the name of region you selected, lilke, us-west-1, or eu-east-2 put in ```source.aws``` file like ```AWS_REGION='us-west-2'```
+> IMPORTANT: Remember that AWS_AMI and AWS_SECURITY_GROUPS are region specific.
 
 ### SSH Keys or so called in AWS Console ```[Network & Security] > [Key Pairs]```
 
