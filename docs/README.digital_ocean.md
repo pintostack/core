@@ -12,34 +12,30 @@ This is detailed description on how to deploy cluster in Digital Ocean.
 * Following dependencies to run Ansible tasks:
 ```bash
 apt-get install -y python-pip # You can skip this on your mac
-pip install pyopenssl ndg-httpsclient pyasn1
-pip install mock --upgrade
-pip install six --upgrade
-pip install dopy --upgrade
+pip install pyopenssl ndg-httpsclient pyasn1 mock six dopy --upgrade
 ```
 > NOTE: Depending on system configuration it might be required to run installation commands as super user. 
 
 ## Configuring Digital Ocean Account
 
-### API Token
-It's time to open digital ocean management [portal](https://cloud.digitalocean.com/settings/applications). On this page you need to create new token id, which will be used later . Edit file ```source.digital_ocean``` and put this one line tokent to ```DO_TOKEN="..."```.
+### Creating API Token
 
-### SSH Keys
-For machines we are going to create we'll need SSH keys. In order to create a new ssh key pair follow [GitHub instructions](https://help.github.com/articles/generating-ssh-keys/). Now you should upload content of your public key file (usualy ~/.ssh/id_rsa.pub) with key name ```soft-cluster-key``` to the [digital ocean web site](https://cloud.digitalocean.com/settings/security).
-
-> NOTE: Veify that you now have API key and SSH keys provisioned into Digital Ocean.
+It's time to open digital ocean management [portal](https://cloud.digitalocean.com/settings/applications). On this page you need to create new token id, which will be used later . Edit file ```source.digital_ocean``` and put this one line tokent to ```DO_TOKEN='Change me'```.
 
 ## Deployment
+
+### Generating SSH Keys
+
+For machines we are going to create we'll need SSH keys. In order to create a new ssh key pair follow [GitHub instructions](https://help.github.com/articles/generating-ssh-keys/). Now system will automaticaly upload content of your public key file (usualy a pivate key ```~/.ssh/id_rsa``` with extention ```.pub```) with key name ```Vagrant``` to the Digital Ocean. And after all done you will see it [here](https://cloud.digitalocean.com/settings/security) later.
 
 ### Configure VPC details
 
 Edit file ```source.digital_ocean```:
-* ```SSH_KEY_FILE=<FULL PATH TO SSH PRIVATE KEY FILE>``` (ususaly ~/.ssh/id_rsa), containing private key corresponding to the public key uploaded to digital ocean web site.
 * ```DO_SIZE=<DROPLET MEMORY SIZE>``` (8gb recomended, but do not use less than 4gb for this tutorial). Available options are listed [here](https://www.digitalocean.com/pricing/)
-* ```DO_REGION=<PREFERED DATACENTER FOR YOUR DROPLETS>```, (default is ams3 in Amsterdam). Available options are listed [here](https://www.digitalocean.com/features/reliability/)
-* ```DO_IMAGE=<INSTALLATION IMAGE FOR DROPLET>``` Default is ubuntu-14-04-x64. Do not change this until you know what you are doing. 
+* ```DO_REGION=<PREFERED DATACENTER FOR YOUR DROPLETS>```, (default is ```ams3``` in Amsterdam). Available options are listed [here](https://www.digitalocean.com/features/reliability/)
+* ```DO_IMAGE=<INSTALLATION IMAGE FOR DROPLET>``` Default is ```ubuntu-14-04-x64```. Do not change this until you know what you are doing. 
 
-Here is an example of ```infrastructure/do.source```:
+Here is an example of ```source.digital_ocean``` file:
 ```bash
 ### Digital Ocean Account Parametrs
 # For more information refere to https://github.com/pintostack/core
@@ -48,40 +44,7 @@ source source.global
 
 # All variables add below
 
-#SSH_KEY_FILE='~/.ssh/id_rsa'
-
-DO_TOKEN='Change me'
-DO_IMAGE='ubuntu-14-04-x64'
-DO_REGION=ams3
-DO_SIZE='8gb'
-```
-
-
-
-
-
-## Configure VPC details
-
-### file: infrastructure/do.source
-
-You can find the file under <software root>/infrastructure/do.source. File structure is very simple.
-
-* ```SSH_KEY_FILE=<FULL PATH TO SSH KEY FILE YOU CREATED BEFORE>``` (ususaly ~/.ssh/id_rsa), containing private key corresponding to the public key uploaded to digital ocean web site.
-* ```DO_SIZE=<DROPLET MEMORY SIZE>``` (8gb recomended), all available options see [here](https://www.digitalocean.com/pricing/) 8gb, 4gb, ...
-* ```DO_REGION=<PREFERED DATACENTER FOR YOUR DROPLETS```, (default is ams3)all available options see [here](https://www.digitalocean.com/features/reliability/) nyc1, nyc2, ...
-* ```DO_IMAGE=<INSTALLATION IMAGE FOR DROPLET>``` (default is ```ubuntu-14-04-x64```, do not change this until you know what you are doing) that image will be installed on your droplets
-
-After all your ```source.digital_ocean``` file should look like this:
-```bash
-### Digital Ocean Account Parametrs
-# For more information refere to https://github.com/pintostack/core
-
-source source.global
-
-# All variables add below
-
-#SSH_KEY_FILE='~/.ssh/id_rsa'
-
+SSH_KEY_FILE='~/.ssh/id_rsa'
 DO_TOKEN='Change me'
 DO_IMAGE='ubuntu-14-04-x64'
 DO_REGION=ams3
@@ -95,9 +58,7 @@ Run
 $ vagrant up --provider=digital_ocean
 ```
 
-This may take a several minutes but after command completes you should be able to find new droplets in your digital ocean web site [console](https://cloud.digitalocean.com/droplets).  Also you can try to ssh to one of those new droplets by running ```vagrant ssh master-1```
-
-## Infrastructure ready, lets bootstrap software
+This may take a several minutes but after command completes you should be able to find new droplets in your digital ocean web site [console](https://cloud.digitalocean.com/droplets).  You can run ```./open-webui.sh``` to see a web ui, or you can try to ssh to one of those new droplets by running ```vagrant ssh master-1```
 
 Once you finished provisioning droplets you can start deploying the cluster software on this new infrastructure.
 [Please follow instructions](../README.install.md#bootstrap).
