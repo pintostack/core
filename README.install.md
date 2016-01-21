@@ -17,11 +17,7 @@ Bootstrap stage however less dependant, and uses ansible to deploy packages, con
 Depending on your virtual resource provider, it might be required to install additional software, section below defines common prerequisites.
 
 ## Prerequisite. Ansible
-Download and install Ansible 2.1 from http://releases.ansible.com/ansible/ansible-latest.tar.gz
-Other options to obtain fresh Ansible are to use pip (to get freshest version from github ```pip install git+https://github.com/ansible/ansible.git ```, next metod do not work now on some platforms ```pip install ansible``` ), mac users can use brew (```brew install ansible```).
-Depending on system configuration it might be required to run installation command as super user.
-
-> NOTE: Version > 2.1 strictly required. This way is recomended now ```pip install git+https://github.com/ansible/ansible.git```
+Download and install Ansible 1.9.4.
 
 ## Prerequisite. Vagrant
 Download and install Vagrant 1.8 or later from https://www.vagrantup.com/downloads.html
