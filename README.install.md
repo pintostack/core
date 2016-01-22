@@ -16,7 +16,7 @@ First step creates virtual resources that are later used in bootstrap phase. Aft
 Depending on your virtual resource provider, it might be required to install additional software, section below defines common prerequisites.
 
 ## Prerequisite. Ansible 2.0 
-You can download and install Ansible 2.0 by running ```pip install ansible>=2.0``` or follow [official installation guide](http://docs.ansible.com/ansible/intro_installation.html)
+You can download and install Ansible 2.0 by running ```pip install "ansible>=2.0"``` or follow [official installation guide](http://docs.ansible.com/ansible/intro_installation.html)
 
 ## Prerequisite. Vagrant 1.8 or later
 Download and install Vagrant 1.8 or later from [here](https://www.vagrantup.com/downloads.html)
