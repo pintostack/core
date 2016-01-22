@@ -19,7 +19,7 @@ sudo vagrant plugin install vagrant-cachier
 ## Provisioning
 Edit source.global file to set the number of ```MASTERS=1``` and ```SLAVES=3``` or whatever you need.
 Now it's time to run provisioning
-```
+```bash
 vagrant up --provider=virtualbox
 ```
 
