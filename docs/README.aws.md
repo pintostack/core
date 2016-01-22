@@ -5,8 +5,8 @@ This is detailed description on how to deploy cluster in Amason AWS Cloud.
 ## Prerequisites 
 * Linux, FreeBSD, OSX, or other unix-like OS (Ubuntu 14.04 LTS or OSX 10.9+ recommended)
 * Python 2.7
-* Digital Ocean account and API key
-* Ansible 2.0. At the time of writing of this document, Ansible 2.0 was still in beta. Latest version can be installed directly from master branch: ```pip install git+https://github.com/ansible/ansible.git```). 
+* AWS account and API key and SSH KEYPAIR
+* Ansible 2.0. At the time of writing of this document, Ansible 2.0 was still in beta. Latest version can be installed directly from master branch: ```pip install "ansible>=2"```). 
 * Vagrant 1.8 or later with ```aws``` plugin
 
 To install Vagrant plugin run:
