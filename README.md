@@ -5,7 +5,7 @@ PintoStack is a container Platform as a Service for brave and true. A paradigm s
 The core principles of PintoStack are:
 - infrastructure immutability
 - separation of services and infrastructure
-- determenistic deployments
+- deterministic deployments
 - service isolation and discovery
 
 > NOTE: Want to spin a cluster and cruch some puilc data and tear it down afterwards? Try our IPython+Spark tutorial on top of UK Road Accidents data on DigitalOcean [here](docs/README.ipython-spark-hdfs.md) 
