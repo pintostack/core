@@ -49,3 +49,14 @@ Typically marathon web ui available on port 8080, and mesos information on 5050.
 
 # History
 It all started with trying to setup a scalable performance testing environment for http://devicehive.com where we could independently run our application containers, test containers, and infrastructure: Cassandra and Kafka. We wanted something we could play with locally to ensure it runs property and set for a real test in cloud infrastructure. After extensive search, everything we found was too provider specific and required extensive background knowledge. Docker swarm, docker compose, chef, puppet, you name it. There were bits and pieces, and tutorials and discussion threads, but there was not solution. That’s when the work has started. 
+
+# Docker
+Once you built an image, 
+```
+docker run  -v /<full path to conf folder with keys and source.aws>:/pintostack/conf   -it <sha>  bash
+```
+for example:
+```
+docker run  -v /Users/username/pintostack/conf:/pintostack/conf   -it <sha>  bash
+```
+
