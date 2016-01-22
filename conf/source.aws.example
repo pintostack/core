@@ -1,0 +1,17 @@
+### Amazon AWS Account Parametrs
+# For more information refere to https://github.com/pintostack/core
+
+source source.global
+
+# All variables add below
+
+AWS_KEY_ID=''
+AWS_ACCESS_KEY=''
+AWS_KEYPAIR_NAME='pinto'
+AWS_AMI='ami-df6a8b9b'
+AWS_INSTANCE_TYPE='m3.large'
+AWS_ROOT_PARTITION_SIZE=50
+AWS_REGION='us-west-1'
+AWS_SECURITY_GROUPS="default,default-ssh"
+AWS_SSH_USERNAME='ubuntu'
+SSH_KEY_FILE=/pintostack/conf/pinto.pem

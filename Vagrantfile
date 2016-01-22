@@ -65,18 +65,18 @@ Vagrant.configure(2) do |config|
           override.vm.box_url = "https://github.com/smdahlen/vagrant-digitalocean/raw/master/box/digital_ocean.box"
   end
   config.vm.provider :aws do |aws, override|
-          aws.access_key_id = %x( bash -c "source source.aws && echo \\$AWS_KEY_ID").strip
-          aws.secret_access_key = %x( bash -c "source source.aws && echo \\$AWS_ACCESS_KEY").strip
-          aws.keypair_name = %x( bash -c "source source.aws && echo \\$AWS_KEYPAIR_NAME").strip
-          aws.ami = %x( bash -c "source source.aws && echo \\$AWS_AMI").strip
-          aws.instance_type = %x( bash -c "source source.aws && echo \\$AWS_INSTANCE_TYPE").strip
-          aws.region = %x( bash -c "source source.aws && echo \\$AWS_REGION").strip
-          aws.security_groups = %x( bash -c "source source.aws && echo \\$AWS_SECURITY_GROUPS").strip.split(",")
-          aws.block_device_mapping = [{ 'DeviceName' => '/dev/sda1', 'Ebs.VolumeSize' => %x( bash -c "source source.aws && echo \\$AWS_ROOT_PARTITION_SIZE").strip }]
-          override.ssh.username = %x( bash -c "source source.aws && echo \\$AWS_SSH_USERNAME").strip
+          aws.access_key_id = %x( bash -c "source conf/source.aws && echo \\$AWS_KEY_ID").strip
+          aws.secret_access_key = %x( bash -c "source conf/source.aws && echo \\$AWS_ACCESS_KEY").strip
+          aws.keypair_name = %x( bash -c "source conf/source.aws && echo \\$AWS_KEYPAIR_NAME").strip
+          aws.ami = %x( bash -c "source conf/source.aws && echo \\$AWS_AMI").strip
+          aws.instance_type = %x( bash -c "source conf/source.aws && echo \\$AWS_INSTANCE_TYPE").strip
+          aws.region = %x( bash -c "source conf/source.aws && echo \\$AWS_REGION").strip
+          aws.security_groups = %x( bash -c "source conf/source.aws && echo \\$AWS_SECURITY_GROUPS").strip.split(",")
+          aws.block_device_mapping = [{ 'DeviceName' => '/dev/sda1', 'Ebs.VolumeSize' => %x( bash -c "source conf/source.aws && echo \\$AWS_ROOT_PARTITION_SIZE").strip }]
+          override.ssh.username = %x( bash -c "source conf/source.aws && echo \\$AWS_SSH_USERNAME").strip
           override.vm.box = 'aws'
           override.vm.box_url ="https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
-          override.ssh.private_key_path = %x( bash -c "source source.aws && echo \\$SSH_KEY_FILE").strip
+          override.ssh.private_key_path = %x( bash -c "source conf/source.aws && echo \\$SSH_KEY_FILE").strip
   end
   config.vm.provider :virtualbox do |virtualbox|
           virtualbox.gui = false
