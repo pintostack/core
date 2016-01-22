@@ -5,7 +5,7 @@ This is detailed description on how to deploy cluster using Vagrant installed on
 ## Prerequisites
 * Linux, FreeBSD, OSX, or other unix-like OS (Ubuntu 14.04 LTS or OSX 10.9+ recommended)
 * Python 2.7
-* Fully functioning VirtualBox 4 or later
+* Fully functioning VirtualBox 4 or later you can download [here](https://www.virtualbox.org/wiki/Downloads)
 * Ansible 2.0. Proper version can be installed this way: ```pip install "ansible>=2"``` 
 * Vagrant 1.8 or later you can download from [here](https://www.vagrantup.com/downloads.html)
 
