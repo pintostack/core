@@ -7,9 +7,9 @@ This is detailed description on how to deploy cluster in Amason AWS Cloud.
 * Python 2.7
 * AWS account and API key and SSH KEYPAIR
 * Ansible 2.0. At the time of writing of this document, Ansible 2.0 was still in beta. Latest version can be installed directly from master branch: ```pip install "ansible>=2"```). 
-* Vagrant 1.8 or later with ```aws``` plugin
+* Vagrant 1.8 or later with ```aws``` plugin you can download from [here](https://www.vagrantup.com/downloads.html)
 
-To install Vagrant plugin run:
+To install Vagrant aws plugin run:
 ```bash
 sudo vagrant plugin install aws
 ```
