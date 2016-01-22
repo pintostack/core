@@ -124,7 +124,7 @@ puts "
 After vagrant up --provider=[provider] finished you can rerun 
 ansible script on your new cluster by executing:
 
-ansible-playbook -i .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory provisioning/world-playbook.yml
+ansible-playbook -i #{ANSIBLE_INVENTORY_FILE} provisioning/world-playbook.yml
 
 "
 system("open_webui.sh")
