@@ -10,7 +10,7 @@ This is detailed description on how to deploy cluster in Amason AWS Cloud.
 * Vagrant 1.8 or later with ```aws``` plugin
 
 To install Vagrant plugin run:
-```
+```bash
 sudo vagrant plugin install aws
 ```
 
@@ -68,7 +68,7 @@ AMI name is the name of image that is used as a source for your virtual instance
 ## Checking your details
 
 After all your ```source.aws``` file would be like this:
-```
+```bash
 ### Amazon AWS Account Parametrs
 # For more information refere to https://github.com/pintostack/core
 
@@ -92,7 +92,7 @@ SSH_KEY_FILE=<FULL PATH TO PEM FILE>
 
 Open terminal window and run provision
 
-```
+```bash
 vagrant up --provider=aws
 ```
 
