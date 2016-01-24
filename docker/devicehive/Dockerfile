@@ -8,7 +8,8 @@ RUN mkdir -p /opt/devicehive
 
 ADD https://github.com/devicehive/devicehive-java-server/releases/download/${DH_VERSION}/devicehive-${DH_VERSION}-boot.jar /opt/devicehive/
 
-RUN apk add --update sed curl jq bash
+RUN apk add --update sed curl jq bash \
+    && rm -rf /var/cache/apk/*
 
 #start script
 ADD bootstrap.sh /bootstrap.sh

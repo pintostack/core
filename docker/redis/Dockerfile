@@ -1,9 +1,10 @@
-FROM ubuntu:15.04
+FROM alpine:3.3
 
-RUN apt-get update
-RUN apt-get install -y curl redis-server
-RUN mkdir /data
+RUN apk add --update bash curl 'redis<3.1' \
+    && rm -rf /var/cache/apk/*
 
+ENV REDISDATA /data
+VOLUME /data
 WORKDIR /data
 
 ADD bootstrap.sh /entrypoint.sh
