@@ -31,8 +31,8 @@ end
 puts "Detected #{provider}..."
 puts "Setting VPC interface #{vpc_if}..."
 
-SLAVES = %x( bash -c "source source.global && echo \\$SLAVES" ).strip
-MASTERS = %x( bash -c "source source.global && echo \\$MASTERS" ).strip
+SLAVES = %x( bash -c "source conf/source.global && echo \\$SLAVES" ).strip
+MASTERS = %x( bash -c "source conf/source.global && echo \\$MASTERS" ).strip
 
 #Vagrant.require_plugin 'vagrant-aws'
 #Vagrant.require_plugin 'vagrant-digital_ocean'
@@ -117,7 +117,7 @@ Vagrant.configure(2) do |config|
 end
 
 
-ANSIBLE_INVENTORY_FILE = %x( bash -c "source source.global && echo \\$ANSIBLE_INVENTORY_FILE" ).strip
+ANSIBLE_INVENTORY_FILE = %x( bash -c "source conf/source.global && echo \\$ANSIBLE_INVENTORY_FILE" ).strip
 
 puts "
 ==================================================================

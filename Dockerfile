@@ -13,10 +13,15 @@ RUN wget https://releases.hashicorp.com/vagrant/1.8.1/vagrant_1.8.1_x86_64.deb
 RUN dpkg -i vagrant_1.8.1_x86_64.deb
 RUN vagrant plugin install aws vagrant-aws
 
+# Patch ssh connection in ansible, it couldn't work with ansible.
 RUN sed -i -- 's/$HOME\/.ansible\/cp/\/tmp/g' /usr/local/lib/python2.7/dist-packages/ansible/plugins/connection/ssh.py
 
 ADD . /pintostack
 RUN rm -rf /pintostack/conf
 RUN rm -rf /pintostack/.vagrant
+RUN echo "while true; do foo; sleep 60; done" > /s.sh
+RUN chmod +x /s.sh
+
+CMD /s.sh
 
 
