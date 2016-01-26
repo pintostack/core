@@ -5,12 +5,12 @@ This is detailed description on how to deploy cluster in Amason AWS Cloud.
 ## Prerequisites 
 * Linux, FreeBSD, OSX, or other unix-like OS (Ubuntu 14.04 LTS or OSX 10.9+ recommended)
 * Python 2.7
-* Digital Ocean account and API key
-* Ansible 2.0. At the time of writing of this document, Ansible 2.0 was still in beta. Latest version can be installed directly from master branch: ```pip install git+https://github.com/ansible/ansible.git```). 
-* Vagrant 1.8 or later with ```aws``` plugin
+* AWS account and API key and SSH KEYPAIR
+* Ansible 2.0. At the time of writing of this document, Ansible 2.0 was still in beta. Latest version can be installed directly from master branch: ```pip install "ansible>=2"```). 
+* Vagrant 1.8 or later with ```aws``` plugin you can download from [here](https://www.vagrantup.com/downloads.html)
 
-To install Vagrant plugin run:
-```
+To install Vagrant aws plugin run:
+```bash
 sudo vagrant plugin install aws
 ```
 
@@ -68,7 +68,7 @@ AMI name is the name of image that is used as a source for your virtual instance
 ## Checking your details
 
 After all your ```source.aws``` file would be like this:
-```
+```bash
 ### Amazon AWS Account Parametrs
 # For more information refere to https://github.com/pintostack/core
 
@@ -92,7 +92,7 @@ SSH_KEY_FILE=<FULL PATH TO PEM FILE>
 
 Open terminal window and run provision
 
-```
+```bash
 vagrant up --provider=aws
 ```
 
