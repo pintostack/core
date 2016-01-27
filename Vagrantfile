@@ -1,6 +1,10 @@
 #!/usr/bin/env ruby
 
-provider = ARGV[1].split("=")[1].to_sym
+provider = :virtualbox
+
+tokens=ARGV[1].split("=")
+provider = tokens[1].to_sym if tokens[1]
+
 vpc_if = provider == :aws ? "eth0" : "eth1"
 
 # .env is actually `env > .env` so we will just read this file.
