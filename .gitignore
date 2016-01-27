@@ -3,3 +3,9 @@
 *.pyc
 infrastructure/*.sh
 .vagrant
+conf/source.aws
+conf/source.azure
+conf/source.digital_ocean
+conf/source.vagrant
+conf/*.pem
+.env

@@ -1,52 +1,22 @@
 #!/usr/bin/env ruby
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
 
-puts "
-==================================================================
-To change provisioning options please use source.[provider] files.
-For more information refere to https://github.com/pintostack/core
-"
-system("ls source.*")
-puts "Usage:
-vagrant up --provider=[virtualbox|aws|digital_ocean]
+provider = ARGV[1].split("=")[1].to_sym
+vpc_if = provider == :aws ? "eth0" : "eth1"
 
-More information on vagrant it self you can find
-here http://docs.vagrantup.com/v2/cli/index.html
-==================================================================
-"
+# .env is actually `env > .env` so we will just read this file.
+CONFIG = File.new(".env").read.split("\n").map{ |t| x=t.index("="); [t[0..x-1], t[x+1..-1] ]}.inject({}) {|r, a| r[a[0]] = a[1].strip;r}
 
-if ARGV[1] and \
-   (ARGV[1].split('=')[0] == "--provider" or ARGV[2])
-  provider = (ARGV[1].split('=')[1] || ARGV[2])
-else
-  provider = (ENV['VAGRANT_DEFAULT_PROVIDER'] || :virtualbox).to_sym
-end
+puts %Q(
+Detected provider "#{provider}"
+Setting VPC interface '#{vpc_if}'
+)
 
-if  provider == "aws" 
-  vpc_if="eth0"
-else
-  vpc_if="eth1"
-end
-puts "Detected #{provider}..."
-puts "Setting VPC interface #{vpc_if}..."
-
-SLAVES = %x( bash -c "source conf/source.global && echo \\$SLAVES" ).strip
-MASTERS = %x( bash -c "source conf/source.global && echo \\$MASTERS" ).strip
-
-#Vagrant.require_plugin 'vagrant-aws'
-#Vagrant.require_plugin 'vagrant-digital_ocean'
-#Vagrant.require_plugin 'vagrant-cachier'
+SLAVES = CONFIG["SLAVES"]
+MASTERS = CONFIG["MASTERS"]
 
 ALL_HOSTS=[]
-(1..MASTERS.to_i).each do |i|
-   m_host = "master-#{i}"
-   ALL_HOSTS.push("#{m_host}")
-end
-(1..SLAVES.to_i).each do |i|
-    s_host = "slave-#{i}"
-    ALL_HOSTS.push("#{s_host}")
-end
+(1..MASTERS.to_i).each {|i| ALL_HOSTS.push "master-#{i}"}
+(1..SLAVES.to_i).each {|i| ALL_HOSTS.push "slave-#{i}"}
 ALL_HOSTS.push("docker-registry")
 
 Vagrant.configure(2) do |config|
@@ -55,33 +25,33 @@ Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu/trusty64"
   config.vm.synced_folder ".", "/vagrant", disabled: true
   config.vm.provider :digital_ocean do |digital_ocean, override|
-          digital_ocean.token = %x( bash -c "source source.digital_ocean && echo \\$DO_TOKEN").strip
-          digital_ocean.image = %x( bash -c "source source.digital_ocean && echo \\$DO_IMAGE").strip
-          digital_ocean.region = %x( bash -c "source source.digital_ocean && echo \\$DO_REGION").strip
-          digital_ocean.size = %x( bash -c "source source.digital_ocean && echo \\$DO_SIZE").strip
+          digital_ocean.token = CONFIG["DO_TOKEN"]
+          digital_ocean.image = CONFIG["DO_IMAGE"]
+          digital_ocean.region = CONFIG["DO_REGION"]
+          digital_ocean.size = CONFIG["DO_SIZE"]
           digital_ocean.private_networking = true
-          override.ssh.private_key_path = %x( bash -c "source source.digital_ocean && echo \\$SSH_KEY_FILE").strip
+          override.ssh.private_key_path = CONFIG["SSH_KEY_FILE"]
           override.vm.box = 'digital_ocean'
           override.vm.box_url = "https://github.com/smdahlen/vagrant-digitalocean/raw/master/box/digital_ocean.box"
   end
   config.vm.provider :aws do |aws, override|
-          aws.access_key_id = %x( bash -c "source conf/source.aws && echo \\$AWS_KEY_ID").strip
-          aws.secret_access_key = %x( bash -c "source conf/source.aws && echo \\$AWS_ACCESS_KEY").strip
-          aws.keypair_name = %x( bash -c "source conf/source.aws && echo \\$AWS_KEYPAIR_NAME").strip
-          aws.ami = %x( bash -c "source conf/source.aws && echo \\$AWS_AMI").strip
-          aws.instance_type = %x( bash -c "source conf/source.aws && echo \\$AWS_INSTANCE_TYPE").strip
-          aws.region = %x( bash -c "source conf/source.aws && echo \\$AWS_REGION").strip
-          aws.security_groups = %x( bash -c "source conf/source.aws && echo \\$AWS_SECURITY_GROUPS").strip.split(",")
-          aws.block_device_mapping = [{ 'DeviceName' => '/dev/sda1', 'Ebs.VolumeSize' => %x( bash -c "source conf/source.aws && echo \\$AWS_ROOT_PARTITION_SIZE").strip }]
-          aws.terminate_on_shutdown = %x( bash -c "source source.aws && echo \\$AWS_TERMINATE_ON_SHUTDOWN").strip
-          override.ssh.username = %x( bash -c "source conf/source.aws && echo \\$AWS_SSH_USERNAME").strip
+          aws.access_key_id = CONFIG["AWS_KEY_ID"]
+          aws.secret_access_key = CONFIG["AWS_ACCESS_KEY"]
+          aws.keypair_name = CONFIG["AWS_KEYPAIR_NAME"]
+          aws.ami = CONFIG["AWS_AMI"]
+          aws.instance_type = CONFIG["AWS_INSTANCE_TYPE"]
+          aws.region = CONFIG["AWS_REGION"]
+          aws.security_groups = CONFIG["AWS_SECURITY_GROUPS"].split(",")
+          aws.block_device_mapping = [{ 'DeviceName' => '/dev/sda1', 'Ebs.VolumeSize' => CONFIG["AWS_ROOT_PARTITION_SIZE"] }]
+          aws.terminate_on_shutdown = CONFIG["AWS_TERMINATE_ON_SHUTDOWN"]
+          override.ssh.username = CONFIG["AWS_SSH_USERNAME"]
           override.vm.box = 'aws'
           override.vm.box_url ="https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
-          override.ssh.private_key_path = %x( bash -c "source conf/source.aws && echo \\$SSH_KEY_FILE").strip
+          override.ssh.private_key_path = CONFIG["SSH_KEY_FILE"]
   end
   config.vm.provider :virtualbox do |virtualbox|
           virtualbox.gui = false
-          virtualbox.memory = %x( bash -c "source source.virtualbox && echo \\$VBOX_SIZE").strip
+          virtualbox.memory = CONFIG["VBOX_SIZE"]
           virtualbox.cpus = 2
   end
 
@@ -118,15 +88,10 @@ Vagrant.configure(2) do |config|
 end
 
 
-ANSIBLE_INVENTORY_FILE = %x( bash -c "source conf/source.global && echo \\$ANSIBLE_INVENTORY_FILE" ).strip
+ANSIBLE_INVENTORY_FILE = CONFIG["ANSIBLE_INVENTORY_FILE"]
 
-puts "
-==================================================================
-After vagrant up --provider=[provider] finished you can rerun 
-ansible script on your new cluster by executing:
-
-ansible-playbook -i .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory provisioning/world-playbook.yml
-
-"
-system("open_webui.sh")
-
+puts %Q(
+Done!
+you can run open_webui.sh to open browser with mesos and marathon
+you can run reansible.sh to run ansible one more time
+)

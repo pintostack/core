@@ -7,7 +7,7 @@ source conf/source.global
 
 #SSH_KEY_FILE='~/.ssh/id_rsa'
 
-DO_TOKEN='Change me'
-DO_IMAGE='ubuntu-14-04-x64'
-DO_REGION=ams3
-DO_SIZE='8gb'
+export DO_TOKEN='Change me'
+export DO_IMAGE='ubuntu-14-04-x64'
+export DO_REGION=ams3
+export DO_SIZE='8gb'
