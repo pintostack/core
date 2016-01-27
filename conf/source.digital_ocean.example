@@ -1,0 +1,13 @@
+### Digital Ocean Account Parametrs
+# For more information refere to https://github.com/pintostack/core
+
+source conf/source.global
+
+# All variables add below
+
+#SSH_KEY_FILE='~/.ssh/id_rsa'
+
+DO_TOKEN='Change me'
+DO_IMAGE='ubuntu-14-04-x64'
+DO_REGION=ams3
+DO_SIZE='8gb'
