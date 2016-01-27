@@ -28,7 +28,7 @@ else
  echo "INFO: Mesos started $SERVICE"
 fi
 
-if [ $SERVICE == "hdfs/namenode"]; then
+if [ $SERVICE == "hdfs/namenode" ]; then
 # HOTFIX: Now it works only with SERVICE needs to be fixed  jq -r .[0].ServiceTags 
 	SERVICE_IP=`vagrant ssh ${DEFAULT_HOST} -c "curl -s localhost:8500/v1/catalog/service/hdfs | jq -r .[0].Address" | tail -n 1`
 	SERVICE_PORT=`vagrant ssh ${DEFAULT_HOST} -c "curl -s localhost:8500/v1/catalog/service/hdfs |  jq -r .[0].ServiceTags | sed -n 's/.*\"http-\([0-9]*\)\".*/\1/p'" | tail -n 1`
