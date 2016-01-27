@@ -2,6 +2,22 @@
 
 - hosts: all-hosts
   user: "{{ ansible_ssh_user }}"
+  gather_facts: false
+  tasks:
+   - name: Check hosts UP and SSH is listening before taking actions
+     local_action: wait_for
+        host="{{ansible_ssh_host}}"
+        port="{{ansible_ssh_port}}"
+        state="started"
+        delay=3
+        connect_timeout=2
+        timeout=300
+   - name: INFO
+     local_action: debug
+        msg="If you fail on this step try execute  source source.global && ansible-playbook -i ${ANSIBLE_INVENTORY_FILE} provisioning/world-playbook.yml"
+
+- hosts: all-hosts
+  user: "{{ ansible_ssh_user }}"
   sudo: yes
   gather_facts: true
   tasks:
