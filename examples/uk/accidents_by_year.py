@@ -21,3 +21,12 @@ output = data.filter(lambda row: len(row[header.index('Date')].strip().split("/"
 for (line, count) in output:
         print("%s: %i" % (line, count))
 print ("Duration is '%i' ms" % (int(round(time.time() * 1000)) - start_time))
+
+
+%matplotlib inline
+
+import matplotlib
+import numpy as np
+import matplotlib.pyplot as plt
+
+plt.plot([str(x[0]) for x in output], [str(x[1]) for x in output])
