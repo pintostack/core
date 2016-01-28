@@ -72,6 +72,8 @@ Vagrant.configure(2) do |config|
           aws.instance_type = %x( bash -c "source source.aws && echo \\$AWS_INSTANCE_TYPE").strip
           aws.region = %x( bash -c "source source.aws && echo \\$AWS_REGION").strip
           aws.security_groups = %x( bash -c "source source.aws && echo \\$AWS_SECURITY_GROUPS").strip.split(",")
+          aws.block_device_mapping = [{ 'DeviceName' => '/dev/sda1', 'Ebs.VolumeSize' => %x( bash -c "source source.aws && echo \\$AWS_ROOT_PARTITION_SIZE").strip }]
+          aws.terminate_on_shutdown = %x( bash -c "source source.aws && echo \\$AWS_TERMINATE_ON_SHUTDOWN").strip
           override.ssh.username = %x( bash -c "source source.aws && echo \\$AWS_SSH_USERNAME").strip
           override.vm.box = 'aws'
           override.vm.box_url ="https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"

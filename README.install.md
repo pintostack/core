@@ -15,12 +15,8 @@ First step creates virtual resources that are later used in bootstrap phase. Aft
 
 Depending on your virtual resource provider, it might be required to install additional software, section below defines common prerequisites.
 
-## Prerequisite. Ansible 2.1
-Download and install Ansible 2.1 from [here](http://releases.ansible.com/ansible/ansible-latest.tar.gz)
-Other options to obtain fresh Ansible is to use ```pip``` (to get freshest version from github ```pip install git+https://github.com/ansible/ansible.git ```, metod ```pip install ansible``` do not work while ansible 2.1 not released yet.), mac users can use brew (```brew install ansible```).
-Depending on system configuration it might be required to run installation command as super user.
-
-> NOTE: But since version > 2.1 strictly required this method is recomended now ```pip install git+https://github.com/ansible/ansible.git```
+## Prerequisite. Ansible 2.0 
+You can download and install Ansible 2.0 by running ```pip install "ansible>=2.0"``` or follow [official installation guide](http://docs.ansible.com/ansible/intro_installation.html)
 
 ## Prerequisite. Vagrant 1.8 or later
 Download and install Vagrant 1.8 or later from [here](https://www.vagrantup.com/downloads.html)

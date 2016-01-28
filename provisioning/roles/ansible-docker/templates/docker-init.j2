@@ -9,6 +9,6 @@ respawn limit 10 5
 
 script
   [ ! -f /etc/default/docker ] || . /etc/default/docker
-  /usr/bin/docker -d $DOCKER_OPTS
+  /usr/bin/docker daemon $DOCKER_OPTS
 end script
 
