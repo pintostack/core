@@ -5,8 +5,9 @@ MAINTAINER Artyom Astafurov (artyom.astafurov@gmail.com)
 # Set the env variable DEBIAN_FRONTEND to noninteractive
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get -y update
 
+RUN rm -rf /var/lib/apt/lists/*
+RUN apt-get -y update
 # Install dependeincies 
 RUN sudo apt-get install -y openjdk-7-jre dnsutils jq curl && \
 	rm -rf /var/lib/apt/lists/*
