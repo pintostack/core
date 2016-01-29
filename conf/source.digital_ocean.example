@@ -5,8 +5,7 @@ source conf/source.global
 
 # All variables add below
 
-#SSH_KEY_FILE='~/.ssh/id_rsa'
-
+export SSH_KEY_FILE='/pintostack/conf/id_rsa'
 export DO_TOKEN='Change me'
 export DO_IMAGE='ubuntu-14-04-x64'
 export DO_REGION=ams3

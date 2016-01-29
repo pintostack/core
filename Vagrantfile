@@ -45,7 +45,7 @@ Vagrant.configure(2) do |config|
           aws.ami = CONFIG["AWS_AMI"]
           aws.instance_type = CONFIG["AWS_INSTANCE_TYPE"]
           aws.region = CONFIG["AWS_REGION"]
-          aws.security_groups = CONFIG["AWS_SECURITY_GROUPS"].split(",")
+          aws.security_groups = CONFIG["AWS_SECURITY_GROUPS"].split(",") rescue ""
           aws.block_device_mapping = [{ 'DeviceName' => '/dev/sda1', 'Ebs.VolumeSize' => CONFIG["AWS_ROOT_PARTITION_SIZE"] }]
           aws.terminate_on_shutdown = CONFIG["AWS_TERMINATE_ON_SHUTDOWN"]
           override.ssh.username = CONFIG["AWS_SSH_USERNAME"]

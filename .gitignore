@@ -8,4 +8,6 @@ conf/source.azure
 conf/source.digital_ocean
 conf/source.vagrant
 conf/*.pem
+conf/id_rsa
+conf/id_rsa.pub
 .env
