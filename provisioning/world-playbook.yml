@@ -198,4 +198,4 @@
       docker_registry_port: 5000
 
     - role: ansible-docker
-      docker_opts: '"--insecure-registry docker-registry.service.consul:5000"' 
+      docker_opts: '"-s devicemapper --insecure-registry docker-registry.service.consul:5000"' 

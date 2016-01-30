@@ -7,8 +7,7 @@ This is detailed description on how to deploy cluster in Digital Ocean.
 * Linux, FreeBSD, OSX, or other unix-like OS (Ubuntu 14.04 LTS or OSX 10.9+ recommended)
 * Python 2.7
 * Digital Ocean account and API key
-* Vagrant 1.8 or later
-* Ansible 2.1. At the time of writing of this document, Ansible 2.0 was still in beta. Latest version can be installed directly from master branch: ```pip install git+https://github.com/ansible/ansible.git```). 
+* Ansible 2.0. Latest version can be installed: ```pip install ansible```). 
 * Vagrant 1.8 or later with ```digital_ocean``` plugin
 
 To install Vagrant plugin run:
