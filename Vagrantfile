@@ -2,7 +2,7 @@
 
 provider = :virtualbox
 
-tokens=ARGV[1].split("=")
+tokens=ARGV[1].split("=") rescue []
 provider = tokens[1].to_sym if tokens[1]
 
 vpc_if = provider == :aws ? "eth0" : "eth1"
