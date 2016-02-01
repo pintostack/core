@@ -7,7 +7,7 @@ provider = tokens[1].to_sym if tokens[1]
 
 vpc_if = provider == :aws ? "eth0" : "eth1"
 
-# .env is actually `env > .env` so we will just read this file.
+# .env is actually `env > .env` so we will just read this file. But remember to update this file eachtime you make changes,
 CONFIG = File.new(".env").read.split("\n").map{ |t| x=t.index("="); [t[0..x-1], t[x+1..-1] ]}.inject({}) {|r, a| r[a[0]] = a[1].strip;r}
 
 puts %Q(
@@ -96,6 +96,7 @@ ANSIBLE_INVENTORY_FILE = CONFIG["ANSIBLE_INVENTORY_FILE"]
 
 puts %Q(
 Done!
-you can run open_webui.sh to open browser with mesos and marathon
-you can run reansible.sh to run ansible one more time
+You can run open_webui.sh to open browser with mesos and marathon.
+You can run reansible.sh to bootstrap all host one more time in case
+of network errors.
 )

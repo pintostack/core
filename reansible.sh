@@ -1,1 +1,4 @@
-ansible-playbook -i .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory provisioning/world-playbook.yml
+#!/usr/bin/env bash
+source conf/source.global
+
+ansible-playbook -i ${ANSIBLE_INVENTORY_FILE} provisioning/world-playbook.yml ${ANSIBLE_OPTS}
