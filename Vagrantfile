@@ -1,5 +1,3 @@
-#!/usr/bin/env ruby
-
 provider = :virtualbox
 
 tokens=ARGV[1].split("=") rescue []
