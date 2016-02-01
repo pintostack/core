@@ -14,3 +14,5 @@ fi
 ( set -o posix ; set ) > .env
 
 echo "Provider is ${PROVIDER}"
+
+vagrant up --provider=${PROVIDER}
