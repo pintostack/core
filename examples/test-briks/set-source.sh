@@ -6,19 +6,19 @@ Usage:
 $0 [global|aws|digital_ocean] <variable name> <value>
 
 Example:
-$0 global MASTERS 3		#Sets MASTERS to 3 in source.global file
+$0 global MASTERS 3		#Sets MASTERS to 3 in conf/source.global file
 "
 }
 if [ $# -lt 1 ]; then
     print_usage
     exit
 else
-    if [ -f source.$1 ]; then
-        sed -i "/^$2.*/d" source.$1
-	echo "$2='$3'" >> source.$1
-	cat source.$1
+    if [ -f conf/source.$1 ]; then
+        sed -i "/^$2.*/d" conf/source.$1
+	echo "$2='$3'" >> conf/source.$1
+	cat conf/source.$1
     else
-	echo "No file source.$1"
+	echo "No file conf/source.$1"
 	print_usage
 	exit
     fi

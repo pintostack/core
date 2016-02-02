@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source source.global
+source conf/source.global
 
 vagrant global-status
 
