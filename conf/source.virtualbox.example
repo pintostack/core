@@ -7,4 +7,4 @@ source conf/source.global
 
 #SSH_KEY_FILE='~/.ssh/id_rsa'
 
-export VBOX_SIZE=1024
+VBOX_SIZE=1024

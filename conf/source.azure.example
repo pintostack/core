@@ -1,14 +1,14 @@
 source conf/source.global
 
-export MASTER_PORTS=22,80,5050,8080
-export SLAVE_PORTS=22,80
-export DOCKER_PORTS=22,80
-export CER_FILE=~/.ssh/azure.cer
-export PEM_FILE=~/.ssh/azure.pem
-export PASSWD=Passw0+rd1
-export STORAGE_NAME=changeme
-export CLUSTER=changeme-cluster
-export LOCATION="Central US"
-export BOXUSERNAME=ubuntu
-export VERBOSITY=-vvvv
+MASTER_PORTS=22,80,5050,8080
+SLAVE_PORTS=22,80
+DOCKER_PORTS=22,80
+CER_FILE=~/.ssh/azure.cer
+PEM_FILE=~/.ssh/azure.pem
+PASSWD=Passw0+rd1
+STORAGE_NAME=changeme
+CLUSTER=changeme-cluster
+LOCATION="Central US"
+BOXUSERNAME=ubuntu
+VERBOSITY=-vvvv
 
