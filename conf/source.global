@@ -1,10 +1,10 @@
-# Global configuration
+### Global configuration
 # For more information refere to https://github.com/pintostack/core
 
-export MASTERS=1
-export SLAVES=3
+MASTERS=1
+SLAVES=3
 
 # Defaults do not overwrite variables below
-export SSH_KEY_FILE='~/.ssh/id_rsa'
-export ANSIBLE_INVENTORY_FILE=".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory"
-export ANSIBLE_OPTS=""
+SSH_KEY_FILE='~/.ssh/id_rsa'
+ANSIBLE_INVENTORY_FILE=".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory"
+ANSIBLE_OPTS=""
