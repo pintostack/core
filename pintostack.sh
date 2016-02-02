@@ -28,7 +28,6 @@ for each in $GLOBAL_VARS_LIST; do
 done
 sed -i "/^GLOBAL_VARS_LIST/d" .env
 
-GLOBAL_VARS_LIST
 echo "Provider is ${PROVIDER}"
 echo "Setting Vagrant env..."
 cat .env
