@@ -29,6 +29,11 @@
             }
         ]
     },
+    "env":{
+        "SERVICE_PORT0_NAME": "{{NAME}}",
+        "SERVICE_PORT0_CHECK_SCRIPT": "nc -w 5 -z {{HOST}} {{PORT}} >/dev/null",
+        "SERVICE_PORT0_CHECK_INTERVAL": "10s"
+    },
     "constraints": [["hostname", "UNIQUE"]],
     "healthChecks": [
         {

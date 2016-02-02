@@ -97,7 +97,7 @@ replace ${CONF_PATH}/hdfs-site.xml
 
 case $COMMAND in
 	namenode)
-		register_nn_service
+		#register_nn_service
 		if [ ! -d /hadoop/name ]; then 
 			echo "NameNode dir is unformatted, formatting."
 			bin/hdfs namenode -format
