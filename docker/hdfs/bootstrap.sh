@@ -33,40 +33,43 @@ NN_HOSTNAME='hdfs.service.dc1.consul'
 
 env
 
-HOST_JSON=$(curl -s http://$HOST:8500/v1/agent/self) \
-HOSTNAME=$(echo $HOST_JSON | jq .Config.NodeName | sed -n 's/.*"\(.*\)".*/\1/p')
-HOST=$(echo $HOST_JSON | jq .Config.AdvertiseAddr | sed -n 's/.*"\(.*\)".*/\1/p')
+# HOST_JSON=$(curl -s http://$HOST:8500/v1/agent/self) \
+# HOSTNAME=$(echo $HOST_JSON | jq .Config.NodeName | sed -n 's/.*"\(.*\)".*/\1/p')
+# HOST=$(echo $HOST_JSON | jq .Config.AdvertiseAddr | sed -n 's/.*"\(.*\)".*/\1/p')
 
 case $COMMAND in
 	namenode)
-		NN_IP=$HOST
-		declare -A parameters=(["NN_IP"]=$NN_IP \
-		["NN_HOSTNAME"]=$NN_HOSTNAME \
-		["NN_RPC_PORT"]=$PORT0 \
-		["NN_SERVICE_RPC_PORT"]=$PORT1 \
-		["NN_HTTP_PORT"]=$PORT2)
+		declare -A parameters=( \
+		["NN_HOSTNAME"]=$HOST \
+		["NN_RPC_ADDR"]=$HOST:$PORT0 \
+		["NN_IPC_ADDR"]=$HOST:$PORT1 \
+		["NN_HTTP_ADDR"]=$HOST:$PORT2)
  		;;
 	datanode)
-		HDFS_NN_JSON=$(curl -s http://$HOST:8500/v1/catalog/service/hdfs)
-		NN_RPC_PORT=$(echo "$HDFS_NN_JSON" | jq .[0].ServiceTags | sed -n 's/.*"rpc-\([0-9]*\)".*/\1/p')
-		NN_SERVICE_RPC_PORT=$(echo "$HDFS_NN_JSON" | jq .[0].ServiceTags | sed -n 's/.*"ipc-\([0-9]*\)".*/\1/p')
-		NN_IP=$(echo "$HDFS_NN_JSON" | jq .[0].Address)
-		DN_HOSTNAME=$HOSTNAME
+		NN_RPC_JSON=$(curl -s http://$HOST:8500/v1/catalog/service/hdfs-rpc)
+		NN_IPC_JSON=$(curl -s http://$HOST:8500/v1/catalog/service/hdfs-ipc)
+		NN_RPC_NODE=$(echo "$NN_RPC_JSON" | jq .[0].Node | sed -n 's/.*"\(.*\)".*/\1/p')
+		NN_RPC_PORT=$(echo "$NN_RPC_JSON" | jq .[0].ServicePort)
+		NN_IPC_NODE=$(echo "$NN_IPC_JSON" | jq .[0].Node | sed -n 's/.*"\(.*\)".*/\1/p')
+		NN_IPC_PORT=$(echo "$NN_IPC_JSON" | jq .[0].ServicePort)
+		NN_HOSTNAME=$NN_RPC_NODE
 
-		declare -A parameters=(["NN_IP"]=$NN_IP \
+		declare -A parameters=( \
 		["NN_HOSTNAME"]=$NN_HOSTNAME \
-		["NN_RPC_PORT"]=$NN_RPC_PORT \
-		["NN_SERVICE_RPC_PORT"]=$NN_SERVICE_RPC_PORT \
-		["DN_HOSTNAME"]=$DN_HOSTNAME \
-		["DN_RPC_PORT"]=$PORT0 \
-		["DN_IPC_PORT"]=$PORT1 \
-		["DN_HTTP_PORT"]=$PORT2)
+		["NN_RPC_ADDR"]=$NN_RPC_NODE:$NN_RPC_PORT \
+		["NN_IPC_ADDR"]=$NN_IPC_NODE:$NN_IPC_PORT \
+		["DN_HOSTNAME"]=$HOST \
+		["DN_RPC_ADDR"]=0.0.0.0:$PORT0 \
+		["DN_IPC_ADDR"]=0.0.0.0:$PORT1 \
+		["DN_HTTP_ADDR"]=0.0.0.0:$PORT2)
  		;;
  	client)
-		HDFS_NN_JSON=$(curl -s http://$HOST:8500/v1/catalog/service/hdfs)
-		NN_RPC_PORT=$(echo "$HDFS_NN_JSON" | jq .[0].ServiceTags | sed -n 's/.*"rpc-\([0-9]*\)".*/\1/p')
+		NN_RPC_JSON=$(curl -s http://$HOST:8500/v1/catalog/service/hdfs-rpc)
+		NN_RPC_NODE=$(echo "$NN_RPC_JSON" | jq .[0].Node | sed -n 's/.*"\(.*\)".*/\1/p')
+		NN_RPC_PORT=$(echo "$NN_RPC_JSON" | jq .[0].ServicePort)
 
-		declare -A parameters=(["NN_HOSTNAME"]=$NN_HOSTNAME \
+		declare -A parameters=( \
+		["NN_HOSTNAME"]=$NN_RPC_NODE \
 		["NN_RPC_PORT"]=$NN_RPC_PORT)
 		;;
  	default)
