@@ -24,29 +24,26 @@ cd /pintostack
 ```
 
 # Upload data
+
+The best way is to install hdfs client and configure it to work with hdfs in your cluster.
+The easiest is to use hdfs name node. 
+Find the node where hdfs name node lives using Marathon UI.
+ssh to it with this command:
+ 
 ```
-vagrant ssh master-1
-
-TODO: COMMANDS TO UPLOAD DATA
+vagrant ssh slave-n # n is number of slave
 ```
-
-# HOW TO OPEN IPYTHON AND START WORKING
-TODO
-
-# Description of examples
-TODO
-
-Please refer to https://data.gov.uk/dataset/road-accidents-safety-data and get the biggest archive with information about accidents from 1979 to 2004 years.
-Here is the link http://data.dft.gov.uk/road-accidents-safety-data/Stats19-Data1979-2004.zip, please Download it, extract and find Accidents7904.csv 
-
-Deploy HDFS and IPython to run examples.
-
-Extract file:```Accidents7904.csv``` and save it to hdfs.
-```bash
- hadoop fs -put Accidents7904.csv hdfs://slave-1.node.consul:31851/
+find the container where hdfs-nn lives and ssh to it
 ```
+docker ps # find your hdfs node there
+docker exec -it <sha> bash
+apt-get update
+apt-get install -y wget unzip
+wget http://data.dft.gov.uk/road-accidents-safety-data/Stats19-Data1979-2004.zip
+unzip Stats19-Data1979-2004.zip
+hadoop fs -put Accidents7904.csv hdfs://slave-1.node.consul:31851/ # note the port please, it should be from your environment
 
-When this is done you please find examples in examples/uk directory and change their code to use correct path to the csv file.
+Please find python scripts in examples/uk folder.
 
 ### accidents_by_year.py
 This job produces a table with a number of accidents per year.

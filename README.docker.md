@@ -9,6 +9,23 @@ To start your cluster you need to do this:
 ```
 docker build -t pintostack .
 ```
+# Setup number of masters and slaves
+
+edit conf/source.global file and set number of master and slaves
+
+```
+# For more information refere to https://github.com/pintostack/core
+
+MASTERS=1
+SLAVES=3
+
+# Defaults do not overwrite variables below
+SSH_KEY_FILE='~/.ssh/id_rsa'
+ANSIBLE_INVENTORY_FILE=".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory"
+ANSIBLE_OPTS=""
+```
+
+to have cluster up and running you need to set at least one master and one slave.
 
 # Setup your credentials to work with AWS/DO.
 ### AWS
