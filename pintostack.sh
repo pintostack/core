@@ -24,9 +24,9 @@ fi
 
 #Removing old global vars from .env
 for each in $GLOBAL_VARS_LIST; do
-	sed -i "/^${each}/d" .env
+	sed -i.bak "/^${each}/d" .env
 done
-sed -i "/^GLOBAL_VARS_LIST/d" .env
+sed -i.bak "/^GLOBAL_VARS_LIST/d" .env
 
 echo "Provider is ${PROVIDER}"
 echo "Setting Vagrant env..."
