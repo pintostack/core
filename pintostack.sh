@@ -31,5 +31,7 @@ sed -i.bak "/^GLOBAL_VARS_LIST/d" .env
 echo "Provider is ${PROVIDER}"
 echo "Setting Vagrant env..."
 cat .env
-
+echo "Refreshing Vagrant global status befor begin..."
+vagrant global-status --prune
+echo "Starting Vagrant.."
 vagrant up --provider=${PROVIDER}
