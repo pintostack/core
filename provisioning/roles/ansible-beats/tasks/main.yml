@@ -1,7 +1,7 @@
 - name: install rpm
   apt: name=rpm state=present update_cache=yes
 - name: install beats
-  shell: curl -L -O https://download.elastic.co/beats/filebeat/filebeat-1.0.0-x86_64.rpm && sudo rpm -vi filebeat-1.0.0-x86_64.rpm || true
+  shell: curl -L -O https://download.elastic.co/beats/filebeat/filebeat-1.0.0-x86_64.rpm && sudo rpm -vi filebeat-1.0.0-x86_64.rpm
 - name: configure beats
   shell: 'sed -i "s/hosts: \[\"localhost:9200\"\]/hosts: \[\"elasticsearch.service.consul:31000\"\]/g" /etc/filebeat/filebeat.yml'
 - name: run beats
