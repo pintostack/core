@@ -78,26 +78,30 @@
       consul_domain: "consul."
       consul_port_dns: "8600"
       consul_bind_address: "{{ local_ip }}"
+
+    - role: ansible-docker
+      docker_opts: '"--insecure-registry docker-registry.service.consul:5000"'
+
      
-    - role: ansible-zookeeper 
-      zoo_id: "{{ my_zoo_id }}"
-      zookeeper_hosts: "{{ masters|to_zk }}"
-      zoo_ip: "{{ local_ip }}"
-#      go_to: "http://{{local_ip}}:8500/v1/agent/service/register"
-
-    - role: ansible-mesos
-      mesos_ip: "{{ local_ip }}"
-      mesos_hostname: "{{ ansible_hostname }}"
-      zookeeper_hostnames: "{{ my_zk_hostnames }}"
-      mesos_install_mode: "master"
-      quorum: "{{ my_quorum }}"
-      mesos_version: 0.24.0 
-
-    - role: ansible-marathon
-      marathon_port: 8080
-      zookeeper_hostnames: "{{ my_zk_hostnames }}"
-      marathon_hostname: "{{ ansible_hostname }}"
-#      go_to: "http://{{local_ip}}:8500/v1/agent/service/register
+#    - role: ansible-zookeeper
+#      zoo_id: "{{ my_zoo_id }}"
+#      zookeeper_hosts: "{{ masters|to_zk }}"
+#      zoo_ip: "{{ local_ip }}"
+##      go_to: "http://{{local_ip}}:8500/v1/agent/service/register"
+#
+#    - role: ansible-mesos
+#      mesos_ip: "{{ local_ip }}"
+#      mesos_hostname: "{{ ansible_hostname }}"
+#      zookeeper_hostnames: "{{ my_zk_hostnames }}"
+#      mesos_install_mode: "master"
+#      quorum: "{{ my_quorum }}"
+#      mesos_version: 0.24.0
+#
+#    - role: ansible-marathon
+#      marathon_port: 8080
+#      zookeeper_hostnames: "{{ my_zk_hostnames }}"
+#      marathon_hostname: "{{ ansible_hostname }}"
+##      go_to: "http://{{local_ip}}:8500/v1/agent/service/register
   post_tasks:
     - shell: wget -O /var/www/masters-share/htdocs/spark-1.5.2-bin-hadoop2.6.tgz -q -c http://www.eu.apache.org/dist/spark/spark-1.5.2/spark-1.5.2-bin-hadoop2.6.tgz
 
@@ -133,30 +137,30 @@
       consul_client_address: "{{ local_ip }}"
       consul_bind_address: "{{ consul_client_address }}"
 
-    - role: ansible-mesos
-      mesos_ip: "{{ local_ip }}"
-      mesos_hostname: "{{ ansible_hostname }}"
-      mesos_containerizers: "docker,mesos"
-      zookeeper_hostnames: "{{ my_zk_hostnames }}"
-      mesos_resources: "mem(*):{{ ansible_memtotal_mb }}"
-      mesos_install_mode: "slave"
-      mesos_version: 0.24.0
+#    - role: ansible-mesos
+#      mesos_ip: "{{ local_ip }}"
+#      mesos_hostname: "{{ ansible_hostname }}"
+#      mesos_containerizers: "docker,mesos"
+#      zookeeper_hostnames: "{{ my_zk_hostnames }}"
+#      mesos_resources: "mem(*):{{ ansible_memtotal_mb }}"
+#      mesos_install_mode: "slave"
+#      mesos_version: 0.24.0
 
     - role: ansible-docker
       docker_opts: '"--insecure-registry docker-registry.service.consul:5000"' 
 
-    - role: ansible-scala
+#    - role: ansible-scala
 
-    - role: ansible-spark
-      spark_version: "1.5.2-bin-hadoop2.6"
-      spark_mirror: "http://mirror.cogentco.com/pub/apache/spark/spark-1.5.2"
+#    - role: ansible-spark
+#      spark_version: "1.5.2-bin-hadoop2.6"
+#      spark_mirror: "http://mirror.cogentco.com/pub/apache/spark/spark-1.5.2"
 
-    - role: ansible-beats
+#    - role: ansible-beats
 
   post_tasks:
-    - lineinfile: dest=/etc/environment line="SPARK_HOME={{ spark_usr_dir }}"
-    - lineinfile: dest=/etc/environment line="SCALA_HOME={{ scala_lib_path_target }}"
-    - lineinfile: dest=/etc/environment line="JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64"
+#    - lineinfile: dest=/etc/environment line="SPARK_HOME={{ spark_usr_dir }}"
+#    - lineinfile: dest=/etc/environment line="SCALA_HOME={{ scala_lib_path_target }}"
+#    - lineinfile: dest=/etc/environment line="JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64"
 
 
 - hosts: dockers
