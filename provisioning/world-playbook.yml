@@ -24,6 +24,9 @@
    - name: setup hostname
      hostname: name="{{ inventory_hostname }}"
    - debug: msg="{{ inventory_hostname }}"
+   - sysctl: name="net.core.somaxconn" value=1024 sysctl_set=yes state=present reload=yes
+   - sysctl: name="fs.file-max" value=402302 sysctl_set=yes state=present reload=yes
+
   roles:
     - role: ansible-swap
       swap_file_size: "{{ ansible_memtotal_mb }}M"
