@@ -1,0 +1,88 @@
+ --pid=host
+
+base
+FROM ubuntu:14.04
+
+RUN apt-get update
+RUN apt-get install -y wget telnet curl vim git zip unzip
+RUN apt-get update && apt-get -y install software-properties-common && add-apt-repository ppa:webupd8team/java -y && apt-get update
+RUN (echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections) && apt-get install -y oracle-java8-installer oracle-java8-set-default
+ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
+ENV PATH $JAVA_HOME/bin:$PATH
+
+================================================================
+mesos
+FROM base
+
+RUN echo "deb http://repos.mesosphere.io/ubuntu/ trusty main" > /etc/apt/sources.list.d/mesosphere.list
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv E56151BF
+RUN apt-get update
+
+RUN apt-get -y install zookeeperd
+RUN echo 1 | dd of=/var/lib/zookeeper/myid
+
+# Install mesos.
+RUN apt-get -y install wget curl unzip python-setuptools python-dev mesos
+RUN mkdir -p /etc/mesos-master
+RUN echo in_memory | dd of=/etc/mesos-master/registry
+
+# Not exposing port b/c you have to run the master in bridge net mode
+#EXPOSE 5050
+
+ENTRYPOINT ["mesos-master"]
+
+================================================================
+marathon
+FROM base
+
+## DEPENDENCIES ##
+RUN echo "deb http://repos.mesosphere.io/ubuntu/ trusty main" > /etc/apt/sources.list.d/mesosphere.list
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv E56151BF
+RUN apt-get update
+RUN apt-get install -y mesos
+
+## MARATHON ##
+ADD http://downloads.mesosphere.com/marathon/v0.15.0/marathon-0.15.0.tgz /tmp/marathon.tgz
+RUN mkdir -p /opt/marathon && tar xzf /tmp/marathon.tgz -C /opt/marathon --strip=1 && rm -f /tmp/marathon.tgz
+
+EXPOSE 8080
+WORKDIR /opt/marathon
+CMD ["--help"]
+ENTRYPOINT ["/opt/marathon/bin/start"]
+================================================================
+
+HOST_IP=172.31.10.179
+docker run -d -p 2181:2181 -p 2888:2888 -p 3888:3888 garland/zookeeper
+docker run --net="host" \
+-e "MESOS_HOSTNAME=${HOST_IP}" \
+-e "MESOS_IP=${HOST_IP}" \
+-e "MESOS_ZK=zk://${HOST_IP}:2181/mesos" \
+-e "MESOS_PORT=5050" \
+-e "MESOS_LOG_DIR=/var/log/mesos" \
+-e "MESOS_QUORUM=1" \
+-e "MESOS_REGISTRY=in_memory" \
+-e "MESOS_WORK_DIR=/var/lib/mesos" \
+-d mesos
+docker run \
+--net="host" \
+-d \
+-p 8080:8080 \
+marathon --master zk://${HOST_IP}:2181/mesos --zk zk://${HOST_IP}:2181/marathon
+
+====
+
+docker run  \
+--entrypoint="mesos-slave" \
+--net="host" \
+-e "MESOS_MASTER=zk://${HOST_IP}:2181/mesos" \
+-e "MESOS_PORT=5051" \
+-e "MESOS_IP=${HOST_IP}" \
+-e "MESOS_LOG_DIR=/var/log/mesos" \
+-e "MESOS_LOGGING_LEVEL=INFO" \
+-v /etc/mesos-slave/containerizers:/etc/mesos-slave/containerizers \
+-v /etc/mesos-slave/executor_registration_timeout:/etc/mesos-slave/executor_registration_timeout \
+-v /var/run/docker.sock:/var/run/docker.sock   \
+-v $(which docker):/bin/docker   \
+-v /usr/lib/x86_64-linux-gnu/libapparmor.so.1:/usr/lib/x86_64-linux-gnu/libapparmor.so.1 \
+-e "MESOS_WORK_DIR=/var/lib/mesos" \
+-d mesos --containerizers=docker
