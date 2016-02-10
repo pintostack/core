@@ -1,7 +1,7 @@
 FROM ubuntu:14.04
 
 # Install dependencies and tools
-RUN apt-get update && apt-get install -y wget telnet curl vim git zip unzip software-properties-common
+RUN apt-get update && apt-get install -y wget telnet curl vim git zip unzip software-properties-common  python-dev python-pip
 
 # Install java 8
 RUN add-apt-repository ppa:webupd8team/java && apt-get update
