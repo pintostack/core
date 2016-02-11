@@ -83,6 +83,21 @@ Vagrant.configure(2) do |config|
               "all-hosts" => ["master-[1:#{MASTERS.to_i}]","slave-[1:#{SLAVES.to_i}]","docker-registry"]
           }
         end
+        instance.vm.provision :ansible do |ansible|
+          ansible.playbook = "provisioning/debugging.yml"
+          ansible.limit = 'all'
+          ansible.force_remote_user = true
+          ansible.host_vars={}
+          ALL_HOSTS.each do |each_host|
+            ansible.host_vars["#{each_host}"] = {"vpc_if" => "#{vpc_if}"}
+          end
+          ansible.groups = {
+              "masters" => ["master-[1:#{MASTERS.to_i}]"],
+              "slaves" => ["slave-[1:#{SLAVES.to_i}]"],
+              "dockers" => ["docker-registry"],
+              "all-hosts" => ["master-[1:#{MASTERS.to_i}]","slave-[1:#{SLAVES.to_i}]","docker-registry"]
+          }
+        end
       end
     end
   end

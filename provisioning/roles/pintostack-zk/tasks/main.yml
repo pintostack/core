@@ -1,3 +1,7 @@
+- name: check zk container
+  command: docker ps -a
+  register: containers
+
 - name: run zk
-  shell: docker run --net="host" -d --name=pintostack-zk pintostack/pintostack-zk
-  notif
+  shell: docker run --net="host" -d --name=pintostack-zk-container pintostack/pintostack-zk
+  when: "{{ 'pintostack-zk-container' not in containers.stdout }}"

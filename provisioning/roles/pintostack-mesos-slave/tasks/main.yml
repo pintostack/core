@@ -1,0 +1,7 @@
+- name: check mesos-slave container
+  command: docker ps -a
+  register: containers
+
+- name: run mesos-slave
+  shell: docker run --entrypoint="mesos-slave" --net="host" --pid=host -e "MESOS_MASTER=zk://{{my_zk_hostnames}}/mesos" -e "MESOS_PORT=5051" -e "MESOS_HOSTNAME={{ansible_hostname}}" -e "MESOS_IP={{ansible_default_ipv4.address}}" -e "MESOS_LOG_DIR=/var/log/mesos" -e "MESOS_LOGGING_LEVEL=INFO" -v /var/run/docker.sock:/var/run/docker.sock -v $(which docker):/bin/docker -v /lib/x86_64-linux-gnu/libsystemd-journal.so.0:/lib/x86_64-linux-gnu/libsystemd-journal.so.0 -v /usr/lib/x86_64-linux-gnu/libapparmor.so.1:/usr/lib/x86_64-linux-gnu/libapparmor.so.1 -e "MESOS_WORK_DIR=/var/lib/mesos" --name=pintostack-mesos-slave-container -d pintostack/pintostack-mesos --containerizers=docker
+  when: "{{ 'pintostack-mesos-slave-container' not in containers.stdout }}"
