@@ -5,3 +5,11 @@
 - name: run zk
   shell: docker run --net="host" -d --name=pintostack-zk-container pintostack/pintostack-zk
   when: "{{ 'pintostack-zk-container' not in containers.stdout }}"
+
+- name: register in consul service
+  template: src=zookeeper_tmp.j2
+            dest=/tmp/zookeeper.json
+            mode=666
+
+- name: curl
+  shell: curl -X PUT -d @/tmp/zookeeper.json http://{{local_ip}}:8500/v1/agent/service/register

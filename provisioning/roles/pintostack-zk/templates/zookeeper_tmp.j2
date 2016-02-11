@@ -1,0 +1,12 @@
+{
+   "Name": "zookeeper",
+   "ID": "zookeeper{{ my_zoo_id|del_n }}",
+   "Address": "{{ local_ip }}",
+   "Port": 2181,
+   "Check": {
+       "Script": "nc -w 5 -z {{ local_ip }} 2181 > /dev/null",
+       "Interval": "20s"
+             }
+}
+
+

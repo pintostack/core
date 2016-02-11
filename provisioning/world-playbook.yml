@@ -121,14 +121,7 @@
       consul_bind_address: "{{ consul_client_address }}"
 
     - role: ansible-docker
-      docker_opts: '"--insecure-registry docker-registry.service.consul:5000"' 
-
-
-  post_tasks:
-#    - lineinfile: dest=/etc/environment line="SPARK_HOME={{ spark_usr_dir }}"
-#    - lineinfile: dest=/etc/environment line="SCALA_HOME={{ scala_lib_path_target }}"
-#    - lineinfile: dest=/etc/environment line="JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64"
-
+      docker_opts: '"--insecure-registry docker-registry.service.consul:5000"'
 
 - hosts: dockers
   gather_facts: true

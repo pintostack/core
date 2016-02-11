@@ -5,3 +5,11 @@
 - name: run marathon
   shell: docker run --net="host" --name=pintostack-marathon-container -d pintostack/pintostack-marathon --master zk://{{ansible_default_ipv4.address}}:2181/mesos --zk zk://{{ansible_default_ipv4.address}}:2181/marathon
   when: "{{ 'pintostack-marathon-container' not in containers.stdout }}"
+
+- name: register in consul
+  template: src=marathon_tmp.j2
+            dest=/tmp/marathon.json
+            mode=666
+
+- name: curl
+  shell:  curl -X PUT -d @/tmp/marathon.json http://{{local_ip}}:8500/v1/agent/service/register

@@ -1,0 +1,10 @@
+{
+    "Name": "marathon",
+    "ID": "marathon{{ my_zoo_id }}",
+    "Address": "{{ inventory_hostname }}",
+    "Port": 8080,
+    "Check": {
+       "Script": "nc -w 5 -z {{ inventory_hostname }} 8080 >/dev/null",
+       "Interval": "20s"
+             }
+}

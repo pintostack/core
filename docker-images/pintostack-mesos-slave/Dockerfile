@@ -29,3 +29,6 @@ RUN echo 'export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/lib/hadoop/lib/native' 
 RUN echo 'export HADOOP_CONF_DIR=${HADOOP_CONF_DIR:-/etc/hadoop/conf}' >> /etc/spark/conf/spark-env.sh
 RUN echo 'export SPARK_LOG_DIR=${SPARK_LOG_DIR:-/var/log/spark}' >> /etc/spark/conf/spark-env.sh
 RUN echo 'export SPARK_PID_DIR=${SPARK_PID_DIR:-/run/spark}' >> /etc/spark/conf/spark-env.sh
+
+RUN echo SPARK_HOME=/var/lib/spark >> /etc/environment
+RUN echo SCALA_HOME=/usr/share/scala/scala-2.11.5 >> /etc/environment
