@@ -12,4 +12,4 @@
             mode=666
 
 - name: curl
-  shell:  curl -X PUT -d @/tmp/marathon.json http://{{local_ip}}:8500/v1/agent/service/register
+  shell:  curl -X PUT -d @/tmp/marathon.json http://localhost:8500/v1/agent/service/register
