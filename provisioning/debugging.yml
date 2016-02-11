@@ -52,7 +52,7 @@
 # TODO  zoo_id: "{{ my_zoo_id }}", zookeeper_hosts: "{{ masters|to_zk }}, go_to: "http://{{local_ip}}:8500/v1/agent/service/register"
     - role: pintostack-zk
 
-# TODO: #      quorum: "{{ my_quorum }}",  ##      go_to: "http://{{local_ip}}:8500/v1/agent/service/register?
+# TODO: #      quorum: "{{ my_quorum }}",
     - role: pintostack-mesos-master
 
 # TODO: ##      go_to: "http://{{local_ip}}:8500/v1/agent/service/register
@@ -79,15 +79,5 @@
     - set_fact:
         local_ip: "{{ hostvars[inventory_hostname][a_vpc_if].ipv4.address }}"
   roles:
-# TODO: add    mesos_resources: "mem(*):{{ ansible_memtotal_mb }}"
-# TODO: add  spark to mesos slave
     - role: pintostack-mesos-slave
-
-#    - role: ansible-scala
-
-#    - role: ansible-spark
-#      spark_version: "1.5.2-bin-hadoop2.6"
-#      spark_mirror: "http://mirror.cogentco.com/pub/apache/spark/spark-1.5.2"
-
-# TODO: enable beats
-#    - role: ansible-beats
+    - role: ansible-beats

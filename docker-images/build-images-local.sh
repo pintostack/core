@@ -14,6 +14,9 @@ docker build -t pintostack/pintostack-marathon .
 cd $CPATH/pintostack-mesos
 docker build -t pintostack/pintostack-mesos .
 
+cd $CPATH/pintostack-mesos-slave
+docker build -t pintostack/pintostack-mesos-slave .
+
 cd $CPATH/pintostack-zk
 docker build -t pintostack/pintostack-zk .
 

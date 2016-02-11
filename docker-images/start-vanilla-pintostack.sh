@@ -50,5 +50,5 @@ docker run  \
 -v $(which docker):/bin/docker   \
 -v /usr/lib/x86_64-linux-gnu/libapparmor.so.1:/usr/lib/x86_64-linux-gnu/libapparmor.so.1 \
 -e "MESOS_WORK_DIR=/var/lib/mesos" \
--d pintostack-mesos --containerizers=docker
+-d pintostack-mesos-slave --containerizers=docker
 
