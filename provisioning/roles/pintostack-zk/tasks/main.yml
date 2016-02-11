@@ -1,2 +1,3 @@
 - name: run zk
-  shell: docker run --net="host" -d cyberdisk/pintostack-zk
+  shell: docker run --net="host" -d --name=pintostack-zk pintostack/pintostack-zk
+  notif

@@ -85,7 +85,7 @@
     - role: ansible-docker
       docker_opts: '"--insecure-registry docker-registry.service.consul:5000"'
 
-    - role: pintostack-zk
+#    - role: pintostack-zk
      
 #    - role: ansible-zookeeper
 #      zoo_id: "{{ my_zoo_id }}"
