@@ -6,6 +6,6 @@
 
 - name: Add Registrator Service
   template: src=registrator.conf.j2 dest=/etc/init/registrator.conf
-            mode=666
+            mode=644
 - name: run 
   shell: sudo service registrator restart
