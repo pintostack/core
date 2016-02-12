@@ -59,14 +59,15 @@
     - role: ansible-docker
 
     - role: ansible-consul
-      dns_nameservers: ['127.0.0.1', '8.8.8.8', '8.8.4.4']
+      dns_nameservers: "{{ ['127.0.0.1', '8.8.8.8', '8.8.4.4'] if inventory_hostname in groups['masters'] else masters }}"
       dns_domain: "node.consul"
-      consul_servers: "{{ masters }}"
       consul_is_server: "{{ inventory_hostname in groups['masters'] }}"
       install_bind: "{{ inventory_hostname in groups['masters'] }}"
       consul_domain: "consul."
       consul_port_dns: "8600"
+      consul_client_address: "{{ '127.0.0.1' if inventory_hostname in groups['masters'] else local_ip }}"
       consul_bind_address: "{{ local_ip }}"
+      consul_servers: "{{ masters }}"
 
     - role: ansible-beats
       when: inventory_hostname not in groups["masters"]
@@ -75,7 +76,3 @@
       registrator_consul_host: "127.0.0.1"
       registrator_consul_port: "8500"
       registrator_log_file: "/var/log/registrator.log"
-
-  post_tasks:
-    - shell: wget -O /var/www/masters-share/htdocs/spark-1.5.2-bin-hadoop2.6.tgz -q -c http://www.eu.apache.org/dist/spark/spark-1.5.2/spark-1.5.2-bin-hadoop2.6.tgz
-      when: inventory_hostname in groups["masters"]
