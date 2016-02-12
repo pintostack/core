@@ -1,0 +1,16 @@
+{
+  "id": "test-app10",	
+  "cpus": 0.3,
+  "mem": 200.0,
+  "instances": 1,
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "network": "BRIDGE",
+      "image": "cyberdisk/custom-redis",
+      "portMappings": [
+        { "containerPort": 6379, "hostPort": 0, "servicePort": 0, "protocol": "tcp" }
+      ]
+    }
+  }
+}
