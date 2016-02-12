@@ -54,6 +54,7 @@ export PYSPARK_SUBMIT_ARGS=" --master mesos://${MESOS_MASTER}:5050
 --conf spark.blockManager.port=${PORT5}
 --conf spark.ui.port=${PORT6}
 --conf spark.replClassServer.port=${PORT7}
+--conf spark.mesos.executor.docker.image=pintostack/pintostack-mesos-slave
 "
 #--conf spark.executor.uri=http://${MESOS_MASTER}/spark-1.5.2-bin-hadoop2.6.tgz
 #--conf spark.mesos.coarse=false
