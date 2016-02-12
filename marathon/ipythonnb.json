@@ -54,19 +54,7 @@
                 }
             ],
             "privileged": false
-        },
-        "volumes": [
-            {
-                "containerPath": "/data",
-                "hostPath": "/var/data/zeppelin/data",
-                "mode": "RW"    
-            },
-            {
-                "containerPath": "/log",
-                "hostPath": "/var/data/zeppelin/log",
-                "mode": "RW"
-            }
-        ]
+        }
     },
     "constraints": [["hostname", "UNIQUE"]],
     "healthChecks": [
