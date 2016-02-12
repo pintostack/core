@@ -56,17 +56,7 @@
     - role: ansible-swap
       swap_file_size: "{{ ansible_memtotal_mb }}M"
 
-#    - role: ansible-nginx
-#      nginx_worker_processes: 1
-#      nginx_remove_default: yes
-#      nginx_sites:
-#       - id: masters-share
-#         add_webroot: yes
-#         name: "service.consul.service"
-#      when: inventory_hostname in groups["masters"]
-
     - role: ansible-docker
-#      docker_opts: '"--insecure-registry docker-registry.service.consul:5000"'
 
     - role: ansible-consul
       dns_nameservers: ['127.0.0.1', '8.8.8.8', '8.8.4.4']
@@ -77,31 +67,6 @@
       consul_domain: "consul."
       consul_port_dns: "8600"
       consul_bind_address: "{{ local_ip }}"
-#slave
-#      install_bind: false
-#      dns_nameservers: "{{ masters }}"
-#      consul_is_server: false
-#      consul_domain: "consul."
-#      consul_client_address: "{{ local_ip }}"
-#      consul_bind_address: "{{ consul_client_address }}"
-
-#    - role: ansible-docker
-#      docker_opts: '"--insecure-registry docker-registry.service.consul:5000"'
-
-# TODO  zoo_id: "{{ my_zoo_id }}", zookeeper_hosts: "{{ masters|to_zk }}, go_to: "http://{{local_ip}}:8500/v1/agent/service/register"
-    - role: pintostack-zk
-      when: inventory_hostname in groups["masters"]
-
-# TODO: #      quorum: "{{ my_quorum }}",
-    - role: pintostack-mesos-master
-      when: inventory_hostname in groups["masters"]
-
-# TODO: ##      go_to: "http://{{local_ip}}:8500/v1/agent/service/register
-    - role: pintostack-marathon
-      when: inventory_hostname in groups["masters"]
-
-    - role: pintostack-mesos-slave
-      when: inventory_hostname not in groups["masters"]
 
     - role: ansible-beats
       when: inventory_hostname not in groups["masters"]
@@ -110,7 +75,6 @@
       registrator_consul_host: "127.0.0.1"
       registrator_consul_port: "8500"
       registrator_log_file: "/var/log/registrator.log"
-
 
   post_tasks:
     - shell: wget -O /var/www/masters-share/htdocs/spark-1.5.2-bin-hadoop2.6.tgz -q -c http://www.eu.apache.org/dist/spark/spark-1.5.2/spark-1.5.2-bin-hadoop2.6.tgz

@@ -19,7 +19,6 @@ MASTERS = CONFIG["MASTERS"]
 ALL_HOSTS=[]
 (1..MASTERS.to_i).each {|i| ALL_HOSTS.push "master-#{i}"}
 (1..SLAVES.to_i).each {|i| ALL_HOSTS.push "slave-#{i}"}
-ALL_HOSTS.push("docker-registry")
 
 Vagrant.configure(2) do |config|
   config.vm.network "private_network", type: :dhcp
@@ -67,9 +66,9 @@ Vagrant.configure(2) do |config|
       instance.vm.provider :virtualbox do |virtualbox|
           virtualbox.name = name
       end
-      if name == "docker-registry" # Run ansible after last host provision
+      if name == "slave-#{SLAVES}" # Run ansible after last host provision
         instance.vm.provision :ansible do |ansible|
-          ansible.playbook = "provisioning/world-playbook.yml"
+          ansible.playbook = "provisioning/world-playbook-fast.yml"
           ansible.limit = 'all'
           ansible.force_remote_user = true
           ansible.host_vars={}
@@ -79,12 +78,11 @@ Vagrant.configure(2) do |config|
           ansible.groups = {
               "masters" => ["master-[1:#{MASTERS.to_i}]"],
               "slaves" => ["slave-[1:#{SLAVES.to_i}]"],
-              "dockers" => ["docker-registry"],
-              "all-hosts" => ["master-[1:#{MASTERS.to_i}]","slave-[1:#{SLAVES.to_i}]","docker-registry"]
+              "all-hosts" => ["master-[1:#{MASTERS.to_i}]","slave-[1:#{SLAVES.to_i}]"]
           }
         end
         instance.vm.provision :ansible do |ansible|
-          ansible.playbook = "provisioning/debugging.yml"
+          ansible.playbook = "provisioning/containers.yml"
           ansible.limit = 'all'
           ansible.force_remote_user = true
           ansible.host_vars={}
@@ -94,8 +92,7 @@ Vagrant.configure(2) do |config|
           ansible.groups = {
               "masters" => ["master-[1:#{MASTERS.to_i}]"],
               "slaves" => ["slave-[1:#{SLAVES.to_i}]"],
-              "dockers" => ["docker-registry"],
-              "all-hosts" => ["master-[1:#{MASTERS.to_i}]","slave-[1:#{SLAVES.to_i}]","docker-registry"]
+              "all-hosts" => ["master-[1:#{MASTERS.to_i}]","slave-[1:#{SLAVES.to_i}]"]
           }
         end
       end
