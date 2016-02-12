@@ -28,13 +28,12 @@
         {% for item in groups["masters"] -%}
             {{ comma() }}{{ hostvars[item][eth].ipv4.address }}
         {%- endfor %}
-  tasks:
-   - name: setup hostname
-     hostname: name="{{ inventory_hostname }}"
-   - debug: msg="{{ inventory_hostname }}"
-   - sysctl: name="net.core.somaxconn" value=1024 sysctl_set=yes state=present reload=yes
-   - sysctl: name="fs.file-max" value=402302 sysctl_set=yes state=present reload=yes
   pre_tasks:
+    - name: setup hostname
+      hostname: name="{{ inventory_hostname }}"
+    - shell: echo "127.0.0.1 {{inventory_hostname}}" >> /etc/hosts
+    - sysctl: name="net.core.somaxconn" value=1024 sysctl_set=yes state=present reload=yes
+    - sysctl: name="fs.file-max" value=402302 sysctl_set=yes state=present reload=yes
     - set_fact:
         a_vpc_if: "ansible_{{ vpc_if }}"
     - set_fact:
@@ -51,19 +50,23 @@
         my_quorum: "{{ (masters|length)//2+1 }}"
     - set_fact:
         my_hostname: "master-{{ my_zoo_id }}"
+      when: inventory_hostname in groups["masters"]
 
   roles:
     - role: ansible-swap
       swap_file_size: "{{ ansible_memtotal_mb }}M"
 
-    - role: ansible-nginx
-      nginx_worker_processes: 1
-      nginx_remove_default: yes
-      nginx_sites:
-       - id: masters-share
-         add_webroot: yes
-         name: "service.consul.service"
-      when: inventory_hostname in groups["masters"]
+#    - role: ansible-nginx
+#      nginx_worker_processes: 1
+#      nginx_remove_default: yes
+#      nginx_sites:
+#       - id: masters-share
+#         add_webroot: yes
+#         name: "service.consul.service"
+#      when: inventory_hostname in groups["masters"]
+
+    - role: ansible-docker
+#      docker_opts: '"--insecure-registry docker-registry.service.consul:5000"'
 
     - role: ansible-consul
       dns_nameservers: ['127.0.0.1', '8.8.8.8', '8.8.4.4']
@@ -102,6 +105,12 @@
 
     - role: ansible-beats
       when: inventory_hostname not in groups["masters"]
+
+    - role: ansible-registrator
+      registrator_consul_host: "127.0.0.1"
+      registrator_consul_port: "8500"
+      registrator_log_file: "/var/log/registrator.log"
+
 
   post_tasks:
     - shell: wget -O /var/www/masters-share/htdocs/spark-1.5.2-bin-hadoop2.6.tgz -q -c http://www.eu.apache.org/dist/spark/spark-1.5.2/spark-1.5.2-bin-hadoop2.6.tgz

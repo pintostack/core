@@ -1,0 +1,11 @@
+---
+- name: Copying registrator binary
+  copy: src=registrator
+        dest="/usr/local/sbin/registrator"
+        mode=0755
+
+- name: Add Registrator Service
+  template: src=registrator.conf.j2 dest=/etc/init/registrator.conf
+            mode=666
+- name: run 
+  shell: sudo service registrator restart
