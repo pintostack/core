@@ -48,11 +48,11 @@ RUN curl -SL http://mirror.cogentco.com/pub/apache/spark/spark-1.5.2/spark-1.5.2
 	ln -s /usr/lib/spark-1.5.2-bin-hadoop2.6 /usr/lib/spark
 ENV SPARK_HOME /usr/lib/spark
 
-VOLUME ["/data"]
-VOLUME ["/log"]
+#VOLUME ["/data"]
+#VOLUME ["/log"]
 
-#Create Worck directory for iPython
-RUN mkdir -p /root/ipithon ; \
+#Create Work directory for iPython
+RUN mkdir -p /root/ipython ; \
 	mkdir -p /root/.ipython/profile_pyspark/startup/
 
 WORKDIR  /root/
