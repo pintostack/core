@@ -1,7 +1,7 @@
 {
     "id": "/hdfs/datanode",
     "cpus": 1,
-    "mem": 512,
+    "mem": 2048,
     "cmd": "./bootstrap.sh datanode",
     "requirePorts": false,
     "instances": 1,
