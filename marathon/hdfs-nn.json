@@ -1,14 +1,14 @@
 {
     "id": "/hdfs/namenode",
     "cpus": 1,
-    "mem": 2048,
+    "mem": 512,
     "cmd": "./bootstrap.sh namenode",
     "requirePorts": false,
     "instances": 1,
     "container": {
         "type": "DOCKER",
         "docker": {
-            "image": "docker-registry.service.consul:5000/hdfs",
+            "image": "pintostack/hdfs",
             "forcePullImage": true,
             "network": "BRIDGE",
             "portMappings": [

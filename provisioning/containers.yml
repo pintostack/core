@@ -80,3 +80,7 @@
         local_ip: "{{ hostvars[inventory_hostname][a_vpc_if].ipv4.address }}"
   roles:
     - role: pintostack-mesos-slave
+    - role: ansible-registrator
+      registrator_consul_host: "{{ inventory_hostname }}.node.consul"
+      registrator_consul_port: "8500"
+      registrator_log_file: "/var/log/registrator.log"

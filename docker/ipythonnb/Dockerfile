@@ -43,7 +43,7 @@ RUN curl -SL https://dl.bintray.com/sbt/native-packages/sbt/0.13.9/sbt-0.13.9.tg
 ENV PATH $PATH:/root/sbt-0.13.9/bin
 
 # Spark 1.5.2
-RUN curl -SL http://consul.service.consul/spark-1.5.2-bin-hadoop2.6.tgz \
+RUN curl -SL http://mirror.cogentco.com/pub/apache/spark/spark-1.5.2/spark-1.5.2-bin-hadoop2.6.tgz \
 	| tar -xzC /usr/lib && \
 	ln -s /usr/lib/spark-1.5.2-bin-hadoop2.6 /usr/lib/spark
 ENV SPARK_HOME /usr/lib/spark
@@ -57,6 +57,6 @@ RUN mkdir -p /root/ipithon ; \
 
 WORKDIR  /root/
 
-COPY ./bootstrap.sh /root
+COPY ./bootstrap.sh /root/bootstrap.sh
 
 #ENTRYPOINT ./bootstrap.sh

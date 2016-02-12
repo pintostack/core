@@ -8,7 +8,7 @@
     "container": {
         "type": "DOCKER",
         "docker": {
-            "image": "docker-registry.service.consul:5000/ipythonnb",
+            "image": "pintostack/ipythonnb",
             "forcePullImage": true,
             "network": "BRIDGE",
             "portMappings": [

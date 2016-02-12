@@ -71,8 +71,3 @@
 
     - role: ansible-beats
       when: inventory_hostname not in groups["masters"]
-
-    - role: ansible-registrator
-      registrator_consul_host: "{{ inventory_hostname }}.node.consul"
-      registrator_consul_port: "8500"
-      registrator_log_file: "/var/log/registrator.log"
