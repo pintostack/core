@@ -7,7 +7,7 @@ respawn
 respawn limit 10 5
 
 script
-export DOCKER_HOST=unix:///var/run/docker.sock \
+export DOCKER_HOST=unix:///var/run/docker.sock
 /usr/local/sbin/registrator \
   --marathon-ports=true \
   --cleanup=true \
