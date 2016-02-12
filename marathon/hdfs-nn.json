@@ -41,6 +41,11 @@
             }
         ]
     },
+    "env":{
+        "SERVICE_PORT0_NAME": "{{NAME}}-rpc",
+        "SERVICE_PORT1_NAME": "{{NAME}}-ipc",
+        "SERVICE_PORT2_NAME": "{{NAME}}-http"
+    },
     "constraints": [["hostname", "LIKE", "slave-1"]],
     "healthChecks": [
         {

@@ -21,6 +21,9 @@
             "privileged": false
         }
     },
+    "env":{
+        "SERVICE_PORT0_NAME": "{{NAME}}"
+    },
     "constraints": [["hostname", "UNIQUE"]],
     "healthChecks": [
         {
