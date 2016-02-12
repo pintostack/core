@@ -1,7 +1,7 @@
 {
     "id": "/hdfs/namenode",
     "cpus": 1,
-    "mem": 2048,
+    "mem": 512,
     "cmd": "./bootstrap.sh namenode",
     "requirePorts": false,
     "instances": 1,
@@ -40,6 +40,11 @@
                 "mode": "RW"
             }
         ]
+    },
+    "env":{
+        "SERVICE_PORT0_NAME": "{{NAME}}-rpc",
+        "SERVICE_PORT1_NAME": "{{NAME}}-ipc",
+        "SERVICE_PORT2_NAME": "{{NAME}}-http"
     },
     "constraints": [["hostname", "LIKE", "slave-1"]],
     "healthChecks": [

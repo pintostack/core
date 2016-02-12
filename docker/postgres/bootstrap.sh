@@ -60,7 +60,7 @@ if [ "$1" = 'postgres' ]; then
 	fi
 
         # REGISTER POSTGRES in CONSUL
-        register_service
+        # register_service
 
 	# RUN POSTGRES
 	exec gosu postgres "$@" -p $PORT0

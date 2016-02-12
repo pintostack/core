@@ -28,7 +28,7 @@ function register_service () {
 }
 
 echo "function-ok" > /tmp/logfile
-register_service
+#register_service
 
 # RUN OTHER COMMAND
 exec "$@"

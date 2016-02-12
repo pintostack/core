@@ -19,7 +19,7 @@
 <configuration>
 	<property>
 		<name>fs.defaultFS</name>
-		<value>hdfs://${NN_HOSTNAME}:${NN_RPC_PORT}</value>
+		<value>hdfs://${NN_RPC_ADDR}</value>
 		<description>The name of the default file system.  A URI whose
 		scheme and authority determine the FileSystem implementation.  The
 		uri's scheme determines the config property (fs.SCHEME.impl) naming

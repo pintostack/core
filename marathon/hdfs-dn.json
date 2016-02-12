@@ -1,7 +1,7 @@
 {
     "id": "/hdfs/datanode",
     "cpus": 1,
-    "mem": 2048,
+    "mem": 512,
     "cmd": "./bootstrap.sh datanode",
     "requirePorts": false,
     "instances": 1,
@@ -40,6 +40,11 @@
                 "mode": "RW"
             }
         ]
+    },
+    "env":{
+        "SERVICE_PORT0_NAME": "{{NAME}}-dn-rpc",
+        "SERVICE_PORT1_NAME": "{{NAME}}-dn-ipc",
+        "SERVICE_PORT2_NAME": "{{NAME}}-dn-http"
     },
     "constraints": [["hostname", "UNIQUE"]],
     "healthChecks": [
