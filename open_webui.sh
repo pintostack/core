@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source conf/source.global
+source .env
 
 MASTER_1="$(sed -n "/^master-1\s/p" ${ANSIBLE_INVENTORY_FILE} | grep -Po 'ansible_ssh_host=\K[^ ]*')"
 

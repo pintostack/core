@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source conf/source.global
+source .env
 
 function print_usage (){
     echo "
