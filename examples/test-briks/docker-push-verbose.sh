@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-
-sed -i "/^ANSIBLE_OPTS.*/d" conf/source.global
-echo "ANSIBLE_OPTS=\"-vvv\"" >> conf/source.global
+source .env
+sed -i.bak "/^ANSIBLE_OPTS.*/d" .env
+echo "ANSIBLE_OPTS=\"-vvv $ANSIBLE_OPTS\"" >> .env
 
 ./docker-push.sh $1
