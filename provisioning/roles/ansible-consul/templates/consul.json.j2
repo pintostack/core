@@ -22,6 +22,7 @@
   "advertise_addr": "{{ consul_advertise_address }}",
 {% endif %}
   "ports": {
+    "http": {{ consul_port_http }},
     "dns": {{ consul_port_dns }},
     "rpc": {{ consul_port_rpc }},
     "serf_lan": {{ consul_port_serf_lan }},

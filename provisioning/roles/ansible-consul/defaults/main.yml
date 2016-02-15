@@ -34,6 +34,7 @@ consul_disable_remote_exec: false
 consul_install_dnsmasq: false
 consul_port_dns: 8600
 consul_port_rpc: 8400
+consul_port_http: 8500
 consul_port_serf_lan: 8301
 consul_port_serf_wan: 8302
 consul_port_server: 8300
