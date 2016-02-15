@@ -67,7 +67,7 @@
       consul_port_http: "8500"
       consul_domain: "consul."
       consul_port_dns: "8600"
-      consul_client_address: "{{ '127.0.0.1' if inventory_hostname in groups['masters'] else local_ip }}"
+      consul_client_address: "{{ local_ip }}"
       consul_bind_address: "{{ local_ip }}"
       consul_servers: "{{ masters }}"
 
