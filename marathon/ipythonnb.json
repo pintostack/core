@@ -60,11 +60,11 @@
     "healthChecks": [
         {
             "protocol": "TCP",
-            "gracePeriodSeconds": 60,
+            "gracePeriodSeconds": 300,
             "intervalSeconds": 5,
             "portIndex": 0,
-            "timeoutSeconds": 5,
-            "maxConsecutiveFailures": 3
+            "timeoutSeconds": 60,
+            "maxConsecutiveFailures": 5
         }
     ],
     "backoffSeconds": 1,
