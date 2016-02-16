@@ -1,0 +1,4 @@
+---
+registrator_consul_host: "127.0.0.1"
+registrator_consul_port: "8500"
+registrator_log_file: "/var/log/registrator.log"

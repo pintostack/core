@@ -42,7 +42,7 @@
 	</property>
 	<property>
   		<name>dfs.namenode.rpc-address</name>
-			<value>${NN_HOSTNAME}:${NN_RPC_PORT}</value>
+			<value>${NN_RPC_ADDR}</value>
 			<description>
 			RPC address that handles all clients requests. In the case of HA/Federation where multiple namenodes exist,
 			the name service id is added to the name e.g. dfs.namenode.rpc-address.ns1
@@ -63,7 +63,7 @@
 	</property>
 	<property>
 		<name>dfs.namenode.servicerpc-address</name>
-		<value>${NN_HOSTNAME}:${NN_SERVICE_RPC_PORT}</value>
+		<value>${NN_IPC_ADDR}</value>
 		<description>
 		RPC address for HDFS Services communication. BackupNode, Datanodes and all other services should be
 		connecting to this address if it is configured. In the case of HA/Federation where multiple namenodes exist,
@@ -86,7 +86,7 @@
 	</property>
 	<property>
 		<name>dfs.namenode.http-address</name>
-		<value>${NN_HOSTNAME}:${NN_HTTP_PORT}</value>
+		<value>${NN_HTTP_ADDR}</value>
 		<description>
 		The address and the base port where the dfs namenode web ui will listen on.
 		</description>

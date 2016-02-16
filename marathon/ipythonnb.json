@@ -8,7 +8,7 @@
     "container": {
         "type": "DOCKER",
         "docker": {
-            "image": "docker-registry.service.consul:5000/ipythonnb",
+            "image": "pintostack/ipythonnb",
             "forcePullImage": true,
             "network": "BRIDGE",
             "portMappings": [
@@ -54,29 +54,17 @@
                 }
             ],
             "privileged": false
-        },
-        "volumes": [
-            {
-                "containerPath": "/data",
-                "hostPath": "/var/data/zeppelin/data",
-                "mode": "RW"    
-            },
-            {
-                "containerPath": "/log",
-                "hostPath": "/var/data/zeppelin/log",
-                "mode": "RW"
-            }
-        ]
+        }
     },
     "constraints": [["hostname", "UNIQUE"]],
     "healthChecks": [
         {
             "protocol": "TCP",
-            "gracePeriodSeconds": 60,
+            "gracePeriodSeconds": 300,
             "intervalSeconds": 5,
             "portIndex": 0,
-            "timeoutSeconds": 5,
-            "maxConsecutiveFailures": 3
+            "timeoutSeconds": 60,
+            "maxConsecutiveFailures": 5
         }
     ],
     "backoffSeconds": 1,

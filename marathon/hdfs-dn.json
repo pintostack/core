@@ -1,14 +1,14 @@
 {
     "id": "/hdfs/datanode",
-    "cpus": 1,
-    "mem": 2048,
+    "cpus": 0.2,
+    "mem": 512,
     "cmd": "./bootstrap.sh datanode",
     "requirePorts": false,
     "instances": 1,
     "container": {
         "type": "DOCKER",
         "docker": {
-            "image": "docker-registry.service.consul:5000/hdfs",
+            "image": "pintostack/hdfs",
             "forcePullImage": true,
             "network": "BRIDGE",
             "portMappings": [
@@ -40,6 +40,11 @@
                 "mode": "RW"
             }
         ]
+    },
+    "env":{
+        "SERVICE_PORT0_NAME": "{{NAME}}-dn-rpc",
+        "SERVICE_PORT1_NAME": "{{NAME}}-dn-ipc",
+        "SERVICE_PORT2_NAME": "{{NAME}}-dn-http"
     },
     "constraints": [["hostname", "UNIQUE"]],
     "healthChecks": [

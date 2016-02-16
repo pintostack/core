@@ -7,7 +7,7 @@
     "container": {
         "type": "DOCKER",
         "docker": {
-            "image": "docker-registry.service.consul:5000/redis",
+            "image": "pintostack/redis",
             "forcePullImage": true,
             "network": "BRIDGE",
             "portMappings": [
@@ -20,6 +20,9 @@
             ],
             "privileged": false
         }
+    },
+    "env":{
+        "SERVICE_PORT0_NAME": "{{NAME}}"
     },
     "constraints": [["hostname", "UNIQUE"]],
     "healthChecks": [

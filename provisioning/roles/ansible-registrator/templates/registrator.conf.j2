@@ -1,0 +1,20 @@
+description "Registrator"
+
+start on runlevel [2345]
+stop on runlevel [016]
+
+respawn
+respawn limit 10 5
+
+script
+export DOCKER_HOST=unix:///var/run/docker.sock
+/usr/local/sbin/registrator \
+  --marathon-ports=true \
+  --cleanup=true \
+  --service-name-single "{{ '{{' }}NAME{{ '}}' }}" \
+  --service-name-group "{{ '{{' }}NAME{{ '}}' }}-port{{ '{{' }}PORT_INDEX{{ '}}' }}" \
+  --service-check-script "nc -w 5 -z {{ '{{' }}HOST{{ '}}' }} {{ '{{' }}PORT{{ '}}' }} >/dev/null" \
+  --service-check-interval "5s" \
+  consul://{{ registrator_consul_host }}:{{ registrator_consul_port }} >> {{registrator_log_file}} 2>&1
+end script
+
