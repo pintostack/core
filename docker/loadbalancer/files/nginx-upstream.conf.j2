@@ -1,0 +1,24 @@
+
+upstream ups-{{ nodes[0].ServiceName }} {
+ least_conn;
+{% for each_node in nodes %}
+    server {{ each_node.ServiceAddress }}:{{ each_node.ServicePort }} max_fails=2;
+{% endfor %}
+}
+
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server ipv6only=on;
+
+    gzip_types text/plain text/css application/json application/x-javascript
+               text/xml application/xml application/xml+rss text/javascript;
+
+    # Make site accessible from http://localhost/
+    server_name localhost 127.0.0.1;
+
+    location / {
+        proxy_pass http://ups-{{ nodes[0].ServiceName }};
+        proxy_next_upstream error;
+        include /etc/nginx/proxy_params;
+    }
+}

@@ -1,0 +1,11 @@
+[
+  {
+    "Node": "foobar",
+    "Address": "10.1.10.12",
+    "ServiceID": "redis",
+    "ServiceName": "redis",
+    "ServiceTags": null,
+    "ServiceAddress": "10.1.10.12",
+    "ServicePort": 8000
+  }
+]
