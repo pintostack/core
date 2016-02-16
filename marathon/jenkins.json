@@ -7,7 +7,7 @@
   "container": {
     "type": "DOCKER",
     "docker": {
-      "image": "docker-registry.service.consul:5000/jenkins:latest",
+      "image": "pintostack/jenkins",
       "forcePullImage": true,
       "network": "BRIDGE",
       "portMappings": [
