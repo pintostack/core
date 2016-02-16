@@ -6,7 +6,7 @@ light = ["Daylight", "", "", "Darkness - lights lit", "Darkness - lights unlit",
 start_time = int(round(time.time() * 1000))
 
 # now we have a file
-text_file = sc.textFile("hdfs://hdfs.service.consul:31229/Accidents7904.csv")
+text_file = sc.textFile("hdfs://hdfs-rpc.service.consul:31229/Accidents7904.csv")
 
 # getting the header as an array
 header = text_file.first().split(",")
