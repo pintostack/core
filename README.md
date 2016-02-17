@@ -52,6 +52,7 @@ Now we will set-up our cloud servers. In this tutorial, our provider is Digital 
 ```$ sudo nano conf/source.digital_ocean```
 
 At Digital Ocean API portal (https://cloud.digitalocean.com/settings/api/tokens) generate new token and insert it into the file instead of ‘TOKEN_ID’:
+        
         ### Digital Ocean Account Parameters
 
         source conf/source.global
@@ -84,8 +85,8 @@ Next, start a Bash session in your container:
 
 Time to set-up your environment:
 
-        # cd /pintostack
-        # ./pintostack.sh digital_ocean
+```# cd /pintostack```
+```# ./pintostack.sh digital_ocean```
         
 Congratulations, your cluster is up and running!
 Now if you want to deploy an app (iPython notebook, for example) in the container:
@@ -100,8 +101,8 @@ or head to http://master_ip:5050/ for Mesos UI, http://master_ip:8080/ui for Mar
 
 If you want to access your logs, you have to deploy ElasticSearch and Kibana:
 
-        # ./marathon-push.sh elasticsearch.json
-        # ./marathon-push.sh kibana.json
+```# ./marathon-push.sh elasticsearch.json```
+```# ./marathon-push.sh kibana.json```
 
 and head to http://master_ip:5601/ for Kibana UI.
 Consul UI lives on http://master_ip:8500/ui 
