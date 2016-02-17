@@ -86,9 +86,11 @@ Next, start a Bash session in your container:
 Time to set-up your environment:
 
 ```# cd /pintostack```
+
 ```# ./pintostack.sh digital_ocean```
         
 Congratulations, your cluster is up and running!
+
 Now if you want to deploy an app (iPython notebook, for example) in the container:
 
 ```# ./marathon-push.sh ipythonnb.json```
@@ -102,6 +104,7 @@ or head to http://master_ip:5050/ for Mesos UI, http://master_ip:8080/ui for Mar
 If you want to access your logs, you have to deploy ElasticSearch and Kibana:
 
 ```# ./marathon-push.sh elasticsearch.json```
+
 ```# ./marathon-push.sh kibana.json```
 
 and head to http://master_ip:5601/ for Kibana UI.
