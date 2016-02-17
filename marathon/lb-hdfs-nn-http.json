@@ -1,0 +1,46 @@
+{
+    "id": "/http-lb",
+    "cpus": 1,
+    "mem": 128,
+    "requirePorts": false,
+    "instances": 1,
+    "container": {
+        "type": "DOCKER",
+        "docker": {
+            "image": "pintostack/http-lb",
+            "forcePullImage": true,
+            "network": "BRIDGE",
+            "portMappings": [
+                {
+                    "containerPort": 80,
+                    "servicePort" : 0,
+                    "hostPort": 0,
+                    "protocol": "tcp"
+                }
+            ],
+            "privileged": false
+        }
+    },
+    "env":{
+        "SERVICE_PORT0_NAME": "{{NAME}}"
+        "BACKEND_SERVICE_NAME": "hdfs-http"
+    },
+    "constraints": [["hostname", "UNIQUE"]],
+    "healthChecks": [
+        {
+            "protocol": "TCP",
+            "gracePeriodSeconds": 60,
+            "intervalSeconds": 5,
+            "portIndex": 0,
+            "timeoutSeconds": 5,
+            "maxConsecutiveFailures": 3
+        }
+    ],
+    "backoffSeconds": 1,
+    "backoffFactor": 1.15,
+    "maxLaunchDelaySeconds": 3600,
+    "upgradeStrategy": {
+        "minimumHealthCapacity": 0.5,
+        "maximumOverCapacity": 0.2
+    }
+}
