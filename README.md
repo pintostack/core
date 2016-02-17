@@ -94,7 +94,7 @@ Now if you want to deploy an app (iPython notebook, for example) in the containe
 
 If you want to check your system status, open Mesos UI and Marathon UI with:
 
-```./open_webui.sh```
+```# ./open_webui.sh```
 
 or head to http://master_ip:5050/ for Mesos UI, http://master_ip:8080/ui for Marathon UI.
 
@@ -104,5 +104,4 @@ If you want to access your logs, you have to deploy ElasticSearch and Kibana:
         # ./marathon-push.sh kibana.json
 
 and head to http://master_ip:5601/ for Kibana UI.
-
 Consul UI lives on http://master_ip:8500/ui 
