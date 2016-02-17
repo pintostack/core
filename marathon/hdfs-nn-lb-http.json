@@ -1,5 +1,5 @@
 {
-    "id": "/http-lb",
+    "id": "/hdfs/http-lb",
     "cpus": 1,
     "mem": 128,
     "requirePorts": false,
