@@ -1,49 +1,20 @@
-To start your cluster you need to do this:
-# Install Docker:
-* https://docs.docker.com/linux/
-* https://docs.docker.com/mac/
-* https://docs.docker.com/windows/
+### AWS Credentials
 
-# Build Pintostack's Docker container:
-
-```
-docker build -t pintostack .
-```
-# Setup number of masters and slaves
-
-edit conf/source.global file and set number of master and slaves
-
-```
-# For more information refere to https://github.com/pintostack/core
-
-MASTERS=1
-SLAVES=3
-
-# Defaults do not overwrite variables below
-SSH_KEY_FILE='~/.ssh/id_rsa'
-ANSIBLE_INVENTORY_FILE=".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory"
-ANSIBLE_OPTS=""
-```
-
-to have cluster up and running you need to set at least one master and one slave.
-
-# Setup your credentials to work with AWS/DO.
-### AWS
 copy ./conf/source.aws.example into ./conf/source.aws
 
 Set the following properties:
-```
-AWS_KEY_ID='<KEY>'
-AWS_ACCESS_KEY='<ACCESS_KEY>'
-AWS_KEYPAIR_NAME='<KEY NAME>'
-AWS_AMI='<AMI>'
-AWS_INSTANCE_TYPE='t2.medium'
-AWS_ROOT_PARTITION_SIZE=50
-AWS_REGION='us-west-1'
-AWS_SECURITY_GROUPS="default,<GROUP WHERE SSH IS ALLOWED>"
-AWS_SSH_USERNAME='<USERNAME TO SSH TO VIRTUAL MACHINE'
-SSH_KEY_FILE=<FULL PATH TO PEM FILE>
-```
+
+        AWS_KEY_ID='<KEY>'
+        AWS_ACCESS_KEY='<ACCESS_KEY>'
+        AWS_KEYPAIR_NAME='<KEY NAME>'
+        AWS_AMI='<AMI>'
+        AWS_INSTANCE_TYPE='t2.medium'
+        AWS_ROOT_PARTITION_SIZE=50
+        AWS_REGION='us-west-1'
+        AWS_SECURITY_GROUPS="default,<GROUP WHERE SSH IS ALLOWED>"
+        AWS_SSH_USERNAME='<USERNAME TO SSH TO VIRTUAL MACHINE'
+        SSH_KEY_FILE=<FULL PATH TO PEM FILE>
+
 ##### AWS_KEY_ID and AWS_ACCESS_KEY
 
 * Open [the IAM console](https://console.aws.amazon.com/iam/home?#home)
@@ -93,69 +64,3 @@ We sugest you create two default security groups for your cluster with names ```
 
 Remember security groups you want to apply to your new instances should be listed in ```source.aws``` file in ```AWS_SECURITY_GROUPS="default,allow-ssh"```
 >NOTICE: For more information on AWS Security Groups look [here](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_SecurityGroups.html).
-
-### Digital Ocean
-
-copy ./conf/source.aws.digital_ocean into ./conf/source.digital_ocean
-
-Set the following properties:
-```
-SSH_KEY_FILE='/pintostack/conf/id_rsa'
-export DO_TOKEN='<TOKEN>'
-export DO_IMAGE='ubuntu-14-04-x64'
-export DO_REGION=nyc3
-export DO_SIZE='8gb'
-```
-
-###### DO_TOKEN
-     
-It's time to open digital ocean management [portal](https://cloud.digitalocean.com/settings/applications). On this page you need to create new token id, which will be used later . Edit file ```source.digital_ocean``` and put this one line tokent to ```DO_TOKEN='Change me'```.
-          
-###### Generating SSH Keys
-     
-For machines we are going to create we'll need SSH keys. In order to create a new ssh key pair follow [GitHub instructions](https://help.github.com/articles/generating-ssh-keys/). Now system will automaticaly upload content of your public key file (usualy a pivate key ```~/.ssh/id_rsa``` with extention ```.pub```) with key name ```Vagrant``` to the Digital Ocean. And after all done you will see it [here](https://cloud.digitalocean.com/settings/security) later.
-put your keyfile into ```conf``` folder and set SSH_KEY_FILE to ```/pintostack/conf/id_rsa``` to allow working with it from Pintostack's container. 
-
-
-# Start new container
-Run 
-```
-docker run -d -v $(pwd)/conf:/pintostack/conf -v $(pwd)/.vagrant:/pintostack/.vagrant --name=pintostack-container pintostack
-```
-Note that ```-v $(pwd)/conf:/pintostack/conf -v $(pwd)/.vagrant:/pintostack/.vagrant``` will mount these folders into ```/pintostack``` path and it will plug in inventory and conf folder with settings and keys. 
-
-# Open CLI
-
-```
-docker exec -it pintostack-container bash 
-```
-
-# Go to Pintostack folder (In Container). 
-
-```
-cd /pintostack
-./pintostack.sh aws
-```
-
-# Start your cluster (In Container)
-##### AWS
-```
-./pintostack.sh aws
-```
-##### Digital Ocean
-```
-./pintostack.sh digital_ocean
-```
-# Build an application (In Container)
-```
-./docker-push.sh redis
-```
-# Start the service (In Container)
-```
-./marathon-push.sh redis.json
-```
-# Open Mesos and Marathon UI and find your services
-From you host.
-```
-./open_webui.sh
-```
