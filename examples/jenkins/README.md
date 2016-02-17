@@ -1,3 +1,4 @@
+# Jenkins in cloud
 1. submit an app into marathon (marathon-push.sh jenkins.json)
 2. Enable security and set JNLP TCP port to fixed, specify one of free ports allocated by Marathon.
 3. install mesos plugin
