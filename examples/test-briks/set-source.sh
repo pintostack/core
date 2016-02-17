@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 function print_usage () {
-echo "This script sets variables in source files by postfix like aws for source.aws file.
+echo "This script sets variables in source files by postfix, it should be run before ./pitostack.sh
+put aws for source.aws file.
 Usage:
 $0 [global|aws|digital_ocean] <variable name> <value>
 

@@ -3,7 +3,7 @@
 domain {{dns_domain}}
 {% endif %}
 {% if consul_is_server == true %}
-nameserver {{ consul_client_address }}
+nameserver 127.0.0.1
 {% endif %}
 {% if consul_is_server == false %}
 {% for nameserver in consul_servers %}

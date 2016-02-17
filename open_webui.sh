@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source conf/source.global
+source .env
 
 MASTER_1="$(sed -n "/^master-1\s/p" ${ANSIBLE_INVENTORY_FILE} | grep -Po 'ansible_ssh_host=\K[^ ]*')"
 
@@ -11,3 +11,4 @@ than open http://MASTER_IP:8080  and http://MASTER_IP:5050"
 fi
 python -m webbrowser -t "http://${MASTER_1}:5050"
 python -m webbrowser -t "http://${MASTER_1}:8080"
+python -m webbrowser -t "http://${MASTER_1}:8500"

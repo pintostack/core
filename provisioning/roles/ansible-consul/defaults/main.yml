@@ -24,7 +24,7 @@ consul_syslog: false
 consul_rejoin_after_leave: true
 consul_leave_on_terminate: false
 consul_bind_address: 
-consul_client_address: "127.0.0.1"
+consul_client_address: "0.0.0.0"
 consul_datacenter: "dc1"
 consul_ui_server_name: "{{ ansible_fqdn }}"
 consul_ui_require_auth: false
@@ -34,6 +34,7 @@ consul_disable_remote_exec: false
 consul_install_dnsmasq: false
 consul_port_dns: 8600
 consul_port_rpc: 8400
+consul_port_http: 8500
 consul_port_serf_lan: 8301
 consul_port_serf_wan: 8302
 consul_port_server: 8300
@@ -46,7 +47,3 @@ dns_dhclient_rule: "supersede" # can be supersede or prepend
 
 dns_dhclient_file: "/etc/dhcp/dhclient.conf"
 dns_forced_in_dhclientconf: "{{ansible_os_family == 'Debian' or ansible_os_family == 'Redhat'}}"
-
-
-
-
