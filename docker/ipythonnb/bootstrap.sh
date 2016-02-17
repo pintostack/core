@@ -46,7 +46,7 @@ export PYSPARK_SUBMIT_ARGS=" --master mesos://${MESOS_MASTER}:5050
 --driver-cores 1
 --conf spark.python.worker.memory=1024m
 --conf spark.task.cpus=1
---conf spark.cores.max=1
+--conf spark.cores.max=8
 --conf spark.mesos.executor.home=/usr/lib/spark
 --conf spark.driver.port=${PORT2}
 --conf spark.fileserver.port=${PORT3}
@@ -55,7 +55,9 @@ export PYSPARK_SUBMIT_ARGS=" --master mesos://${MESOS_MASTER}:5050
 --conf spark.ui.port=${PORT6}
 --conf spark.replClassServer.port=${PORT7}
 --conf spark.mesos.executor.docker.image=pintostack/pintostack-mesos-slave
+--conf spark.mesos.coarse=true
 "
+
 #--conf spark.executor.uri=http://${MESOS_MASTER}/spark-1.5.2-bin-hadoop2.6.tgz
 #--conf spark.mesos.coarse=false
 #--conf spark.broadcast.factory=org.apache.spark.broadcast.HttpBroadcastFactor

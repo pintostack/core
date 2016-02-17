@@ -1,6 +1,6 @@
 {
     "id": "/hdfs/namenode",
-    "cpus": 1,
+    "cpus": 0.1,
     "mem": 512,
     "cmd": "./bootstrap.sh namenode",
     "requirePorts": false,
