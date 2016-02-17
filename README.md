@@ -21,11 +21,11 @@ Prerequisites:
 
 ##Step # 1 - Build your PintoStack container.
 
-Pull PintoStack image from DockerHub: 
+Pull PintoStack image from DockerHub (If you can’t find PintoStack on DockerHub you can clone it from GitHub): 
 
 ```$ docker pull pintostack```
 
-or build a PintoStack image(If you can’t find PintoStack on DockerHub you can clone it from GitHub):
+and build a PintoStack image:
 
 ```$ docker build -t pintostack .```
 
