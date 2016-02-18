@@ -1,0 +1,39 @@
+{
+  "id": "/jmeter",
+  "cpus": 0.5,
+  "mem": 512.0,
+  "requirePorts": false,
+  "instances": 1,
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "pintostack/jmeter",
+      "forcePullImage": true,
+      "network": "BRIDGE",
+      "portMappings": [
+        {
+          "containerPort": 1099,
+          "hostPort": 0,
+          "protocol": "tcp"
+        },
+        {
+          "containerPort": 60000,
+          "hostPort": 0,
+          "protocol": "tcp"
+        }
+      ],
+      "privileged": false
+    }
+  },
+  "env":{
+    "SERVICE_PORT0_NAME": "{{NAME}}",
+    "SERVICE_PORT1_NAME": "{{NAME}}-rmi-local"
+  },
+  "backoffSeconds": 1,
+  "backoffFactor": 1.15,
+  "maxLaunchDelaySeconds": 3600,
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 0.5,
+    "maximumOverCapacity": 0.2
+  }
+}

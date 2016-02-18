@@ -1,51 +1,111 @@
-# Introduction
+# How To Install PintoStack
 
-PintoStack is a container Platform as a Service for brave and true. A paradigm shift from how we used to run and manage distributed systems.
+PintoStack from [DataArt](http://www.dataart.com/) is an open source Docker container system. It is very easy to set-up and to run and it offers an elegant solution for enterprise computing or for Big Data processing.
 
-The core principles of PintoStack are:
-- infrastructure immutability
-- separation of services and infrastructure
-- deterministic deployments
-- service isolation and discovery
+A new approach to running and managing distributed systems, PintoStack gives you immutable container infrastructure, with service discovery and continuous logging. Simply put, PintoStack is an easy, reliable and complete solution to get your cloud up and running.
 
-> NOTE: Want to spin a cluster and cruch some puilc data and tear it down afterwards? Try our IPython+Spark tutorial on top of UK Road Accidents data on DigitalOcean [here](docs/README.ipython-spark-hdfs.md) 
+This tutorial will guide you through the process of setting up PintoStack. Once complete, you will have a system consisting of:
+- Docker containers
+- Immutable infrastructure with Ansible and Vagrant
+- Fault tolerant and fully elastic Marathon framework
+- Dynamic service discovery via Consul
+- Centralized logging with ELK stack
+- iPython Notebook with Apache Spark for big data jobs
 
-In our PaaS we are using the following fundamental components:
-- **Containerization.** Every service in our cluster is a container. We use containers for DFS nodes, KV storages, web applications. We are using Docker for containerization, and deploying Docker Registry as the part of the cluster to store the images of all services and applications you'll be running.
-- **Resource management.** Apache Mesos is used to abstract CPU, memory, storage, and other resources away from machines (physical or virtual), enabling fault-tolerant and elastic distributed systems to easily be built and run effectively. We are using Mesos to deploy our payload, which comes in the form of Docker containers as per.
-- **Scheduling.** While Mesos provides resource abstraction, our services and applications need to be deployed, monitored and scaled. We are using Marathon from Mesosphere to define services in form of JSON files which link to Docker images in local registry.
-- **Service Discovery.** Some services depend on others. We want our infrastructure to be immutable, hence we need service discovery. We are using Consul from Hashicorp. Consul is deployed on each host node and is accessible from every container. You can query Consul to register your service and get information about other services registered in the cluster. Service discovery is available through RESTful API and can be easily integrated into your applications and scripts. Service discovery is also available through a cluster-wide DNS service which allows to resolve service URI’s into IP addresses. For example db-0.service will resolve into an IP address of a machine where db-0 service is running. 
-- **Logging.** We are using Elasticsearch Logstash and Kibana (ELK) for log aggreation and analysis. As everything in our cluster, ELK comes in the form of container availeble for deployment through Marathon. Having ELK containerized allows to run it at scale on the same cluster. All services and containers are shipping their logs into ELK providing you with a consolidated view of a distriubuted system. 
-- **Run everywhere.** PintoStack infrastructure provisioned and bootstrapped using Vagrant and Ansible. Your applications and services are running in containers. This combination creates an abstraction from cloud or virtualization provider. You can tune PintoStack to run on DigitalOcean, AWS, GCE, Azure or private cloud running OpenStack or just KVM or xen.
 
-# Running the Cluster
-1. Provision and machines in cloud or virtualization provider of choice using Vagrant. Edit ```source.global``` to match your environment. This will give you clean machines to build on top of. 
-```MATERS=N SLAVES=M ``` thrn run ```vagrant up --provider [aws|digital_ocean|virtualbox]```
-This will bring necessery instances up and run bootstrap scripts giving you a ready to use environment in the end.
-2. Build service containers and push them into registry. For example to build HDFS 2.6 that comes with PintoStack by running ```docker-build.sh hdfs```
-3. Push Marathon jobs ```marathon-push.sh hdfs-nn.json``` and ```marathon-push.sh hdfs-dn.json``` to run HDFS DataNode and NameNode in PintoStack.
-4. Discover services through consul REST API running ```curl http://$HOST/v1/catalog/service/cassandra-dev``` on each node or resolve through DNS as ```cassandra-dev.service.consul```.
+Prerequisites:
 
-Find out more in this [step by step guide](./README.install.md) 
+- [Docker](http://docker.io) installed 
+- user with sudo access
+- [Digital Ocean](http://digitalocean.com) account (for the purpose of this tutorial. PintoStack can work with AWS, Digital Ocean and Virtualbox)
 
-# Building Docker Images
-You can start with one of existing images available in docker registry as an example, or start a new one.
-Once you are done with your image configuration feel free to push it into the docker registry by runnging
-```./docker-duild.sh <image directory name> ```
-Command will create docker image and push it into local cluster registry.
+##Step # 1 - Build your PintoStack container.
 
-# Starting Tasks
-Marathon and Mesos together are guarding task execution. Creating marathon tasks is easy process, as usual there are several tasks defined in marathon directory.
-Create a copy of a file containing existing task definition, change docker image path, task name and other task specific parameters.
-You probably want to edit number of ports task scheduler framework will book for you, healthcheck parameters.
-Starting your task is easy, just enter the command into the shell:
+Pull PintoStack image from DockerHub (If you can’t find PintoStack on DockerHub you can clone it from GitHub): 
 
-```./marathon-push.sh <marathon task file name with json> ```
+```$ docker pull pintostack```
 
-For instance ```./marathon-push.sh kafka.json ```.
+and build a PintoStack image:
 
-No you can open marathon on your master machine and see how task is deployed to the slave machine.
-Typically marathon web ui available on port 8080, and mesos information on 5050. 
+```$ docker build -t pintostack .```
 
-# History
-It all started with trying to setup a scalable performance testing environment for http://devicehive.com where we could independently run our application containers, test containers, and infrastructure: Cassandra and Kafka. We wanted something we could play with locally to ensure it runs property and set for a real test in cloud infrastructure. After extensive search, everything we found was too provider specific and required extensive background knowledge. Docker swarm, docker compose, chef, puppet, you name it. There were bits and pieces, and tutorials and discussion threads, but there was not solution. That’s when the work has started. 
+##Step # 2 - Configure your system for PintoStack.
+
+First, set-up number of master/slaves in the PintoStack configuration file. In this tutorial we are using 1 master/3 slaves. Create a source.global file in conf folder on the host:
+
+```$ sudo nano conf/source.global```
+
+Change the MASTERS/SLAVES numbers to suit your configuration. In order for the cluster to run you need to have at least one master and one slave, you can always come back to this file to change the number.
+
+        ### Global configuration
+
+        MASTERS=1
+        SLAVES=3
+
+        # Defaults. DO NOT overwrite variables below
+        SSH_KEY_FILE='~/.ssh/id_rsa'
+        ANSIBLE_INVENTORY_FILE=".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory"
+        ANSIBLE_OPTS=""
+
+Now we will set-up our cloud servers. In this tutorial, our provider is Digital Ocean, so create a source.digital_ocean configuration file in conf folder on the host:
+
+```$ sudo nano conf/source.digital_ocean```
+
+At Digital Ocean API portal (https://cloud.digitalocean.com/settings/api/tokens) generate new token and insert it into the file instead of ‘TOKEN_ID’:
+        
+        ### Digital Ocean Account Parameters
+
+        source conf/source.global
+
+        # All variables add below
+
+        SSH_KEY_FILE='/pintostack/conf/id_rsa'
+        DO_TOKEN='TOKEN_ID'
+        DO_IMAGE='ubuntu-14-04-x64'
+        DO_REGION=nyc3
+        DO_SIZE='8gb'
+        
+Next, we need to create a new SSH key pair:
+
+```$ ssh-keygen -t rsa```
+
+at the prompt, save the pair into your conf folder: ```~/conf/id_rsa```
+
+Add the SSH keys to your Digital Ocean account with key name Vagrant. You can use [this tutorial](https://www.digitalocean.com/community/tutorials/how-to-use-ssh-keys-with-digitalocean-droplets) for guidance.
+
+### Step # 3 - Build and deploy PintoStack. 
+
+First, start-up your PintoStack container (this step contains mounting your local conf and vagrant folders into /pintostack, plugging in inventory, settings and keys) :
+
+```$ docker run -d -v $(pwd)/conf:/pintostack/conf -v $(pwd)/.vagrant:/pintostack/.vagrant --name=pintostack-container pintostack```
+
+Next, start a Bash session in your container: 
+
+```$ docker exec -it pintostack-container bash```
+
+Time to set-up your environment:
+
+```# cd /pintostack```
+
+```# ./pintostack.sh digital_ocean```
+        
+Congratulations, your cluster is up and running!
+
+Now if you want to deploy an app (iPython notebook, for example) in the container:
+
+```# ./marathon-push.sh ipythonnb.json```
+
+If you want to check your system status, open Mesos UI and Marathon UI with:
+
+```# ./open_webui.sh```
+
+or head to http://master_ip:5050/ for Mesos UI, http://master_ip:8080/ui for Marathon UI.
+
+If you want to access your logs, you have to deploy ElasticSearch and Kibana:
+
+```# ./marathon-push.sh elasticsearch.json```
+
+```# ./marathon-push.sh kibana.json```
+
+and head to http://master_ip:5601/ for Kibana UI.
+Consul UI lives on http://master_ip:8500/ui 
