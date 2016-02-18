@@ -71,7 +71,7 @@ Next, we need to create a new SSH key pair:
 
 at the prompt, save the pair into your conf folder: ```~/conf/id_rsa```
 
-Add the SSH keys to your Digital Ocean account with key name Vagrant. You can use [this tutorial](https://www.digitalocean.com/community/tutorials/how-to-use-ssh-keys-with-digitalocean-droplets) for guidance.
+Ensure the SSH key name Vagrant do not exist in your Digital Ocean account. You can use [this tutorial](https://www.digitalocean.com/community/tutorials/how-to-use-ssh-keys-with-digitalocean-droplets) for guidance.
 
 ### Step # 3 - Build and deploy PintoStack. 
 
