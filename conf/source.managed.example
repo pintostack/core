@@ -12,6 +12,6 @@ SSH_KEY_FILE='/home/some_user/.ssh/id_rsa'
 
 MANAGED_SSH_USERNAME='ubuntu'
 MANAGED_SSH_PASSWORD='ubuntu'
-MANAGED_MASTER_1="192.168.11.216"
+MANAGED_MASTER_1="localhost"
 MANAGED_SLAVE_1="192.168.10.149"
-MANAGED_SLAVE_2="192.168.11.214"
+MANAGED_SLAVE_2="my-super-server.somewhere-in-inter.net"
