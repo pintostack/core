@@ -8,7 +8,7 @@ source conf/source.global
 
 RESOURCE_PROVIDER='managed'
 VPC_IF='eth0'
-SSH_KEY_FILE='/home/yvlasov/.ssh/id_rsa'
+SSH_KEY_FILE='/home/some_user/.ssh/id_rsa'
 
 MANAGED_SSH_USERNAME='ubuntu'
 MANAGED_SSH_PASSWORD='ubuntu'
