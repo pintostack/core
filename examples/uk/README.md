@@ -18,17 +18,21 @@ Prerequisites:
 ###Step # 1 - Build and deploy HDFS and iPython notebook.
 
 Start a Bash session in your container:
+
 ```$ docker exec -it pintostack-container bash```
 
 Now deploy HDFS NameNode for you meta data:
 
 ```# cd /pintostack```
+
 ```# ./marathon-push.sh hdfs-nn.json```
 
 Deploy iPython notebook:
+
 ```# ./marathon-push.sh ipythonnb.json```
 
 Deploy HDFS DataNode for your actual data:
+
 ```# ./marathon-push.sh hdfs-dn.json```
 
 ###Step # 2 - Upload data.
@@ -54,6 +58,7 @@ Update its contents and install zip:
 ```# apt-get update && apt-get install -y wget unzip```
 
 Download data:
+
 ```# wget http://data.dft.gov.uk/road-accidents-safety-data/Stats19-Data1979-2004.zip```
 
 Unzip it:
@@ -72,9 +77,13 @@ Congratulations, you are now all set, and should be back on familiar soil!
 
 Let’s find out how many accidents were reported to the police each year.
 Your output should be along these lines:
+
 1979: 254967
+
 1980: 250958
+
 1981: 248276
+
 … 
 
 ```python
@@ -116,11 +125,14 @@ Remember to shut-down the previous iPython notebook before starting a new one.
 Now let’s look whether there is a trend in the number of accidents in areas with speed limits 50 and 70.
 Your output will be like this:
 
-
 (1979, 50) : 500 
+
 (1979, 70) : 400 
+
 (1980, 50) : 600 
+
 (1980, 70) : 800
+
 … 
 
 
@@ -154,9 +166,10 @@ print ("Duration is '%i' ms" % (int(round(time.time() * 1000)) - start_time))
 As a final example, let’s look into the correlation between the number of accidents and light conditions and area type (Urban or Rural). 
 You should get an output like this:
 
-
 (Daylight, 1979, Rural) : 300 
+
 (Daylight, 1980, Rural) : 400
+
 … 
 
 ```python
