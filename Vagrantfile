@@ -3,14 +3,12 @@ provider = :virtualbox
 tokens=ARGV[1].split("=") rescue []
 provider = tokens[1].to_sym if tokens[1]
 
-vpc_if = provider == :aws ? "eth0" : "eth1"
-
 # .env is actually `env > .env` so we will just read this file. But remember to update this file eachtime you make changes,
 CONFIG = File.new(".env").read.split("\n").map{ |t| x=t.index("="); [t[0..x-1], t[x+1..-1] ]}.inject({}) {|r, a| r[a[0]] = a[1].strip;r}
 
 puts %Q(
-Detected provider "#{provider}"
-Setting VPC interface '#{vpc_if}'
+Detected provider #{CONFIG["RESOURCE_PROVIDER"]}
+Setting VPC interface #{CONFIG["VPC_IF"]}
 )
 
 SLAVES = CONFIG["SLAVES"]
@@ -50,6 +48,12 @@ Vagrant.configure(2) do |config|
           override.vm.box_url ="https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
           override.ssh.private_key_path = CONFIG["SSH_KEY_FILE"]
   end
+  config.vm.provider :managed do |managed, override|
+          override.vm.box = "tknerr/managed-server-dummy"
+          override.ssh.username = CONFIG["MANAGED_SSH_USERNAME"]
+          override.ssh.password = CONFIG["MANAGED_SSH_PASSWORD"]
+          override.ssh.insert_key = false
+  end
   config.vm.provider :virtualbox do |virtualbox|
           virtualbox.gui = false
           virtualbox.memory = CONFIG["VBOX_SIZE"]
@@ -66,14 +70,34 @@ Vagrant.configure(2) do |config|
       instance.vm.provider :virtualbox do |virtualbox|
           virtualbox.name = name
       end
+      instance.vm.provider :managed do |managed, override|
+          managed.server = CONFIG["MANAGED_#{name.upcase.tr('-','_')}"]
+      end
+
       if name == "slave-#{SLAVES}" # Run ansible after last host provision
+        if CONFIG["RESOURCE_PROVIDER"] == "managed"
+            instance.vm.provision :ansible do |ansible|
+              ansible.playbook = "provisioning/fix-sudo.yml"
+              ansible.limit = 'all'
+              ansible.force_remote_user = true
+              ansible.host_vars={}
+                ALL_HOSTS.each do |each_host|
+              ansible.host_vars["#{each_host}"] = {"vpc_if" => CONFIG["VPC_IF"], "ansible_sudo_pass" =>  CONFIG["MANAGED_SSH_PASSWORD"] }
+            end
+            ansible.groups = {
+              "masters" => ["master-[1:#{MASTERS.to_i}]"],
+              "slaves" => ["slave-[1:#{SLAVES.to_i}]"],
+              "all-hosts" => ["master-[1:#{MASTERS.to_i}]","slave-[1:#{SLAVES.to_i}]"]
+            }
+            end
+        end
         instance.vm.provision :ansible do |ansible|
           ansible.playbook = "provisioning/world-playbook-fast.yml"
           ansible.limit = 'all'
           ansible.force_remote_user = true
           ansible.host_vars={}
           ALL_HOSTS.each do |each_host|
-            ansible.host_vars["#{each_host}"] = {"vpc_if" => "#{vpc_if}"}
+            ansible.host_vars["#{each_host}"] = {"vpc_if" => CONFIG["VPC_IF"]}
           end
           ansible.groups = {
               "masters" => ["master-[1:#{MASTERS.to_i}]"],
@@ -87,7 +111,7 @@ Vagrant.configure(2) do |config|
           ansible.force_remote_user = true
           ansible.host_vars={}
           ALL_HOSTS.each do |each_host|
-            ansible.host_vars["#{each_host}"] = {"vpc_if" => "#{vpc_if}"}
+            ansible.host_vars["#{each_host}"] = {"vpc_if" => CONFIG["VPC_IF"]}
           end
           ansible.groups = {
               "masters" => ["master-[1:#{MASTERS.to_i}]"],
@@ -105,8 +129,7 @@ end
 ANSIBLE_INVENTORY_FILE = CONFIG["ANSIBLE_INVENTORY_FILE"]
 
 puts %Q(
-Done!
-You can run open_webui.sh to open browser with mesos and marathon.
-You can run reansible.sh to bootstrap all host one more time in case
-of network errors.
+Well done...
+* You can run open_webui.sh to open browser with consul, mesos and marathon.
+* You can run reansible.sh to bootstrap all host one more time in case of network errors.
 )
