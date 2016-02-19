@@ -18,40 +18,40 @@
                     "protocol": "tcp"
                 },
                 {
--                    "containerPort": 0,
--                    "hostPort": 0,
--                    "protocol": "tcp"
--                },
+                    "containerPort": 0,
+                    "hostPort": 0,
+                    "protocol": "tcp"
+                },
                  {
--                    "containerPort": 0,
--                    "hostPort": 0,
--                    "protocol": "tcp"
--                },
+                    "containerPort": 0,
+                    "hostPort": 0,
+                    "protocol": "tcp"
+                },
                  {
--                    "containerPort": 0,
--                    "hostPort": 0,
--                    "protocol": "tcp"
--                },
+                    "containerPort": 0,
+                    "hostPort": 0,
+                    "protocol": "tcp"
+                },
                  {
--                    "containerPort": 0,
--                    "hostPort": 0,
--                    "protocol": "tcp"
--                },
+                    "containerPort": 0,
+                    "hostPort": 0,
+                    "protocol": "tcp"
+                },
                  {
--                    "containerPort": 0,
--                    "hostPort": 0,
--                    "protocol": "tcp"
--                },
+                    "containerPort": 0,
+                    "hostPort": 0,
+                    "protocol": "tcp"
+                },
                  {
--                    "containerPort": 0,
--                    "hostPort": 0,
--                    "protocol": "tcp"
--                },
+                    "containerPort": 0,
+                    "hostPort": 0,
+                    "protocol": "tcp"
+                },
                  {
--                    "containerPort": 0,
--                    "hostPort": 0,
--                    "protocol": "tcp"
--                }
+                    "containerPort": 0,
+                    "hostPort": 0,
+                    "protocol": "tcp"
+                }
             ],
             "privileged": false
         }
