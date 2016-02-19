@@ -67,7 +67,7 @@ Unzip it:
 
 Now place your table with accidents data into your cloud HDFS (replace ‘YOUR_PORT’ with one of the NameNode ports for your server found through Marathon UI):
 
-```# bin/hadoop fs -put Accidents7904.csv hdfs://slave-1.node.consul:YOUR_PORT/```
+```# bin/hadoop fs -put Accidents7904.csv hdfs://hdfs-rpc.service.consul:YOUR_PORT/```
 
 ###Step # 3 - iPython and data processing.
 
