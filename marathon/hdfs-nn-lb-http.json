@@ -7,7 +7,7 @@
     "container": {
         "type": "DOCKER",
         "docker": {
-            "image": "pintostack/http-lb",
+            "image": "pytnru/pintostack:http-lb",
             "forcePullImage": true,
             "network": "BRIDGE",
             "portMappings": [
