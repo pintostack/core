@@ -1,10 +1,10 @@
-### Amazon AWS Account Parametrs
+### Managed Legacy Servers Parametrs
 # For more information refere to https://github.com/pintostack/core
 
 source conf/source.global
 
 # All variables add below
-#vagrant plugin install vagrant-managed-server
+# vagrant plugin install vagrant-managed-server
 
 RESOURCE_PROVIDER='managed'
 VPC_IF='eth0'
