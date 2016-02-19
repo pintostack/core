@@ -79,6 +79,7 @@ hdfs-rpc.service.consul. 0	IN	SRV	1 1 31245 slave-1.node.dc1.consul.
 So in our example port is ```31245```
 
 Now place your table with accidents data into your cloud HDFS (replace ‘YOUR_PORT’ with one of the NameNode ports for your server):
+
 ```# bin/hadoop fs -put Accidents7904.csv hdfs://hdfs-rpc.service.consul:YOUR_PORT/```
 
 ###Step # 3 - iPython and data processing.
