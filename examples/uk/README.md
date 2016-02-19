@@ -82,6 +82,8 @@ Now place your table with accidents data into your cloud HDFS (replace ‘YOUR_P
 
 ```# bin/hadoop fs -put Accidents7904.csv hdfs://hdfs-rpc.service.consul:YOUR_PORT/```
 
+>NOTICE: Do not forget the slash at the end of the put url.
+
 ###Step # 3 - iPython and data processing.
 
 Open up iPython Notebook on http://SLAVE_IP_WITH_IPYTHON:PORT/ (remember, those are on your Digital Ocean account and Marathon UI).
