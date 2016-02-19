@@ -23,11 +23,11 @@ Prerequisites:
 
 Pull PintoStack image from DockerHub (If you can’t find PintoStack on DockerHub you can clone it from GitHub): 
 
-```$ docker pull pintostack```
+```$ docker pull pintostack/pintostack```
 
-and build a PintoStack image:
+or build a PintoStack image:
 
-```$ docker build -t pintostack .```
+```$ docker build -t pintostack/pintostack .```
 
 ##Step # 2 - Configure your system for PintoStack.
 
@@ -81,7 +81,7 @@ Ensure the SSH key name Vagrant do not exist in your Digital Ocean account, it w
 
 First, start-up your PintoStack container (this step contains mounting your local conf and vagrant folders into /pintostack, plugging in inventory, settings and keys) :
 
-```$ docker run -d -v $(pwd)/conf:/pintostack/conf -v $(pwd)/.vagrant:/pintostack/.vagrant --name=pintostack-container pintostack```
+```$ docker run -d -v $(pwd)/conf:/pintostack/conf -v $(pwd)/.vagrant:/pintostack/.vagrant --name=pintostack-container pintostack/pintostack```
 
 Next, start a Bash session in your container: 
 
