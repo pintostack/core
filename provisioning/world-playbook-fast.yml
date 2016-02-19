@@ -74,3 +74,34 @@
 
     - role: ansible-beats
       when: inventory_hostname not in groups["masters"]
+
+- hosts: dockers
+  gather_facts: true
+  user: "{{ ansible_ssh_user }}"
+  sudo: yes
+  vars:
+    public_dns : ["8.8.8.8", "8.8.4.4"]
+  vars:
+    masters_str: |
+        {% set comma = joiner(",") %}
+        {% set eth = "ansible_"+vpc_if %}
+        {% for item in groups["masters"] -%}
+            {{ comma() }}{{ hostvars[item][eth].ipv4.address }}
+        {%- endfor %}
+
+  pre_tasks:
+    - set_fact:
+        masters : "{{ masters_str|trim|split(',') }}"
+    - set_fact:
+        a_vpc_if: "ansible_{{ vpc_if }}"
+    - set_fact:
+        local_ip: "{{ hostvars[inventory_hostname][a_vpc_if].ipv4.address }}"
+
+  roles:
+
+    - role: ansible-docker-registry
+      docker_registry_ip: "{{ local_ip }}"
+      docker_registry_port: 5000
+
+    - role: ansible-docker
+      docker_opts: '"-s devicemapper --insecure-registry docker-registry.service.consul:5000"'
