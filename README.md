@@ -37,34 +37,38 @@ First, set-up number of master/slaves in the PintoStack configuration file. In t
 
 Change the MASTERS/SLAVES numbers to suit your configuration. In order for the cluster to run you need to have at least one master and one slave, you can always come back to this file to change the number.
 
-        ### Global configuration
+```
+### Global configuration
 
-        MASTERS=1
-        SLAVES=3
+MASTERS=1
+SLAVES=3
 
-        # Defaults. DO NOT overwrite variables below
-        SSH_KEY_FILE='~/.ssh/id_rsa'
-        ANSIBLE_INVENTORY_FILE=".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory"
-        ANSIBLE_OPTS=""
+# Defaults. DO NOT overwrite variables below
+SSH_KEY_FILE='~/.ssh/id_rsa'
+ANSIBLE_INVENTORY_FILE=".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory"
+ANSIBLE_OPTS=""
+```
 
 Now we will set-up our cloud servers. In this tutorial, our provider is Digital Ocean, so create a source.digital_ocean configuration file in conf folder on the host:
 
 ```$ sudo nano conf/source.digital_ocean```
 
 At Digital Ocean API portal (https://cloud.digitalocean.com/settings/api/tokens) generate new token and insert it into the file instead of ‘TOKEN_ID’:
-        
-        ### Digital Ocean Account Parameters
 
-        source conf/source.global
+```        
+### Digital Ocean Account Parameters
 
-        # All variables add below
+source conf/source.global
 
-        SSH_KEY_FILE='/pintostack/conf/id_rsa'
-        DO_TOKEN='TOKEN_ID'
-        DO_IMAGE='ubuntu-14-04-x64'
-        DO_REGION=nyc3
-        DO_SIZE='8gb'
-        
+# All variables add below
+
+SSH_KEY_FILE='/pintostack/conf/id_rsa'
+DO_TOKEN='TOKEN_ID'
+DO_IMAGE='ubuntu-14-04-x64'
+DO_REGION=nyc3
+DO_SIZE='8gb'
+```
+
 Next, we need to create a new SSH key pair:
 
 ```$ ssh-keygen -t rsa```
