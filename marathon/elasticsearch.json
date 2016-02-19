@@ -9,7 +9,7 @@
     "container": {
         "type": "DOCKER",
         "docker": {
-            "image": "docker-registry.service.consul:5000/elasticsearch",
+            "image": "pintostack/elasticsearch",
             "forcePullImage": true,
             "network": "BRIDGE",
             "portMappings": [
@@ -28,6 +28,9 @@
             ],
             "privileged": false
         }
+    },
+    "env":{
+      "SERVICE_PORT0_NAME": "{{NAME}}"
     },
     "constraints": [["hostname", "UNIQUE"]],
     "backoffSeconds": 1,
