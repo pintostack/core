@@ -111,5 +111,5 @@ If you want to access your logs, you have to deploy ElasticSearch and Kibana:
 
 ```# ./marathon-push.sh kibana.json```
 
-and head to http://master_ip:5601/ for Kibana UI.
+and head to http://kibana.service.consul:5601/ for Kibana UI.
 Consul UI lives on http://master_ip:8500/ui 
