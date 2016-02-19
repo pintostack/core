@@ -93,6 +93,8 @@ Congratulations, you are now all set, and should be back on familiar soil!
 Let’s find out how many accidents were reported to the police each year.
 Your output should be along these lines:
 
+> NOTICE: Remember to replace port in hdfs url's in code as we done before with ```# dig SRV hdfs-rpc.service.consul | grep -A1 ";; ANSWER SECTION:" ``` 
+
 1979: 254967
 
 1980: 250958
