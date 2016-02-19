@@ -67,7 +67,7 @@ Unzip it:
 
 You need find namenode port in ANSWER SECTION executing dig
 
-```bash # dig SRV hdfs-rpc.service.consul | grep -A1 ";; ANSWER SECTION:" ```          
+```# dig SRV hdfs-rpc.service.consul | grep -A1 ";; ANSWER SECTION:" ```          
 
 Returns
 
