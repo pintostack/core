@@ -22,7 +22,7 @@
         }
     },
     "env":{
-        "SERVICE_PORT0_NAME": "{{NAME}}"
+        "SERVICE_PORT0_NAME": "{{NAME}}",
         "BACKEND_SERVICE_NAME": "hdfs-http"
     },
     "constraints": [["hostname", "UNIQUE"]],
