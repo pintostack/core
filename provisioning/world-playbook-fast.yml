@@ -58,6 +58,7 @@
       when: hostvars[inventory_hostname].ansible_swaptotal_mb < hostvars[inventory_hostname].ansible_memtotal_mb
   
     - role: ansible-docker
+      docker_opts: '"-s devicemapper --insecure-registry docker-registry.service.consul:5000"'
 
     - role: ansible-consul
       dns_nameservers: "{{ ['127.0.0.1', '8.8.8.8', '8.8.4.4'] if inventory_hostname in groups['masters'] else masters }}"
@@ -96,7 +97,6 @@
         a_vpc_if: "ansible_{{ vpc_if }}"
     - set_fact:
         local_ip: "{{ hostvars[inventory_hostname][a_vpc_if].ipv4.address }}"
-
   roles:
 
     - role: ansible-docker-registry

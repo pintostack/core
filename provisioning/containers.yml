@@ -16,6 +16,14 @@
      local_action: debug
         msg="If you fail on this step try execute  source source.global && ansible-playbook -i ${ANSIBLE_INVENTORY_FILE} provisioning/world-playbook.yml"
 
+- hosts: all-hosts
+  user: "{{ ansible_ssh_user }}"
+  gather_facts: false
+  sudo: yes
+  tasks:
+   - name: Warming up docker cache with pintostack/pintostack-mesos-slave
+     shell: docker pull pintostack/pintostack-mesos-slave 
+
 - hosts: masters
   user: "{{ ansible_ssh_user }}"
   sudo: yes
