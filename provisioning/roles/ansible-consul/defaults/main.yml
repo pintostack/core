@@ -18,6 +18,7 @@ consul_domain: node.consul.
 consul_is_server: true
 install_bind: false
 consul_is_ui: false
+consul_consulate: false
 consul_servers:  
 consul_log_level: "INFO"
 consul_syslog: false
