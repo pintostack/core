@@ -14,7 +14,7 @@
         timeout=300
    - name: INFO
      local_action: debug
-        msg="If you fail on this step try execute  source source.global && ansible-playbook -i ${ANSIBLE_INVENTORY_FILE} provisioning/world-playbook.yml"
+        msg="If you fail on this step try execute  ./reansible.sh"
 
 - hosts: all-hosts
   user: "{{ ansible_ssh_user }}"
@@ -31,7 +31,7 @@
   pre_tasks:
     - name: setup hostname
       hostname: name="{{ inventory_hostname }}"
-    - shell: echo "127.0.0.1 {{inventory_hostname}}" >> /etc/hosts
+    - lineinfile: dest=/etc/hosts state=present line='127.0.0.1 {{inventory_hostname}}' owner=root group=root mode=0644
     - sysctl: name="net.core.somaxconn" value=4096 sysctl_set=yes state=present reload=yes
     - sysctl: name="fs.file-max" value=402302 sysctl_set=yes state=present reload=yes
     - set_fact:
@@ -56,7 +56,7 @@
     - role: ansible-swap
       swap_file_size: "{{ ansible_memtotal_mb }}M"
       when: hostvars[inventory_hostname].ansible_swaptotal_mb < hostvars[inventory_hostname].ansible_memtotal_mb
-  
+
     - role: ansible-docker
 
     - role: ansible-consul
@@ -74,3 +74,4 @@
 
     - role: ansible-beats
       when: inventory_hostname not in groups["masters"]
+
