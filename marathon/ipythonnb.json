@@ -22,32 +22,32 @@
                     "hostPort": 0,
                     "protocol": "tcp"
                 },
-                {
+                 {
                     "containerPort": 0,
                     "hostPort": 0,
                     "protocol": "tcp"
                 },
-                {
+                 {
                     "containerPort": 0,
                     "hostPort": 0,
                     "protocol": "tcp"
                 },
-                {
+                 {
                     "containerPort": 0,
                     "hostPort": 0,
                     "protocol": "tcp"
                 },
-                {
+                 {
                     "containerPort": 0,
                     "hostPort": 0,
                     "protocol": "tcp"
                 },
-                {
+                 {
                     "containerPort": 0,
                     "hostPort": 0,
                     "protocol": "tcp"
                 },
-                {
+                 {
                     "containerPort": 0,
                     "hostPort": 0,
                     "protocol": "tcp"
@@ -55,6 +55,16 @@
             ],
             "privileged": false
         }
+    },
+    "env":{
+        "SERVICE_PORT0_NAME": "{{NAME}}",
+        "SERVICE_PORT1_NAME": "{{NAME}}-libprocess",
+        "SERVICE_PORT2_NAME": "{{NAME}}-spark-driver",
+        "SERVICE_PORT3_NAME": "{{NAME}}-spark-fileserver",
+        "SERVICE_PORT4_NAME": "{{NAME}}-spark-broadcast",
+        "SERVICE_PORT5_NAME": "{{NAME}}-spark-blockmanager",
+        "SERVICE_PORT6_NAME": "{{NAME}}-spark-ui",
+        "SERVICE_PORT7_NAME": "{{NAME}}-spark-replclassserver"
     },
     "constraints": [["hostname", "UNIQUE"]],
     "healthChecks": [

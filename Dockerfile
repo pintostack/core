@@ -22,7 +22,8 @@ RUN sed -i -- 's/$HOME\/.ansible\/cp/\/tmp/g' /usr/local/lib/python2.7/dist-pack
 ADD . /pintostack
 RUN rm -rf /pintostack/conf
 RUN rm -rf /pintostack/.vagrant
-RUN echo "while true; do foo; sleep 60; done" > /s.sh
+RUN rm -rf /pintostack/.git
+RUN echo "while true; do echo 'running..'; sleep 60; done" > /s.sh
 RUN chmod +x /s.sh
 
 CMD /s.sh

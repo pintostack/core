@@ -7,8 +7,6 @@ RUN apt-get update && \
     openjdk-7-jre \
     curl
 
-RUN curl -L -O https://download.elastic.co/beats/filebeat/filebeat-1.0.0-x86_64.rpm && sudo rpm -vi filebeat-1.0.0-x86_64.rpm
-
 RUN curl -s https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.0.0/elasticsearch-2.0.0.tar.gz | \
     tar -xz && \
     mv elasticsearch-2.0.0 elasticsearch

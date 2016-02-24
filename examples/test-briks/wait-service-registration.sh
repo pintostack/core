@@ -19,7 +19,7 @@ while [ "x$SERVICE_IS_OK" != "xtrue"  -a  ${RETRY} -gt 0 ]; do
  sleep $INTERVAL
 done
 
-vagrant ssh ${DEFAULT_HOST} -c "curl -s http://localhost:8080/v2/apps/SERVICE/namenode |jq -r .app.tasks[0].healthCheckResults[0].alive" | tail -n 1
+#vagrant ssh ${DEFAULT_HOST} -c "curl -s http://localhost:8080/v2/apps/SERVICE/namenode |jq -r .app.tasks[0].healthCheckResults[0].alive" | tail -n 1
 
 if [ "x${SERVICE_IS_OK}" != "xtrue" ]; then
  echo "ERROR: Mesos do not see $SERVICE"
@@ -30,8 +30,8 @@ fi
 
 if [ $SERVICE == "hdfs/namenode" ]; then
 # HOTFIX: Now it works only with SERVICE needs to be fixed  jq -r .[0].ServiceTags 
-	SERVICE_IP=`vagrant ssh ${DEFAULT_HOST} -c "curl -s localhost:8500/v1/catalog/service/hdfs | jq -r .[0].Address" | tail -n 1`
-	SERVICE_PORT=`vagrant ssh ${DEFAULT_HOST} -c "curl -s localhost:8500/v1/catalog/service/hdfs |  jq -r .[0].ServiceTags | sed -n 's/.*\"http-\([0-9]*\)\".*/\1/p'" | tail -n 1`
+	SERVICE_IP=`vagrant ssh ${DEFAULT_HOST} -c "curl -s localhost:8500/v1/catalog/service/hdfs-http | jq -r .[0].ServiceAddress" | tail -n 1`
+	SERVICE_PORT=`vagrant ssh ${DEFAULT_HOST} -c "curl -s localhost:8500/v1/catalog/service/hdfs-http | jq -r .[0].ServicePort" | tail -n 1`
 	echo "
 INFO: Found $SERVICE on ${SERVICE_IP} : ${SERVICE_PORT}
 Executing curl from ${DEFAULT_HOST}...

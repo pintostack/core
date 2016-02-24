@@ -23,11 +23,11 @@ Prerequisites:
 
 Pull PintoStack image from DockerHub (If you can’t find PintoStack on DockerHub you can clone it from GitHub): 
 
-```$ docker pull pintostack```
+```$ docker pull pintostack/pintostack```
 
-and build a PintoStack image:
+or build a PintoStack image:
 
-```$ docker build -t pintostack .```
+```$ docker build -t pintostack/pintostack .```
 
 ##Step # 2 - Configure your system for PintoStack.
 
@@ -37,47 +37,51 @@ First, set-up number of master/slaves in the PintoStack configuration file. In t
 
 Change the MASTERS/SLAVES numbers to suit your configuration. In order for the cluster to run you need to have at least one master and one slave, you can always come back to this file to change the number.
 
-        ### Global configuration
+```
+### Global configuration
 
-        MASTERS=1
-        SLAVES=3
+MASTERS=1
+SLAVES=3
 
-        # Defaults. DO NOT overwrite variables below
-        SSH_KEY_FILE='~/.ssh/id_rsa'
-        ANSIBLE_INVENTORY_FILE=".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory"
-        ANSIBLE_OPTS=""
+# Defaults. DO NOT overwrite variables below
+SSH_KEY_FILE='~/.ssh/id_rsa'
+ANSIBLE_INVENTORY_FILE=".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory"
+ANSIBLE_OPTS=""
+```
 
 Now we will set-up our cloud servers. In this tutorial, our provider is Digital Ocean, so create a source.digital_ocean configuration file in conf folder on the host:
 
 ```$ sudo nano conf/source.digital_ocean```
 
 At Digital Ocean API portal (https://cloud.digitalocean.com/settings/api/tokens) generate new token and insert it into the file instead of ‘TOKEN_ID’:
-        
-        ### Digital Ocean Account Parameters
 
-        source conf/source.global
+```        
+### Digital Ocean Account Parameters
 
-        # All variables add below
+source conf/source.global
 
-        SSH_KEY_FILE='/pintostack/conf/id_rsa'
-        DO_TOKEN='TOKEN_ID'
-        DO_IMAGE='ubuntu-14-04-x64'
-        DO_REGION=nyc3
-        DO_SIZE='8gb'
-        
+# All variables add below
+
+SSH_KEY_FILE='/pintostack/conf/id_rsa'
+DO_TOKEN='TOKEN_ID'
+DO_IMAGE='ubuntu-14-04-x64'
+DO_REGION=nyc3
+DO_SIZE='8gb'
+```
+
 Next, we need to create a new SSH key pair:
 
 ```$ ssh-keygen -t rsa```
 
 at the prompt, save the pair into your conf folder: ```~/conf/id_rsa```
 
-Add the SSH keys to your Digital Ocean account with key name Vagrant. You can use [this tutorial](https://www.digitalocean.com/community/tutorials/how-to-use-ssh-keys-with-digitalocean-droplets) for guidance.
+Ensure the SSH key name Vagrant do not exist in your Digital Ocean account, it will be created automaticaly. You can use [this tutorial](https://www.digitalocean.com/community/tutorials/how-to-use-ssh-keys-with-digitalocean-droplets) for guidance.
 
 ### Step # 3 - Build and deploy PintoStack. 
 
 First, start-up your PintoStack container (this step contains mounting your local conf and vagrant folders into /pintostack, plugging in inventory, settings and keys) :
 
-```$ docker run -d -v $(pwd)/conf:/pintostack/conf -v $(pwd)/.vagrant:/pintostack/.vagrant --name=pintostack-container pintostack```
+```$ docker run -d -v $(pwd)/conf:/pintostack/conf -v $(pwd)/.vagrant:/pintostack/.vagrant --name=pintostack-container pintostack/pintostack```
 
 Next, start a Bash session in your container: 
 
@@ -107,5 +111,5 @@ If you want to access your logs, you have to deploy ElasticSearch and Kibana:
 
 ```# ./marathon-push.sh kibana.json```
 
-and head to http://master_ip:5601/ for Kibana UI.
+and head to http://kibana.service.consul:5601/ for Kibana UI.
 Consul UI lives on http://master_ip:8500/ui 
