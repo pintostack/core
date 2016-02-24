@@ -3,5 +3,6 @@
   register: containers
 
 - name: run mesos-master
-  shell: docker run --net="host" -e "MESOS_HOSTNAME={{inventory_hostname}}" -e "MESOS_IP={{ansible_default_ipv4.address}}" -e "MESOS_ZK=zk://{{ansible_default_ipv4.address}}:2181/mesos" -e "MESOS_PORT=5050" -e "MESOS_LOG_DIR=/var/log/mesos" -e "MESOS_QUORUM=1" -e "MESOS_REGISTRY=in_memory" -e "MESOS_WORK_DIR=/var/lib/mesos" --name=pintostack-mesos-master-container -d pintostack/pintostack-mesos
+  shell: docker run --net="host" -e "MESOS_HOSTNAME={{inventory_hostname}}" -e "MESOS_IP={{local_ip}}" -e "MESOS_ZK=zk://{{local_ip}}:2181/mesos" -e "MESOS_PORT=5050" -e "MESOS_LOG_DIR=/var/log/mesos" -e "MESOS_QUORUM=1" -e "MESOS_REGISTRY=in_memory" -e "MESOS_WORK_DIR=/var/lib/mesos" --name=pintostack-mesos-master-container -d pintostack/pintostack-mesos
   when: "{{ 'pintostack-mesos-master-container' not in containers.stdout }}"
+  

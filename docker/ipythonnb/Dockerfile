@@ -17,6 +17,9 @@ RUN \
 	python-mathgl python-igraph python-matplotlib python-mpmath \
 	python-plplot python-pychart python-sciscipy  python-scipy python-scitools
 
+RUN \
+    sudo pip install pydns
+
 WORKDIR /root
 
 

@@ -3,7 +3,7 @@
   register: containers
 
 - name: run marathon
-  shell: docker run --net="host" --name=pintostack-marathon-container -d pintostack/pintostack-marathon --master zk://{{ansible_default_ipv4.address}}:2181/mesos --zk zk://{{ansible_default_ipv4.address}}:2181/marathon
+  shell: docker run --net="host" --name=pintostack-marathon-container -d pintostack/pintostack-marathon --master zk://{{local_ip}}:2181/mesos --zk zk://{{local_ip}}:2181/marathon
   when: "{{ 'pintostack-marathon-container' not in containers.stdout }}"
 
 - name: register in consul
