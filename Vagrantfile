@@ -52,7 +52,7 @@ Vagrant.configure(2) do |config|
           override.vm.box = "tknerr/managed-server-dummy"
           override.ssh.username = CONFIG["MANAGED_SSH_USERNAME"]
           override.ssh.password = CONFIG["MANAGED_SSH_PASSWORD"]
-          override.ssh.insert_key = false
+          override.ssh.insert_key = true
   end
   config.vm.provider :virtualbox do |virtualbox|
           virtualbox.gui = false
