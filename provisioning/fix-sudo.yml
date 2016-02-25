@@ -28,4 +28,7 @@
      user: name={{ansible_ssh_user}} append=yes groups=vagrant
 
    - name: add group vagrant NO PASSWORD sudo
-     lineinfile: dest=/etc/sudoers state=present regexp='^%vagrant ALL\=' line='%vagrant ALL=(ALL{{":"}} ALL) NOPASSWD{{":"}} ALL' validate='visudo -cf %s'
+     lineinfile: dest=/etc/sudoers mode=0440 state=present regexp='^{{ ansible_ssh_user }} ALL\=' line='{{ ansible_ssh_user }} ALL=(ALL{{":"}} ALL) NOPASSWD{{":"}} ALL' validate='visudo -cf %s'
+
+   - name: Check sudo
+     shell: sudo -l
