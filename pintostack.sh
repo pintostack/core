@@ -6,6 +6,12 @@ fi
 
 GLOBAL_VARS_LIST="$( set -o posix ; set | cut -f1 -d= )"
 
+if [ "x$PROVIDER"="xvirtualbox" ]; then
+	if [ -f /.dockerinit ]; then
+		echo "Managing VirtualBOX from docker container not supported, please run $0 without docker"
+		exit 1
+	fi
+fi
 if [ -f conf/source.global ]; then
     source conf/source.global
 else
@@ -35,3 +41,6 @@ echo "Refreshing Vagrant global status befor begin..."
 vagrant global-status --prune
 echo "Starting Vagrant.."
 vagrant up --provider=${PROVIDER}
+if [ "x$PROVIDER" == "xmanaged" ]; then 
+    vagrant provision
+fi

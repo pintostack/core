@@ -8,7 +8,7 @@
     "container": {
         "type": "DOCKER",
         "docker": {
-            "image": "pintostack/ipythonnb",
+            "image": "pytnru/pintostack:ipythonnb",
             "forcePullImage": true,
             "network": "BRIDGE",
             "portMappings": [

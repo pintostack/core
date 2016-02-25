@@ -5,6 +5,8 @@ source conf/source.global
 
 # All variables add below
 
+RESOURCE_PROVIDER='virtualbox'
+VPC_IF='eth1'
 #SSH_KEY_FILE='~/.ssh/id_rsa'
 
 VBOX_SIZE=1024

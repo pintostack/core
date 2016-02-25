@@ -5,7 +5,10 @@ source conf/source.global
 
 # All variables add below
 
+RESOURCE_PROVIDER='digital_ocean'
+VPC_IF='eth1'
 SSH_KEY_FILE='/pintostack/conf/id_rsa'
+
 DO_TOKEN='Change me'
 DO_IMAGE='ubuntu-14-04-x64'
 DO_REGION=ams3
