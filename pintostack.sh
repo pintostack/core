@@ -41,3 +41,6 @@ echo "Refreshing Vagrant global status befor begin..."
 vagrant global-status --prune
 echo "Starting Vagrant.."
 vagrant up --provider=${PROVIDER}
+if [ "x$PROVIDER" == "xmanaged" ]; then 
+    vagrant provision
+fi
