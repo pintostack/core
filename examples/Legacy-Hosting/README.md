@@ -35,7 +35,7 @@ Pull PintoStack image from DockerHub (If you can’t find PintoStack on DockerHu
 
 ```$ docker pull pintostack/pintostack```
 
-or build a PintoStack image (if you are running 32-bit OS):
+or build a PintoStack image (if you are running 32-bit OS or need a latest version of pintostack):
 
 ```$ docker build -t pintostack/pintostack .```
 
