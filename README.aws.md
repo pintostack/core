@@ -15,6 +15,9 @@ Set the following properties:
         AWS_SSH_USERNAME='<USERNAME TO SSH TO VIRTUAL MACHINE>'
         SSH_KEY_FILE=<FULL PATH TO PEM FILE>
 
+>WARNING: Remeber all parametrs like AWS_AMI, AWS_INSTANCE_TYPE, AWS_SECURITY_GROUPS, AWS_REGION are region specific so make sure if you change the one, the others are compatible. Do not forget to swhich your AWS WEB Console to the region you specified in source.aws file.
+
+
 ##### AWS_KEY_ID and AWS_ACCESS_KEY
 
 * Open [the IAM console](https://console.aws.amazon.com/iam/home?#home)
