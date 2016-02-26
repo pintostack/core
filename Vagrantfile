@@ -73,8 +73,23 @@ Vagrant.configure(2) do |config|
       instance.vm.provider :managed do |managed, override|
           managed.server = CONFIG["MANAGED_#{name.upcase.tr('-','_')}"]
       end
-
       if name == "slave-#{SLAVES}" # Run ansible after last host provision
+       if File.file?('.vagrant_provision_disable') # Make fake provision for add slave
+        instance.vm.provision :ansible do |ansible|
+          ansible.playbook = "provisioning/dummy-playbook.yml"
+          ansible.limit = 'all'
+          ansible.force_remote_user = true
+          ansible.host_vars={}
+          ALL_HOSTS.each do |each_host|
+            ansible.host_vars["#{each_host}"] = {"vpc_if" => CONFIG["VPC_IF"]}
+          end
+          ansible.groups = {
+              "masters" => ["master-[1:#{MASTERS.to_i}]"],
+              "slaves" => ["slave-[1:#{SLAVES.to_i}]"],
+              "all-hosts" => ["master-[1:#{MASTERS.to_i}]","slave-[1:#{SLAVES.to_i}]"]
+          }
+        end
+       else
         if CONFIG["RESOURCE_PROVIDER"] == "managed"
             instance.vm.provision :ansible do |ansible|
               ansible.playbook = "provisioning/fix-sudo.yml"
@@ -119,6 +134,7 @@ Vagrant.configure(2) do |config|
               "all-hosts" => ["master-[1:#{MASTERS.to_i}]","slave-[1:#{SLAVES.to_i}]"]
           }
         end
+       end
       end
     end
   end
