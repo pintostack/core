@@ -44,7 +44,7 @@ First, set-up number of master/slaves in the PintoStack configuration file. In t
 
 Change the MASTERS/SLAVES numbers to suit your configuration. In order for the cluster to run you need to have at least one master and one slave, you can always come back to this file to change the number.
 
-```
+```bash
 ### Global configuration
 
 MASTERS=1
@@ -78,3 +78,44 @@ MANAGED_MASTER_1="localhost"
 MANAGED_SLAVE_1="192.168.10.149"
 MANAGED_SLAVE_2="my-super-server.somewhere-in-inter.net"
 ```
+Next, we need to create a new SSH key pair:
+
+```$ ssh-keygen -t rsa```
+
+at the prompt, save the pair into your conf folder: ```conf/id_rsa```. Ensure two files apeared in ```conf``` folder ```id_rsa``` and ```id_rsa.pub```.
+
+
+```bash
+$ docker run -d -v $(pwd)/conf:/pintostack/conf -v $(pwd)/.vagrant:/pintostack/.vagrant --name=pintostack-container pintostack/pintostack
+```
+
+Next, start a Bash session in your container: 
+
+```$ docker exec -it pintostack-container bash```
+
+Time to set-up your environment:
+
+```# cd /pintostack```
+
+```# ./pintostack.sh managed```
+        
+Congratulations, your cluster is up and running!
+
+Now if you want to deploy an app (iPython notebook, for example) in the container:
+
+```# ./marathon-push.sh ipythonnb.json```
+
+If you want to check your system status, open Mesos UI, Marathon UI or Consul UI with:
+
+```# ./open_webui.sh```
+
+or head to http://master_ip:5050/ for Mesos UI, http://master_ip:8080/ui for Marathon UI.
+
+If you want to access your logs, you have to deploy ElasticSearch and Kibana:
+
+```# ./marathon-push.sh elasticsearch.json```
+
+```# ./marathon-push.sh kibana.json```
+
+and head to http://kibana.service.consul:5601/ for Kibana UI.
+Consul UI lives on http://master_ip:8500/
