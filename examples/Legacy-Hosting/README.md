@@ -57,3 +57,24 @@ ANSIBLE_OPTS=""
 ```
 >NOTICE: Remember you need MASTERS + SLAVES number of phisical servers.
 
+Now we will set-up our servers. In this tutorial, our resource provider is managed server, so copy ```conf/source.managed.example``` to  ```conf/source.managed``` configuration file. And edit this file according to your resources.
+
+```bash
+### Managed Legacy Servers Parametrs
+# For more information refere to https://github.com/pintostack/core
+
+source conf/source.global
+
+# All variables add below
+# vagrant plugin install vagrant-managed-server
+
+RESOURCE_PROVIDER='managed'
+VPC_IF='eth0'
+SSH_KEY_FILE='/pintostack/conf/id_rsa'
+
+MANAGED_SSH_USERNAME='ubuntu'
+MANAGED_SSH_PASSWORD='ubuntu'
+MANAGED_MASTER_1="localhost"
+MANAGED_SLAVE_1="192.168.10.149"
+MANAGED_SLAVE_2="my-super-server.somewhere-in-inter.net"
+```
