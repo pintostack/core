@@ -24,7 +24,7 @@ Server enviroment:
 - All servers running 64-bit linux kernel OS
 - All servers have a direct IP network interconnection on VPC intereface
 - You can use your WAN interface for VPC but interface name on all servers needs to be same
-- All servers need docker support in kernel (all modern linux based OS do)
+- All servers need docker support in kernel (all modern linux based OS do, Ubuntu 14.04 Recomended)
 - All servers need access to download from internet
 - All servers need a same SSH username and same SSH/SUDO password
 - Sudo priveleges is also required but NO PASSWORD will be add automaticaly
