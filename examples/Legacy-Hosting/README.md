@@ -14,9 +14,11 @@ This tutorial will guide you through the process of setting up PintoStack. Once 
 
 
 Prerequisites:
+
 Managment PC/Laptop:
 - [Docker](http://docker.io) installed on you managment computer or laptop
 - User with sudo access on you managment computer or laptop
+
 Server enviroment:
 - You need atleast 3 servers
 - All servers running 64-bit linux kernel OS
