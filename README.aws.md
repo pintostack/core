@@ -12,7 +12,7 @@ Set the following properties:
         AWS_ROOT_PARTITION_SIZE=50
         AWS_REGION='us-west-1'
         AWS_SECURITY_GROUPS="default,<GROUP WHERE SSH IS ALLOWED>"
-        AWS_SSH_USERNAME='<USERNAME TO SSH TO VIRTUAL MACHINE'
+        AWS_SSH_USERNAME='<USERNAME TO SSH TO VIRTUAL MACHINE>'
         SSH_KEY_FILE=<FULL PATH TO PEM FILE>
 
 ##### AWS_KEY_ID and AWS_ACCESS_KEY
@@ -60,7 +60,7 @@ Network and Firewall so called in AWS Console ```[Network & Security] > [Securit
 
 We sugest you create two default security groups for your cluster with names ```default``` and ```allow-ssh``` to do so open ```[AWS Console] > [EC2]``` then in left pane ```[Network & Security] > [Security Groups]``` than create two with names ```default``` and ```allow-ssh```
 * After security groups has bin created copy ```Group ID``` of that one with name ```default``` and click edit and add the only one inbound rule to allow local traffic in VPC with ```Type: All traffic; Source: Custom IP [put here Group ID]``` and press ```save```.
-* Now chose the one named ```allow-ssh``` and the same way add three inbound rules to allow ```SSH ,TCP port 5050, TCP port 8080``` and save.
+* Now chose the one named ```allow-ssh``` and the same way add three inbound rules to allow ```SSH ,TCP port 5050, TCP port 8080, TCP port 8500``` and save.
 
 Remember security groups you want to apply to your new instances should be listed in ```source.aws``` file in ```AWS_SECURITY_GROUPS="default,allow-ssh"```
 >NOTICE: For more information on AWS Security Groups look [here](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_SecurityGroups.html).
