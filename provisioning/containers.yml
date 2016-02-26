@@ -38,6 +38,8 @@
 - hosts: slaves
   user: "{{ ansible_ssh_user }}"
   sudo: yes
+  pre_tasks:
+    - include: pre_tasks_slaves.yml
   roles:
     - role: pintostack-mesos-slave
     - role: ansible-registrator
