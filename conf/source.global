@@ -1,8 +1,10 @@
 
-# Global configuration
+### Global configuration
 # For more information refere to https://github.com/pintostack/core
 MASTERS=1
-SLAVES=2
+SLAVES=3
+
+# Defaults do not overwrite variables below
 ANSIBLE_INVENTORY_FILE='.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory'
 ANSIBLE_OPTS=''
 VPC_IF=eth1
