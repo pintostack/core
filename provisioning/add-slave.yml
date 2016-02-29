@@ -41,7 +41,12 @@
       consul_bind_address: "{{ local_ip }}"
       consul_servers: "{{ masters }}"
     - role: ansible-beats
-      when: inventory_hostname not in groups["masters"]
+
+- hosts: slave-{{add_number}}
+  user: "{{ ansible_ssh_user }}"
+  sudo: yes
+  gather_facts: true
+  roles:   
     - role: pintostack-mesos-slave
     - role: ansible-registrator
       registrator_consul_host: "{{ inventory_hostname }}.node.consul"
