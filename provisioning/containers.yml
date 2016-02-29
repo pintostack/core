@@ -45,6 +45,14 @@
 - hosts: slaves
   user: "{{ ansible_ssh_user }}"
   sudo: yes
+  vars:
+     public_dns: ["8.8.8.8", "8.8.4.4"]
+     masters_str: |
+        {% set comma = joiner(",") %}
+        {% set eth = "ansible_"+vpc_if %}
+        {% for item in groups["masters"] -%}
+            {{ comma() }}{{ hostvars[item][eth].ipv4.address }}
+        {%- endfor %}
   pre_tasks:
     - include: pre_tasks_slaves.yml
   roles:
