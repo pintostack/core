@@ -6,7 +6,7 @@ fi
 
 GLOBAL_VARS_LIST="$( set -o posix ; set | cut -f1 -d= )"
 
-if [ "x$PROVIDER"="xvirtualbox" ]; then
+if [ "x$PROVIDER" == "xvirtualbox" ]; then
 	if [ -f /.dockerinit ]; then
 		echo "Managing VirtualBOX from docker container not supported, please run $0 without docker"
 		exit 1
