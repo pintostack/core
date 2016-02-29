@@ -108,8 +108,17 @@ import time
 
 start_time = int(round(time.time() * 1000))
 
+import DNS
+
+hdfs_serevice="hdfs-rpc.service.consul"
+
+DNS.ParseResolvConf()
+srv_req = DNS.Request(qtype = 'SRV')
+srv_result = srv_req.req(hdfs_serevice)
+hdfs_port=srv_result.answers[0]['data'][2]
+
 # now we have a file
-text_file = sc.textFile("hdfs://hdfs-rpc.service.consul:31229/Accidents7904.csv")
+text_file = sc.textFile("hdfs://"+str(hdfs_serevice)+":"+str(hdfs_port)+"/Accidents7904.csv")
 
 # getting the header as an array
 header = text_file.first().split(",")

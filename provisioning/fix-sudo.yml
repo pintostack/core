@@ -11,9 +11,7 @@
   sudo: yes
   gather_facts: false
   tasks:
-
    - name: add vagrant usere NO PASSWORD sudo
      lineinfile: dest=/etc/sudoers mode=0440 state=present regexp='^{{ ansible_ssh_user }} ALL\=' line='{{ ansible_ssh_user }} ALL=(ALL{{":"}} ALL) NOPASSWD{{":"}} ALL' validate='visudo -cf %s'
-
    - name: Check sudo
      shell: sudo -l

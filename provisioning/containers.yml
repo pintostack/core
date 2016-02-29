@@ -34,6 +34,13 @@
 # TODO: #      quorum: "{{ my_quorum }}",
     - role: pintostack-mesos-master
     - role: pintostack-marathon
+  post_tasks:
+    - shell:  iptables -t nat -I PREROUTING -p tcp -d {{ ansible_default_ipv4.address }} --dport {{ item }} -j DNAT --to-destination {{ local_ip }}:{{ item }}
+      with_items:
+      - "5050"
+      - "2181"
+      when: ansible_default_ipv4.address != local_ip
+
 
 - hosts: slaves
   user: "{{ ansible_ssh_user }}"
