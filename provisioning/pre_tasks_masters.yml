@@ -1,0 +1,12 @@
+    - include: pre_tasks_slaves.yml
+    - set_fact:
+        my_zoo_id : "{{ masters|index_of(local_ip) }}"
+    - set_fact:
+        my_quorum: "{{ (masters|length)//2+1 }}"
+    - set_fact:
+        my_hostname: "master-{{ my_zoo_id }}"
+    - shell:  iptables -t nat -I PREROUTING -p tcp -d {{ ansible_default_ipv4.address }} --dport {{ item }} -j DNAT --to-destination {{ local_ip }}:{{ item }}
+      with_items:
+      - "5050"
+      - "2181"
+      when: ansible_default_ipv4.address != local_ip
