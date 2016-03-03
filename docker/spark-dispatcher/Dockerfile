@@ -1,7 +1,7 @@
 FROM pintostack/pintostack-mesos-slave
 
-EXPOSE 7077
 EXPOSE 8081
+EXPOSE 7077
 
 RUN apt-get install -y jq
 
