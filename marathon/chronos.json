@@ -1,7 +1,7 @@
 {
     "id": "/chronos",
-    "cpus": 1,
-    "mem": 300,
+    "cpus": 0.1,
+    "mem": 128,
     "requirePorts": false,
     "instances": 1,
     "container": {
