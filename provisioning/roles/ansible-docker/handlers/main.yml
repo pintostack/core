@@ -1,3 +1,6 @@
 ---
-- name: Restart Docker
-  service: name=docker state=restarted enabled=yes sleep=5
+- name: Stoping Docker
+  shell: service docker stop
+
+- name: Starting Docker
+  shell: service docker start

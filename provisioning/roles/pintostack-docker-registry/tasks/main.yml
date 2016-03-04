@@ -1,0 +1,44 @@
+- name: check docker-registry container
+  command: docker ps -a
+  register: containers
+
+- name: check docker-registry running
+  command: docker ps
+  register: running
+
+- name: pull docker-registry
+  shell: docker pull registry:2
+
+- name: check docker-registry image
+  command: docker images
+  register: images
+
+- name: tag docker-registry image
+  shell: docker tag registry:2 docker-registry
+  when: "{{ 'docker-registry' not in images.stdout }}"
+
+- name: create dir /var/lib/registry/
+  file: path=/var/lib/registry/
+        state=directory
+        mode=666
+
+- name: create docker-registry config.yml
+  template: src=config.yml.j2
+            dest=/var/lib/registry/config.yml
+            mode=666
+
+- name: create docker-registry
+  shell: docker create --net="host" --name=pintostack-docker-registry-container --restart=always -v /var/lib/registry:/var/lib/registry docker-registry /var/lib/registry/config.yml 
+  when: "{{ 'pintostack-docker-registry-container' not in containers.stdout }}"
+
+- name: start docker-registry
+  shell: docker start pintostack-docker-registry-container
+  when: "{{ 'pintostack-docker-registry-container' not in running.stdout }}"
+
+- name: register docker-registry in consul
+  template: src=docker-registry.json.j2
+            dest=/tmp/docker-registry.json
+            mode=666
+
+- name: curl
+  shell:  curl -X PUT -d @/tmp/docker-registry.json http://localhost:8500/v1/agent/service/register

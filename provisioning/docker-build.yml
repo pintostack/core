@@ -1,25 +1,5 @@
-- hosts: dockers
+- hosts: ~master-1
   user: "{{ ansible_ssh_user }}"
   sudo: yes
-  tasks:
-    - name: mkdir ~/docker/{{ name }}
-      file: path="/home/{{ ansible_ssh_user }}/docker/{{ name }}" state=directory
-            owner={{ ansible_ssh_user }} 
-            mode=666
-
-    - name: cp "{{ name }}" to registry
-      copy: src="../docker/{{ name }}"
-            dest="/home/{{ ansible_ssh_user }}/docker"
-
-    - name: make boostrap file executable
-      command: chmod +x /home/{{ ansible_ssh_user }}/docker/{{ name }}/bootstrap.sh
-
-    - name: build {{ name }}
-      command: docker build -t {{ name }} /home/{{ ansible_ssh_user }}/docker/{{ name }}/.
-
-    - name: tag docker img {{ name }}
-      command: docker tag -f {{ name }} docker-registry.service.consul:5000/{{ name }}
-   
-    - name: push img {{ name }}
-      command: docker push docker-registry.service.consul:5000/{{ name }}
-
+  roles:
+    - role: pintostack-docker-build

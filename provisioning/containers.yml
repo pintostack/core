@@ -41,7 +41,6 @@
       - "2181"
       when: ansible_default_ipv4.address != local_ip
 
-
 - hosts: slaves
   user: "{{ ansible_ssh_user }}"
   sudo: yes

@@ -13,5 +13,5 @@ if [ $# = 0 ]; then
   print_usage
   exit
 else
-    ansible-playbook -i $ANSIBLE_INVENTORY_FILE provisioning/docker-build.yml -e name=$1 $ANSIBLE_OPTS
+    ansible-playbook -i $ANSIBLE_INVENTORY_FILE provisioning/docker-build.yml -e docker_name=$1 -vvv $ANSIBLE_OPTS
 fi
