@@ -28,7 +28,7 @@
       swap_file_size: "{{ ansible_memtotal_mb }}M"
       when: hostvars[inventory_hostname].ansible_swaptotal_mb < hostvars[inventory_hostname].ansible_memtotal_mb//2
     - role: ansible-docker
-      docker_opts: '"-s devicemapper --insecure-registry docker-registry.service.consul:5000"'
+      docker_opts: '"-s devicemapper --registry-mirror=http://docker-proxy.service.consul:5001 --insecure-registry docker-registry.service.consul:5000"'
     - role: ansible-consul
       dns_nameservers: "{{ ['127.0.0.1', '8.8.8.8', '8.8.4.4'] if inventory_hostname in groups['masters'] else masters }}"
       dns_domain: "node.consul"
