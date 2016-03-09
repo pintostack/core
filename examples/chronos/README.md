@@ -17,9 +17,12 @@ CREATE TABLE numbers (
 insert into numbers (number_id, value) values (1, 1);
 ```
 
-5. start dispatcher (./marathon-push.sh spark-dispatcher.json)
+5. start dispatcher (```./marathon-push.sh spark-dispatcher.json```)
 
+```
 https://issues.apache.org/jira/browse/SPARK-13258
+```
+```
 SPARK_JAVA_OPTS="-Dspark.mesos.executor.home=/ -Dspark.mesos.executor.docker.image=cyberdisk/spark:latest -Dspark.task.cpus=1 -Dspark.cores.max=8" ./bin/spark-submit \
   --class SimpleApp \
   --master mesos://ec2-54-193-23-64.us-west-1.compute.amazonaws.com:31286 \
@@ -31,7 +34,12 @@ SPARK_JAVA_OPTS="-Dspark.mesos.executor.home=/ -Dspark.mesos.executor.docker.ima
   --conf spark.mesos.executor.docker.image=cyberdisk/spark:latest \
   https://s3-us-west-1.amazonaws.com/ygpublic/simple-project_2.10-1.0.jar \
   1
+```
 
 
-
-curl -L -H 'Content-Type: application/json' -X POST -d@file.json  http://ec2-52-53-218-73.us-west-1.compute.amazonaws.com:31268/scheduler/iso8601
+```
+curl -L -H 'Content-Type: application/json' -X POST -d@file.json
+``` 
+```
+http://ec2-52-53-218-73.us-west-1.compute.amazonaws.com:31268/scheduler/iso8601
+```
