@@ -3,7 +3,7 @@
 3. start cassandra (```./marathon-push.sh cassandra.json```)
     from cassandra:3.3 running container connect to cassandra: ```cqlsh slave-2 31161```
 4. create space and table, insert value.
-
+```
 CREATE KEYSPACE mykeyspace
 WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };
 
@@ -15,6 +15,7 @@ CREATE TABLE numbers (
 );
 
 insert into numbers (number_id, value) values (1, 1);
+```
 
 5. start dispatcher (./marathon-push.sh spark-dispatcher.json)
 
