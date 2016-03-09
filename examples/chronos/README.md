@@ -1,7 +1,7 @@
 1. setup cluster
 2. submit chronos.json (```./marathon-push.sh chronos.json```)
 3. start cassandra (```./marathon-push.sh cassandra.json```)
-    from cassandra:3.3 running container connect to cassandra: cqlsh slave-2 31161
+    from cassandra:3.3 running container connect to cassandra: ```cqlsh slave-2 31161```
 4. create space and table, insert value.
 
 CREATE KEYSPACE mykeyspace
