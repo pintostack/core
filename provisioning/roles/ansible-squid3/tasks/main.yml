@@ -1,0 +1,11 @@
+---
+
+- name: Install Squid3
+  apt: pkg=squid3 state=present update_cache=yes
+
+- name: Create configuration
+  template: src=squid.conf.j2 dest=/etc/squid3/squid.conf force=yes
+
+- name: Restart Squid3
+  shell: service squid3 restart
+  
