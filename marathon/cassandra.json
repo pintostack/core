@@ -1,0 +1,65 @@
+{
+    "id": "/cassandra",
+    "cpus": 0.1,
+    "mem": 192,
+    "requirePorts": false,
+    "instances": 1,
+    "container": {
+        "type": "DOCKER",
+        "docker": {
+            "image": "cassandra:3.3",
+            "forcePullImage": true,
+            "network": "BRIDGE",
+            "portMappings": [
+                    {
+                      "containerPort": 9160,
+                      "hostPort": 0,
+                      "protocol": "tcp"
+                    },
+                    {
+                      "containerPort": 9042,
+                      "hostPort": 0,
+                      "protocol": "tcp"
+                    },
+                    {
+                      "containerPort": 7000,
+                      "hostPort": 0,
+                      "protocol": "tcp"
+                    },
+                    {
+                      "containerPort": 7001,
+                      "hostPort": 0,
+                      "protocol": "tcp"
+                    },
+                    {
+                      "containerPort": 7199,
+                      "hostPort": 0,
+                      "protocol": "tcp"
+                    }
+            ],
+            "privileged": false
+        }
+    },
+    "constraints": [["hostname", "UNIQUE"]],
+    "env":{
+      "SERVICE_PORT0_NAME": "{{NAME}}-THRIFT",
+      "SERVICE_PORT1_NAME": "{{NAME}}-CQL"
+    },
+    "healthChecks": [
+        {
+            "protocol": "TCP",
+            "gracePeriodSeconds": 60,
+            "intervalSeconds": 5,
+            "portIndex": 1,
+            "timeoutSeconds": 5,
+            "maxConsecutiveFailures": 120
+        }
+    ],
+    "backoffSeconds": 1,
+    "backoffFactor": 1.15,
+    "maxLaunchDelaySeconds": 3600,
+    "upgradeStrategy": {
+        "minimumHealthCapacity": 0.5,
+        "maximumOverCapacity": 0.2
+    }
+}

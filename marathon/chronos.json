@@ -1,0 +1,51 @@
+{
+    "id": "/chronos",
+    "cpus": 0.1,
+    "mem": 128,
+    "requirePorts": false,
+    "instances": 1,
+    "container": {
+        "type": "DOCKER",
+        "docker": {
+            "image": "pintostack/chronos",
+            "forcePullImage": true,
+            "network": "BRIDGE",
+            "portMappings": [
+                {
+                    "containerPort": 8080,
+                    "servicePort" : 0,
+                    "hostPort": 0,
+                    "protocol": "tcp"
+                },
+                {
+                    "containerPort": 0,
+                    "servicePort" : 0,
+                    "hostPort": 0,
+                    "protocol": "tcp"
+                }
+            ],
+            "privileged": false
+        }
+    },
+    "env":{
+        "SERVICE_PORT0_NAME": "{{NAME}}",
+        "SERVICE_PORT1_NAME": "{{NAME}}-LIBPROCESS"
+    },
+    "healthChecks": [
+        {
+            "protocol": "TCP",
+            "gracePeriodSeconds": 60,
+            "intervalSeconds": 5,
+            "portIndex": 0,
+            "timeoutSeconds": 5,
+            "maxConsecutiveFailures": 3
+        }
+    ],
+    "backoffSeconds": 1,
+    "backoffFactor": 1.15,
+    "maxLaunchDelaySeconds": 3600,
+    "upgradeStrategy": {
+        "minimumHealthCapacity": 0.5,
+        "maximumOverCapacity": 0.2
+    }
+}

@@ -1,0 +1,13 @@
+{
+  "schedule": "R/2014-09-25T17:22:00Z/PT2M",
+  "name": "test-job",
+  "container": {
+    "type": "DOCKER",
+    "image": "pintostack/pintostack-mesos-slave",
+    "network": "BRIDGE"
+  },
+  "cpus": "0.5",
+  "mem": "100",
+  "uris": [],
+  "command": "echo 'OK'"
+}
