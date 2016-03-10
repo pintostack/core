@@ -1,0 +1,10 @@
+{
+    "id": "/pintostack/building-{{ docker_name }}",
+    "cmd": "docker build -t {{ docker_name }} docker/{{ docker_name }} && sleep 2 && docker tag -f {{ docker_name }} docker-registry.service.consul:5000/{{ docker_name }} && sleep 2 && docker push docker-registry.service.consul:5000/{{ docker_name }} && curl -X DELETE http://consul.service.consul:8080/v2/apps/pintostack/building-{{ docker_name }}",
+    "cpus": 0.5,
+    "mem": 768.0,
+    "instances": 1,
+    "uris": [
+        "http://docker-registry.service.consul/docker-build/{{ docker_name }}.tgz"
+    ]
+}

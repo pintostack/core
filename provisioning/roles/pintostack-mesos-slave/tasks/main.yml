@@ -1,7 +1,15 @@
-- name: check mesos-slave container
+- name: check mesos-slave container exist
   command: docker ps -a
   register: containers
 
-- name: run mesos-slave
-  shell: docker run --entrypoint="mesos-slave" --net="host" --pid=host -e "MESOS_RESOURCES=mem(*):{{ ansible_memtotal_mb }}" -e "MESOS_MASTER=zk://{{my_zk_hostnames}}/mesos" -e "MESOS_PORT=5051" -e "MESOS_HOSTNAME={{ansible_hostname}}" -e "MESOS_IP={{local_ip}}" -e "MESOS_LOG_DIR=/var/log/mesos" -e "MESOS_LOGGING_LEVEL=INFO" -v /var/run/docker.sock:/var/run/docker.sock -v $(which docker):/bin/docker -v /lib/x86_64-linux-gnu/libsystemd-journal.so.0:/lib/x86_64-linux-gnu/libsystemd-journal.so.0 -v /usr/lib/x86_64-linux-gnu/libapparmor.so.1:/usr/lib/x86_64-linux-gnu/libapparmor.so.1 -e "MESOS_WORK_DIR=/var/lib/mesos" -v /var/lib/mesos:/var/lib/mesos --name=pintostack-mesos-slave-container -d pintostack/pintostack-mesos-slave --containerizers=docker --docker_puller_timeout=10mins --executor_registration_timeout=10mins
+- name: create mesos-slave
+  shell: docker create --privileged --entrypoint="mesos-slave" --net="host" --pid=host -e "MESOS_RESOURCES=mem(*):{{ ansible_memtotal_mb }}" -e "MESOS_MASTER=zk://{{my_zk_hostnames}}/mesos" -e "MESOS_PORT=5051" -e "MESOS_HOSTNAME={{ansible_hostname}}" -e "MESOS_IP={{local_ip}}" -e "MESOS_LOG_DIR=/var/log/mesos" -e "MESOS_LOGGING_LEVEL=INFO" -v /var/run/docker.sock:/var/run/docker.sock -v $(which docker):/bin/docker -v /lib/x86_64-linux-gnu/libsystemd-journal.so.0:/lib/x86_64-linux-gnu/libsystemd-journal.so.0 -v /usr/lib/x86_64-linux-gnu/libapparmor.so.1:/usr/lib/x86_64-linux-gnu/libapparmor.so.1 -e "MESOS_WORK_DIR=/var/lib/mesos" -v /var/lib/mesos:/var/lib/mesos --name=pintostack-mesos-slave-container pintostack/pintostack-mesos-slave --containerizers="docker,mesos" --docker_puller_timeout=10mins --executor_registration_timeout=10mins
   when: "{{ 'pintostack-mesos-slave-container' not in containers.stdout }}"
+
+- name: check mesos-slave container running
+  command: docker ps
+  register: running_containers
+
+- name: starting mesos-slave
+  shell: docker start pintostack-mesos-slave-container
+  when: "{{ 'pintostack-mesos-slave-container' not in running_containers.stdout }}"

@@ -1,0 +1,32 @@
+- name: mkdir /var/www/docker-registry/htdocs/docker-build/
+  file: path="/var/www/docker-registry/htdocs/docker-build/"
+        state=directory
+        owner={{ ansible_ssh_user }}
+        mode=777
+
+- name: compress local directory
+  sudo: false
+  local_action: command tar -czf /tmp/{{ docker_name }}.tgz docker/{{ docker_name }}
+
+- name: put "{{ docker_name }}.tgz" to http share"
+  copy: src="/tmp/{{ docker_name }}.tgz"
+        dest="/var/www/docker-registry/htdocs/docker-build/{{ docker_name }}.tgz"
+        force=yes
+
+- name: remove archive
+  sudo: false
+  local_action: file path="/tmp/{{ docker_name }}.tgz" state=absent
+
+- name: prepare marathon directory
+  file: path="/home/{{ ansible_ssh_user }}/marathon"
+        state=directory
+        owner={{ ansible_ssh_user }}
+        mode=777
+
+- name: create "pintostack-building-{{ docker_name }}.json"
+  template: src="docker-build.json.j2"
+            dest="/home/{{ ansible_ssh_user }}/marathon/pintostack-building-{{ docker_name }}.json"
+            force=yes
+
+- name: submit task /pintostack/building-{{ docker_name }} to marathon
+  command: curl -X POST -H "Content-Type{{':'}} application/json" -d @/home/{{ ansible_ssh_user }}/marathon/pintostack-building-{{ docker_name }}.json http://consul.service.consul:8080/v2/apps

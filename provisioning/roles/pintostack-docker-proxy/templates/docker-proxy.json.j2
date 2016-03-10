@@ -1,0 +1,10 @@
+{
+    "Name": "docker-proxy",
+    "ID": "docker-proxy",
+    "Address": "{{ local_ip }}",
+    "Port": 5001,
+    "Check": {
+       "Script": "nc -w 5 -z {{ local_ip }} 5001 >/dev/null",
+       "Interval": "20s"
+             }
+}

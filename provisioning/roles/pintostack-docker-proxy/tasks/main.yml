@@ -1,0 +1,45 @@
+- name: check docker-proxy container
+  command: docker ps -a
+  register: containers
+
+- name: check docker-proxy running
+  command: docker ps
+  register: running
+
+- name: pull docker-proxy
+  shell: docker pull registry:2
+
+- name: check docker-proxy image
+  command: docker images
+  register: images
+
+- name: tag docker-proxy image
+  shell: docker tag registry:2 docker-proxy
+  when: "{{ 'docker-proxy' not in images.stdout }}"
+
+- name: create dir /var/lib/registry-cache
+  file: path=/var/lib/registry-cache/
+        state=directory
+        mode=666
+
+- name: create docker-proxy config.yml
+  template: src=config.yml.j2
+            dest=/var/lib/registry-cache/config.yml
+            mode=666
+
+- name: create docker-proxy
+  shell: docker create --net="host" --name=pintostack-docker-proxy-container --restart=always -v /var/lib/registry-cache:/var/lib/registry-cache docker-proxy /var/lib/registry-cache/config.yml 
+  when: "{{ 'pintostack-docker-proxy-container' not in containers.stdout }}"
+
+- name: start docker-proxy
+  shell: docker start pintostack-docker-proxy-container
+  when: "{{ 'pintostack-docker-proxy-container' not in running.stdout }}"
+
+- name: register docker-proxy in consul
+  template: src=docker-proxy.json.j2
+            dest=/tmp/docker-proxy.json
+            mode=666
+
+- name: curl
+  shell:  curl -X PUT -d @/tmp/docker-proxy.json http://localhost:8500/v1/agent/service/register
+

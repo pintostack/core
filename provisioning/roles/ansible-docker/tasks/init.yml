@@ -31,3 +31,8 @@
   notify: 
     - Restart Docker
 
+- name: Stoping Docker
+  shell: service docker stop
+
+- name: Starting Docker
+  shell: service docker start

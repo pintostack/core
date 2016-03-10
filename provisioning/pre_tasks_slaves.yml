@@ -1,0 +1,8 @@
+    - set_fact:
+        masters : "{{ masters_str|trim|split(',') }}"
+    - set_fact:
+        my_zk_hostnames: "{{masters|join(':2181,')}}:2181"
+    - set_fact:
+        a_vpc_if: "ansible_{{ vpc_if }}"
+    - set_fact:
+        local_ip: "{{ hostvars[inventory_hostname][a_vpc_if].ipv4.address }}"

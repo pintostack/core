@@ -1,0 +1,6 @@
+    - name: setup hostname
+      hostname: name="{{ inventory_hostname }}"
+    - lineinfile: dest=/etc/hosts state=present line='127.0.0.1 {{inventory_hostname}}' owner=root group=root mode=0644
+    - sysctl: name="net.core.somaxconn" value=4096 sysctl_set=yes state=present reload=yes
+    - sysctl: name="fs.file-max" value=402302 sysctl_set=yes state=present reload=yes
+    - include: pre_tasks_slaves.yml
