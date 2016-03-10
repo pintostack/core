@@ -37,6 +37,15 @@
   tasks:
    - name: iptables installed
      apt: pkg=iptables state=present
+     when: inventory_hostname != 'master-1'
+
+   - name: ufw installed
+     apt: pkg=ufw state=present
+     when: inventory_hostname != 'master-1'
+
+   - name: start UFW
+     shell: service ufw start
+     when: inventory_hostname != 'master-1'
 
    - name: add NAT to proxy
      shell: iptables -t nat -I OUTPUT -p tcp --dport 80 -j DNAT --to-destination {{ proxy_ip }}:3127
