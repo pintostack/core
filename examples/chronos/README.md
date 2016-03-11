@@ -3,7 +3,7 @@
 3. start cassandra (```./marathon-push.sh cassandra.json```)
     from cassandra:3.3 running container connect to cassandra: ```cqlsh slave-2 31161 ``` (You can find host and port in consul UI by service ```cassandra-CQL```)
 4. create space and table, insert value.
-```
+```sql
 CREATE KEYSPACE mykeyspace
 WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };
 
