@@ -2,7 +2,7 @@
 source .env
 
 if [ "x${1}" == "x" ]; then
-    echo "Put the number of slave you want to reprovision in the parametr
+    echo "Put the number of slave you want to reprovision in the parameter
 Example for slave-4:
 $0 4"
     exit 1
