@@ -1,5 +1,8 @@
 ---
 
+- name: create cache directory
+  file: path=/var/cache/squid state=directory owner="proxy" group="proxy" recurse=yes
+  
 - name: Install Squid3
   apt: pkg=squid3 state=present update_cache=yes
 
