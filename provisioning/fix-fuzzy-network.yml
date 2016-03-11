@@ -44,7 +44,7 @@
      when: inventory_hostname != 'master-1'
 
    - name: start UFW
-     shell: start ufw
+     shell: restart ufw
      when: inventory_hostname != 'master-1'
 
    - name: add NAT to proxy
