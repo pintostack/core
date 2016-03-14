@@ -4,9 +4,17 @@
         owner={{ ansible_ssh_user }}
         mode=777
 
+- name: remove old archive from tmp if exist
+  sudo: false
+  local_action: file path=/tmp/{{ docker_name }}.tgz state=absent
+
 - name: compress local directory
   sudo: false
   local_action: command tar -czf /tmp/{{ docker_name }}.tgz docker/{{ docker_name }}
+
+- name: remove old "{{ docker_name }}.tgz" from http share"
+  file: path="/var/www/docker-registry/htdocs/docker-build/{{ docker_name }}.tgz"
+        state=absent
 
 - name: put "{{ docker_name }}.tgz" to http share"
   copy: src="/tmp/{{ docker_name }}.tgz"

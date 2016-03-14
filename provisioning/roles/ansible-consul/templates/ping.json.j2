@@ -1,7 +1,14 @@
 {
-"check": {
-    "name": "ping",
-    "script": "ping -c1 google.com >/dev/null",
-    "interval": "30s"
-         }
+  "checks": [
+      {
+      "name": "WAN Adderess",
+      "script": "host {{ ansible_ssh_host }}",
+      "interval": "10s"
+      },
+      {
+   	  "name": "Ping google.com",
+    	"script": "ping -c1 google.com >/dev/null",
+    	"interval": "30s"
+      }
+    ]
 }
