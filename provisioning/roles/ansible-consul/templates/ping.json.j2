@@ -3,12 +3,32 @@
       {
       "name": "WAN Adderess",
       "script": "host {{ ansible_ssh_host }}",
-      "interval": "10s"
+      "interval": "30s"
       },
       {
    	  "name": "Ping google.com",
     	"script": "ping -c1 google.com >/dev/null",
     	"interval": "30s"
+      },
+      {
+      "name": "File Systems",
+      "script": "df -h",
+      "interval": "120s"
+      },
+      {
+      "name": "Uptime",
+      "script": "uptime",
+      "interval": "60s"
+      },
+      {
+      "name": "Syslog",
+      "script": "tail -n 10 /var/log/syslog",
+      "interval": "30s"
+      },
+      {
+      "name": "Docker",
+      "script": "docker ps",
+      "interval": "60s"
       }
     ]
 }

@@ -4,7 +4,7 @@
     "Address": "{{ local_ip }}",
     "Port": 5000,
     "Check": {
-       "Script": "curl docker-registry.service.consul:5000/v2/_catalog",
+       "Script": "curl -s localhost:5000/v2/_catalog",
        "Interval": "10s"
              }
 }
