@@ -4,7 +4,7 @@
     "Address": "{{ local_ip }}",
     "Port": 5000,
     "Check": {
-       "Script": "nc -w 5 -z {{ local_ip }} 5000 >/dev/null",
-       "Interval": "20s"
+       "Script": "curl -s localhost:5000/v2/_catalog",
+       "Interval": "10s"
              }
 }
