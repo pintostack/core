@@ -1,0 +1,4 @@
+#!/bin/bash
+set -e
+docker stop pintostack-container
+service docker stop

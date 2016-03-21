@@ -1,0 +1,16 @@
+name: pintostack
+summary: PintoStack from DataArt is an open source Docker container system.
+maintainer: Yuri Vlasov <yu.vlasov@gmail.com>
+description: |
+ It is very easy to set-up and to run and it offers an elegant solution for enterprise computing or for Big Data processing.
+ A new approach to running and managing distributed systems, PintoStack gives you immutable container infrastructure, with service discovery and continuous logging. Simply put, PintoStack is an easy, reliable and complete solution to get your cloud up and running.
+tags:
+  # Replace "misc" with one or more whitelisted tags from this list:
+  # https://jujucharms.com/docs/stable/authors-charm-metadata
+  - cloudfoundry
+  - big_data
+  - analytics
+subordinate: false
+provides:
+  provides-relation:
+    interface: http

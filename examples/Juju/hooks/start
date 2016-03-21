@@ -1,0 +1,14 @@
+#!/bin/bash
+set -e
+service docker restart
+if [ docker ps | grep "pintostack-container" ]; then
+ 	echo "pintostack-container is already running"
+else
+	docker run -d -v $(pwd)/conf:/pintostack/conf -v $(pwd)/.vagrant:/pintostack/.vagrant --name=pintostack-container pintostack/pintostack
+fi
+
+docker exec -it pintostack-container bash -c "cd /pintostack; ./pintostack.sh aws"
+
+CONSUL_URL=`docker exec -it pintostack-container bash -c "cd /pintostack; ./open_webui.sh" | grep "Consul:"`
+
+status-set active "Pintostack  is running $CONSUL_URL"
