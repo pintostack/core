@@ -44,7 +44,6 @@ options:
       fjvldfjsvklfjdlbvkjdfklsbjkldgfjbgklfjbklgfjbklfdjkgfjbkldbj
       fjvldfjsvklfjdlbvkjdfklsbjkldgfjbgklfjbklgfjbklfdjkgfjbkldbj
       fjvldfjsvklfjdlbvkjdfklsbjkldgfjbgklfjbklgfjbklfdjkgfjbkldbj
-      
       -----END RSA PRIVATE KEY-----
 
     description: "Put here the content of .pem or id_rsa file"
