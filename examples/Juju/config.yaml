@@ -12,8 +12,8 @@ options:
   resource-provider-config:
     type: string
     default: |
-        AWS_KEY_ID=AKIAI5KB5GZ7NKAMUAZQ
-        AWS_ACCESS_KEY=9MkZ+FvxOSrk2I2SE56zIyCcG7+7PU8x/wW8N8uz
+        AWS_KEY_ID=AKIAkljdfsgjkldf7NKAMUAZQ
+        AWS_ACCESS_KEY=9MdfgdfklgjkldfjgklfdjgkldfsjglU8x/wW8N8uz
         AWS_KEYPAIR_NAME=PintoStack
         AWS_ROOT_PARTITION_SIZE=20
         AWS_AMI=ami-5189a661
@@ -39,27 +39,12 @@ options:
     type: string
     default: |
       -----BEGIN RSA PRIVATE KEY-----
-      MIIEpQIBAAKCAQEA4s9/wZS02ds3AYO2j+riPAxIdD8KTe7Em4okE7VE8P5hwxmT94wFVNs11JP6
-      jxb1MLdbcWcKVH4JIBsdYW94C0R2XI7XYJ7Znetxhh0H3R97jQM9TIF6wYKt1FAAfADh0a76mRxq
-      C2GfAg+sGHZzzty5ooPnBhpfMuLsWcWLrf3LpCelYzFl1XG+2ZSLX5O1rA5oLV6INHQIOjDhCQ46
-      MV1HydJhlBHPMGxhGGtc2X1kBjiyXoMiOTkyGEE+kzLBv9Ea0BxLJmnXbQ5eeWaMcrBPWMm38IgW
-      Ehn6owHr+UQPS+qOunI4xhz6Af1p60ahiCP8By52JiQEQY0htrHOCQIDAQABAoIBAQCTqJb5xgA/
-      XJHg8IjoBPioMy7wTyI8PlfNExANrJNneZTX2U0Vehj2d4gCDxyuDzotLxHfMD/vZeY2+rAUAOfc
-      HgQYmf3pr0DpqKBNuZSnBpn+4b8Ekb8DQDo+4J6QHFrnkc0f5Pm80x8bzmwxuNwILnbEMK80r/KO
-      RGGuyAb5i+kPWm2ayVjeSP4AQTzLMzN6VGxEjdz6mL3tf0MZbNtaVOFkgXx3uNJ+LePJZAGDbT64
-      ns/XNeRvu5IDrMVaczFy6pHCHWpisPCiioj0WkBh0AQ11rzRk43zAph81tPyii+gizJ0jxPmZn1i
-      eSgiiIfjjwEjhv8zZo0YilVzFsYBAoGBAPpVGK7KzMLWhkKQ3MD5W4QUjSrWziTY77OUy5VmjKd1
-      YN8bdkK3AVImD+nY9SFk+GmZdS9gL9bOqkLLsyeaNXEknb+nY5ancDmTWN4okQhDVB8k0guqVQ1m
-      MpxyLkKWjXswpUYyV8hJ0A4dNrOvVgLG/fSeX9futPZHUUx2WYNhAoGBAOfyEnMXBn9PNsXfrECM
-      7qDleHzls5NRyVQd28H5/N7VFsZk7OizDlbQWZkUq6CuHaTK1gNiIe2NkykMaMl31AXYLGdoO0CJ
-      nHy4lNoMPujarCIm0lMNCkvMErEOL7XbitMpww0h1ynhK/VO2sjWFyBO12ZHmg2HI/p7jRktBfOp
-      AoGBANmZ7wLBtowG/l4OnlYAa9S8KJn8buUIzhREW1Na+Rj3p2VI8du8SKGoBF06ApssseLZSkwM
-      SIlozAeUGf9qxNm9AoL+dksW8S6bLryudqPAIvePgiYxwg0LsSLc/elUBVf4STJjwHqR7xDVxB8d
-      Yp63azmgEaAaF6OdCsZ0egsBAoGAHbYRjPKXH3m7L2+udfpXmv6qB325Ghbw7jiA7QEj1jt/llxZ
-      SJmfLZm00HooXgXPwEtHTNmmNPLctfZj+eLCoxkE3x4n8OVvyT4vuxq0eEmCoUFN0duqxPjYMBv8
-      GpSL3O7NkIIUOMYiRmMafX2HKtlOmEh1wGPeRPjMozv0NjkCgYEAsFMcem96a2Acezf7XfBEiqDD
-      vJlTxFLaaZ/e+kJ4ohJ17cEKoHueN80z3G47yTN25dJmAZjgkr3MGWebJUyMmERki9/doG+bOaD0
-      OIfT/6zv8OZ1TOusFHWSJpIgKK80umxOHl7ALGURAIQjc7knTht7btx2Ik+SKlwrmJwFDAE=
+      fjvldfjsvklfjdlbvkjdfklsbjkldgfjbgklfjbklgfjbklfdjkgfjbkldbj
+      fjvldfjsvklfjdlbvkjdfklsbjkldgfjbgklfjbklgfjbklfdjkgfjbkldbj
+      fjvldfjsvklfjdlbvkjdfklsbjkldgfjbgklfjbklgfjbklfdjkgfjbkldbj
+      fjvldfjsvklfjdlbvkjdfklsbjkldgfjbgklfjbklgfjbklfdjkgfjbkldbj
+      fjvldfjsvklfjdlbvkjdfklsbjkldgfjbgklfjbklgfjbklfdjkgfjbkldbj
+      
       -----END RSA PRIVATE KEY-----
 
     description: "Put here the content of .pem or id_rsa file"
@@ -68,6 +53,11 @@ options:
     type: string
     default: |
       -----BEGIN RSA PUBLIC KEY-----
+      fjvldfjsvklfjdlbvkjdfklsbjkldgfjbgklfjbklgfjbklfdjkgfjbkldbjfj
+      vldfjsvklfjdlbvkjdfklsbjkldgfjbgklfjbklgfjbklfdjkgfjbkldbjfggf
+      vldfjsvklfjdlbvkjdfklsbjkldgfjbgklfjbklgfjbklfdjkgfjbkldbjfggf
+      vldfjsvklfjdlbvkjdfklsbjkldgfjbgklfjbklgfjbklfdjkgfjbkldbjfggf
+      vldfjsvklfjdlbvkjdfklsbjkldgfjbgklfjbklgfjbklfdjkgfjbkldbjfggf
       -----END RSA PUBLIC KEY-----
 
     description: "Put here the content of .pem or id_rsa.pub file"
