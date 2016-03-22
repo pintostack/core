@@ -12,8 +12,6 @@ options:
   resource-provider-config:
     type: string
     default: |
-        AWS_KEY_ID=AKIAI5asgdfgdfsgsgMUAZQ
-        AWS_ACCESS_KEY=9dfsklbjklgjfdlgbjdlsbgjdslbgj
         AWS_KEY_ID=AKIAkljdfsgjkldf7NKAMUAZQ
         AWS_ACCESS_KEY=9MdfgdfklgjkldfjgklfdjgkldfsjglU8x/wW8N8uz
         AWS_KEYPAIR_NAME=PintoStack
