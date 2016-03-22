@@ -1,4 +1,27 @@
 #!/bin/bash
 set -e
-docker stop pintostack-container
-service docker stop
+if [ "$(docker ps | grep pintostack-container)" ]; then
+##
+status-set waiting "pintostack-container is running"
+else
+##
+status-set waiting "pintostack-container is not running, starting"
+	docker start pintostack-container
+fi
+
+RESOURCE_PROVIDER=`config-get resource-provider`
+MASTERS=`config-get masters-number`
+SLAVES=`config-get slaves-number`
+
+##
+status-set waiting "Stopping all nodes ${MASTERS} masters and ${SLAVES} slaves"
+
+docker exec pintostack-container bash -c "cd /pintostack; vagrant destroy -f"
+
+##
+status-set waiting "Pintostack shutdown finished"
+	
+	docker stop pintostack-container
+	
+##
+status-set maintenance "Pintostack is stoped"

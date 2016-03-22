@@ -65,17 +65,16 @@ fi
 status-set waiting "Waiting pintostack managment container start"
 
 cd /opt/pintostack
-docker run -d -v $(pwd)/conf:/pintostack/conf -v $(pwd)/.vagrant:/pintostack/.vagrant --name=pintostack-container pintostack/pintostack
 
 ##
-status-set waiting "Waiting pintostack bootstrap ${MASTERS} masters and ${SLAVES} slaves"
+status-set waiting "Waiting pintostack managment container to build"
 
-docker exec pintostack-container bash -c "cd /pintostack; ./pintostack.sh ${RESOURCE_PROVIDER}"
-
-##
-status-set waiting "Pintostack bootstrap finished"
-
-CONSUL_URL=`docker exec pintostack-container bash -c "cd /pintostack; ./open_webui.sh" | grep "Consul:"`
+docker build -t localhost-pintostack .
 
 ##
-status-set active "Pintostack  is running $CONSUL_URL"
+status-set waiting "Waiting pintostack managment container to get running"
+
+docker create -v $(pwd)/conf:/pintostack/conf -v $(pwd)/.vagrant:/pintostack/.vagrant --name=pintostack-container localhost-pintostack
+
+##
+status-set waiting "Pintostack managment node bootstrap finished"

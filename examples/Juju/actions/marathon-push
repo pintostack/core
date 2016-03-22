@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+
+JSON_FILE=$(action-get jsonfile)
+
+action-set status="Submiting marathon/${JSON_FILE} to Marathon"
+docker exec pintostack-container bash -c "cd /pintostack; ./marathon-push.sh ${JSON_FILE}"
+
+MARATHON_URL=`docker exec pintostack-container bash -c "cd /pintostack; ./open_webui.sh" | grep "Marathon:"`
+
+action-set timestamp="$(date)" message="See ${MARATHON_URL} for result" status="Submition done"

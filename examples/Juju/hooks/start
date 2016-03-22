@@ -1,14 +1,28 @@
 #!/bin/bash
 set -e
 service docker restart
-if [ docker ps | grep "pintostack-container" ]; then
- 	echo "pintostack-container is already running"
+if [ "$(docker ps | grep pintostack-container)" ]; then
+##
+status-set waiting "pintostack-container is already running"
 else
-	docker run -d -v $(pwd)/conf:/pintostack/conf -v $(pwd)/.vagrant:/pintostack/.vagrant --name=pintostack-container pintostack/pintostack
+##
+status-set waiting "pintostack-container is not running, starting"
+	docker start pintostack-container
 fi
 
-docker exec -it pintostack-container bash -c "cd /pintostack; ./pintostack.sh aws"
+RESOURCE_PROVIDER=`config-get resource-provider`
+MASTERS=`config-get masters-number`
+SLAVES=`config-get slaves-number`
 
-CONSUL_URL=`docker exec -it pintostack-container bash -c "cd /pintostack; ./open_webui.sh" | grep "Consul:"`
+##
+status-set waiting "bootstrap ${MASTERS} masters and ${SLAVES} slaves"
 
-status-set active "Pintostack  is running $CONSUL_URL"
+docker exec pintostack-container bash -c "cd /pintostack; ./pintostack.sh ${RESOURCE_PROVIDER}"
+
+##
+status-set waiting "Pintostack bootstrap finished"
+
+CONSUL_URL=`docker exec pintostack-container bash -c "cd /pintostack; ./open_webui.sh" | grep "Consul:"`
+
+##
+status-set active "Pintostack is running $CONSUL_URL"
