@@ -26,7 +26,7 @@ Use ```juju stat``` to find juju-gui address
 ## Building Pintostack charm
 
 Go to folder conteining this charm and run
-
+Edit ```config.yaml``` add resource provider configuration and ssh keys.
 ```
 $ juju charm build pintostack
 ```
