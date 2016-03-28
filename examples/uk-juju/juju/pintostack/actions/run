@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+
+EXEC_CMD=$(action-get jsonfile)
+
+action-set status="Running ${EXEC_CMD} in pintoStack context"
+EXEC_CMD_RESULT=`docker exec pintostack-container bash -c "cd /pintostack; ${EXEC_CMD}"`
+action-set timestamp="$(date)" cmd="${EXEC_CMD}" message="${EXEC_CMD_RESULT}" status="Done"

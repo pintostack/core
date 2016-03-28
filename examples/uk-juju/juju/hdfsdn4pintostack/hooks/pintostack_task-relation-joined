@@ -1,0 +1,7 @@
+#!/bin/bash
+set -e # If any command fails, stop execution of the hook with that error
+juju-log "Starting ${0} script"
+relation-set reaction="marathon-push" jsonfile="hdfs-dn.json"
+juju-log "Submited information to marathon over $JUJU_REMOTE_UNIT"
+status-set active
+#open-port 80

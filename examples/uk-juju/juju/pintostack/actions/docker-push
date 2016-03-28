@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+
+DOCKER_NAME=$(action-get dockername)
+MARATHON_URL=`docker exec pintostack-container bash -c "cd /pintostack; ./open_webui.sh" | grep "Marathon:"`
+
+action-set status="Submiting docker/${DOCKER_NAME} build task to marathon ${MARATHON_URL}"
+docker exec pintostack-container bash -c "cd /pintostack; ./docker-push.sh ${DOCKER_NAME}"
+
+action-set timestamp="$(date)" message="See ${MARATHON_URL} for building ${DOCKER_NAME}" status="Submition done"
+
