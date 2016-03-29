@@ -1,0 +1,16 @@
+{
+      "id": "/pintostack/put-uk-data-to-hdfs",
+      "instances": 1,
+      "cmd": "apt-get update && apt-get install -y unzip && curl -O http://data.dft.gov.uk/road-accidents-safety-data/Stats19-Data1979-2004.zip && unzip -d . Stats19-Data1979-2004.zip Accidents7904.csv && NN_RPC_ADDR=hdfs-rpc.service.consul:$(host -t SRV hdfs-rpc.service.consul. | cut -f 7 -d' ') && export NN_RPC_ADDR && sed -e s/\\${NN_RPC_ADDR}/${NN_RPC_ADDR}/ ${HADOOP_CONF_DIR}/core-site.xml.template > ${HADOOP_CONF_DIR}/core-site.xml && bin/hadoop fs -put Accidents7904.csv hdfs:/// && curl -X DELETE http://consul.service.consul:8080/v2/apps/pintostack/put-uk-data-to-hdfs",
+      "cpus": 0.5,
+      "mem": 512,
+      "container": {
+            "type": "DOCKER",
+            "docker": {
+              "image": "pintostack/hdfs",
+      			  "forcePullImage": false,
+      			  "network": "BRIDGE",
+      			  "privileged": false
+            }
+      }
+}
