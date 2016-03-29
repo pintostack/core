@@ -1,0 +1,17 @@
+name: ukdata4pintostack
+summary: Uploads Example Data to HDFS in PintoStack
+maintainer: Yuri Vlasov <yu.vlasov@gmail.com>
+description: |
+  Downloads UK Stat unpack it and uploads to HDFS in PintoStack
+tags:
+  # Replace "misc" with one or more whitelisted tags from this list:
+  # https://jujucharms.com/docs/stable/authors-charm-metadata
+  - big-data
+  - analytics
+subordinate: false
+provides:
+  hdfs:
+    interface: csv-file
+requires:
+  pintostack_task:
+    interface: marathon-push
