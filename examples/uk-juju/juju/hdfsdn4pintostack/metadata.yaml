@@ -1,5 +1,5 @@
 name: hdfsdn4pintostack
-summary: Launch IPython NB in PintoStack
+summary: Launch HDFS Data Node in PintoStack
 maintainer: Yuri Vlasov <yu.vlasov@gmail.com>
 description: |
   Launch HDFS Data Node in PintoStack
@@ -10,7 +10,7 @@ tags:
   - analytics
 subordinate: false
 provides:
-  website:
+  hdfs:
     interface: hdfs-dn
 requires:
   pintostack_task:
