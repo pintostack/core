@@ -3,7 +3,7 @@ set -e # If any command fails, stop execution of the hook with that error
 juju-log "Starting ${0} script"
 status-set waiting
 sleep 120
-relation-set reaction="marathon-push" jsonfile="put-uk-to-hdfs.json"
+relation-set reaction="marathon-push" jsonfile="upload-uk-data.json"
 juju-log "Submited example data upload to marathon over $JUJU_REMOTE_UNIT"
 status-set active
 #open-port 80
