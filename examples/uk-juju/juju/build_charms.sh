@@ -17,6 +17,5 @@ for each in $CHARM_LIST; do
 		echo "Check $each charm FAILS fix it."
 		exit 1
 	fi
-	ln -s ../${each}/${JUJU_SERIES}/${each} ${START_PWD}/${JUJU_SERIES}/${each}
 	cd ${START_PWD}
 done
