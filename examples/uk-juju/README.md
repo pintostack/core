@@ -70,7 +70,7 @@ AMI name is the name of image that is used as a source for your virtual instance
 
 ### JuJu environment configuration
 
-Edit ```~/.juju/environments.yaml``` put your AWS_KEY_ID and AWS_KEY to ```amazon``` subsection. Below is the example of what you need.
+Edit ```~/.juju/environments.yaml``` put your ```AWS_KEY_ID``` and ```AWS_KEY``` to ```amazon``` subsection. Below is the example of what you need.
 
 ```yaml
 default: amazon
@@ -169,8 +169,62 @@ Here you can navigate information about all nodes and services.
 
 * Find the service named ```ipythonnb``` click it and see the node it is running on (```slave-N```). 
 * Navigate to node information and find ```WAN Adderess``` below you will see public adress (like this ```ec2-some-slave-host.us-west-2.compute.amazonaws.com```) copy it.
-* Open your browser with copird URL with port 31080 (like this ```http://ec2-some-slave-host.us-west-2.compute.amazonaws.com:31080```)
+* Open your browser with copied URL with port 31080 (like this ```http://ec2-some-slave-host.us-west-2.compute.amazonaws.com:31080```)
 
+Now you will get a standart iPython NoteBook interface.
+
+### Running Python NoteBook 
+
+Open Marathon URL from previews paragraph (```http://some-host-1.us-west-2.compute.amazonaws.com:8080```) and make sure all applications are in state ```Running``` and there is no application ```/pintostack/upload-uk-data-to-hdfs``` or wait while it finishes.
+
+Than go back to the  iPython NoteBook interface we opened in previes paragrath
+* Create a notebook
+* Put the code below to the cell
+* Press ```Run Cell```
+
+```python
+import time
+
+start_time = int(round(time.time() * 1000))
+
+import DNS
+
+hdfs_serevice="hdfs-rpc.service.consul"
+
+DNS.ParseResolvConf()
+srv_req = DNS.Request(qtype = 'SRV')
+srv_result = srv_req.req(hdfs_serevice)
+hdfs_port=srv_result.answers[0]['data'][2]
+
+# now we have a file
+text_file = sc.textFile("hdfs://"+str(hdfs_serevice)+":"+str(hdfs_port)+"/Accidents7904.csv")
+
+# getting the header as an array
+header = text_file.first().split(",")
+
+# getting data
+data = text_file \
+   .map(lambda line: line.split(",")) \
+   .filter(lambda w: w[header.index('Date')] != 'Date')
+output = data.filter(lambda row: len(row[header.index('Date')].strip().split("/")) == 3) \
+   .map(lambda row: row[header.index('Date')].strip().split("/")[2]) \
+   .map(lambda word: (word, 1)) \
+   .reduceByKey(lambda a, b: a + b) \
+   .sortByKey(True) \
+   .collect()
+for (line, count) in output:
+        print("%s: %i" % (line, count))
+print ("Duration is '%i' ms" % (int(round(time.time() * 1000)) - start_time))
+
+
+%matplotlib inline
+
+import matplotlib
+import numpy as np
+import matplotlib.pyplot as plt
+
+plt.plot([str(x[0]) for x in output], [str(x[1]) for x in output])
+```
 
 
 ## Using PintoStack actions
