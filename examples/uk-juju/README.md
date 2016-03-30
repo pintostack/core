@@ -60,7 +60,7 @@ Choose Download Credentials, and store the keys in the ```config.yaml``` file in
 >NOTICE: For more information on Amazon Access keys look [here](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html)
 
 
-### AMI and user name
+### AMI and user name (can skip this if using defaults)
 
 AMI name is the name of image that is used as a source for your virtual instances. So if you chose a different region than we sugested in default ```source.aws``` like ```AWS_REGION='us-west-2'``` you need to change default ```AWS_AMI='ami-5189a661'```. To do so, open this [link](https://cloud-images.ubuntu.com/locator/ec2/) and type for example if you would like to find out the AMI-ID for the latest release of “LTS” Ubuntu to run on a “64″ bit “ebs” instance in the “us-east” region, you would search for ```lts 64 us-east ebs```.
 
@@ -99,6 +99,7 @@ environments:
 ```
 
 Than open terminal window, go to ```examples/uk-juju``` and edit ```config.yaml.tmpl``` and save it to ```config.yaml```. After editing it sould look like this example below:
+
 ```yaml
 ---
 pintostack:
@@ -132,7 +133,7 @@ pintostack:
 ### Before begining:
 
 * Make sure you use same ```AWS_REGION``` as in ```~/.juju/environments.yaml```.
-* Make sure ```AWS_SECURITY_GROUPS``` contains ```juju-amazon```, ```juju-amazon-0```, ```pintostack``` -last one you have to create your self in AWS Console
+* Make sure ```AWS_SECURITY_GROUPS``` contains ```juju-amazon```, ```juju-amazon-0```
 * Make sure ```AWS_AMI``` you using is available in this ```AWS_REGION```, if you are not sure use defaults.
 
 ### Deploying with JUJU
@@ -147,6 +148,8 @@ This will return you an IP of Juju-GUI you can open it with browser. Remember to
 
 After all pending items will disapeare go back to the same terminal window.
 
+>INFO: Monitor the status of ```pintostack/0``` unit ```$ juju stat```. To get access to pintostack context use ```$ juju ssh pintostack/0```
+
 ### Starting using PintoStack
 
 After all pending items will disapeare in juju-gui go back to the same terminal window and run:
@@ -155,7 +158,7 @@ After all pending items will disapeare in juju-gui go back to the same terminal 
 ```
 It will give you the similar reply
 ```
-You are runing inside docker could not open browser.
+You are running inside docker could not open browser.
 Mesos: http://some-host-1.us-west-2.compute.amazonaws.com:5050
 Marathon: http://some-host-1.us-west-2.compute.amazonaws.com:8080
 Consul: http://some-host-1.us-west-2.compute.amazonaws.com:8500
@@ -168,16 +171,6 @@ Here you can navigate information about all nodes and services.
 * Navigate to node information and find ```WAN Adderess``` below you will see public adress (like this ```ec2-some-slave-host.us-west-2.compute.amazonaws.com```) copy it.
 * Open your browser with copird URL with port 31080 (like this ```http://ec2-some-slave-host.us-west-2.compute.amazonaws.com:31080```)
 
-
-Monitor the status of ```pintostack/0``` unit
-
-```
-$ juju stat
-```
-
-After enviroment setup yo
-
->INFO: To get access to pintostack context use ```$ juju ssh pintostack/0```
 
 
 ## Using PintoStack actions
