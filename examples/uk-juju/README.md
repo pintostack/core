@@ -146,6 +146,14 @@ $ deploy_uk_demo.sh
 
 This will return you an IP of Juju-GUI you can open it with browser. Remember to accept SSL Exception. Login with user: ```admin``` password: ```nothingButPintostack```. And than you can watch while build all charms and deploys all cluster components.
 
+Juju GUI Login
+
+![](images/01-login-juju-gui.jpg)
+
+Juju GUI
+
+![](images/02-juju-gui.jpg)
+
 After all pending items will disapeare go back to the same terminal window.
 
 >INFO: Monitor the status of ```pintostack/0``` unit ```$ juju stat```. To get access to pintostack context use ```$ juju ssh pintostack/0```
@@ -165,6 +173,11 @@ Consul: http://some-host-1.us-west-2.compute.amazonaws.com:8500
 Connection to closed.
 ```
 Copy the Consul URL ```http://some-host-1.us-west-2.compute.amazonaws.com:8500``` and open it in your browser.
+
+Consul UI
+
+![](images/03-consul-gui.jpg)
+
 Here you can navigate information about all nodes and services.
 
 * Find the service named ```ipythonnb``` click it and see the node it is running on (```slave-N```). 
@@ -177,10 +190,13 @@ Now you will get a standart iPython NoteBook interface.
 
 Open Marathon URL from previews paragraph (```http://some-host-1.us-west-2.compute.amazonaws.com:8080```) and make sure all applications are in state ```Running``` and there is no application ```/pintostack/upload-uk-data-to-hdfs``` or wait while it finishes.
 
+![](images/04-ipython-notebook.jpg)
+
 Than go back to the  iPython NoteBook interface we opened in previews paragrath
 * Create a notebook
 * Put the code below to the cell
 * Press ```Run Cell```
+
 
 ```python
 import time
@@ -227,6 +243,8 @@ plt.plot([str(x[0]) for x in output], [str(x[1]) for x in output])
 > IMPORTANT: You can monitor the execution of tasks in Mesos UI ```Frameworks > pyspark-shell >
 Active Tasks```
 
+
+![](images/05-mesos-pyspark-tasks.jpg)
 
 ## Using PintoStack actions
 
