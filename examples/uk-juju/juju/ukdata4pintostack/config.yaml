@@ -1,5 +1,5 @@
 options:
   service-name:
     type: string
-    default: "ipythonnb"
+    default: "Data For UK Tutorial"
     description: "This name is used for service discovery inside pintostack or by DNS service-name.service.consul."

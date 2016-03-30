@@ -2,4 +2,4 @@
 set -e # If any command fails, stop execution of the hook with that error
 juju-log "Starting ${0} script"
 juju-log "Install hook done"
-
+open-port 31080/tcp

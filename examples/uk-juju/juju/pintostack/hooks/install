@@ -44,3 +44,10 @@ docker create -v $(pwd):/pintostack --name=pintostack-container pintostack/pinto
 
 ##
 status-set waiting "Pintostack managment node bootstrap finished"
+
+open-port 5050/tcp
+open-port 8080/tcp
+open-port 8500/tcp
+open-port 53/tcp
+open-port 53/udp
+

@@ -1,5 +1,5 @@
 options:
   service-name:
     type: string
-    default: "ipythonnb"
+    default: "HDFS Name Node"
     description: "This name is used for service discovery inside pintostack or by DNS service-name.service.consul."
