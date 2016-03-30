@@ -4,7 +4,26 @@ PintoStack from DataArt is an open source Docker container system. It is very ea
 
 A new approach to running and managing distributed systems, PintoStack gives you immutable container infrastructure, with service discovery and continuous logging. Simply put, PintoStack is an easy, reliable and complete solution to get your cloud up and running.
 
-## Configuring EC2 for your cluster with JUJU
+## Install JuJu
+
+### Install JuJu on Ubuntu
+
+```bash
+sudo apt-get install python-software-properties
+sudo add-apt-repository ppa:juju/stable
+sudo apt-get update
+sudo apt-get install juju-quickstart juju-core
+```
+
+### Install JuJu on Apple OSX
+
+To install Juju on OS X without Juju quickstart, follow [the manual install instructions](https://jujucharms.com/docs/getting-started#mac-osx). 
+
+### Install JuJu on Windows
+
+To install Juju on Windows without Juju quickstart, follow [the manual install instructions](https://jujucharms.com/docs/getting-started#windows). 
+
+## Configuring EC2 for your cluster
 
 ### Region
 
@@ -16,17 +35,10 @@ Configuration would require from you the name of region you selected, lilke, us-
 ### SSH Keys or so called in AWS Console ```[Network & Security] > [Key Pairs]```
 
 The keys are used to replace password based authentication. EC2 requires you to setup a keypair in management console. If you do not have keypair, it's easy to create new one open ```[AWS Console] > [EC2]``` then in left pane ```[Network & Security] > [Key Pairs]``` in case there are existing key pairs in your AWS account you can use it as well. We sugest you to name a new key pair ```PintoStack```. And save the key file in save place and put the path to you key file in ```source.aws``` for example it looks like this ```SSH_KEY_FILE='~/Downloads/PintoStack.pem.txt'``` and ```AWS_KEYPAIR_NAME='PintoStack'```.
+
 > IMPORTANT: Please note that keypairs are also region specific and to read more please follow the [this link](http://docs.aws.amazon.com/opsworks/latest/userguide/security-ssh-access.html).
 
-### Network and Firewall so called in AWS Console ```[Network & Security] > [Security Groups]```
-
-We sugest you create two default security groups for your cluster with names ```default``` and ```allow-ssh``` to do so open ```[AWS Console] > [EC2]``` then in left pane ```[Network & Security] > [Security Groups]``` than create one with name ```pintostack```
-
-* After security groups has bin created, chose the one named ```pintostack``` and the same way add three inbound rules to allow ```SSH ,TCP port 5050, TCP port 8080, TCP port 8500``` and save. If you are doing this for first time you can add ```Allow ALL```, but remember it is unsafe.
-
-Remember security groups you want to apply to your new instances should be listed in ```config.yaml``` file in ```AWS_SECURITY_GROUPS='juju-amazon,juju-amazon-0,pintostack'```
-
->NOTICE: For more information on AWS Security Groups look [here](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_SecurityGroups.html).
+> NOTICE: For more information on AWS Security Groups look [here](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_SecurityGroups.html).
 
 
 ### API Access key and secret
@@ -37,10 +49,12 @@ Remember security groups you want to apply to your new instances should be liste
  * Choose the Security Credentials tab and then choose Create Access Key.
 
 To see your access key, choose Show User Security Credentials. Your credentials will look something like this:
+
 ```
   Access Key ID: AKIAIOSFODNN7EXAMPLE
   Secret Access Key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 ```
+
 Choose Download Credentials, and store the keys in the ```config.yaml``` file in ```AWS_KEY_ID='Change me'``` and ```AWS_ACCESS_KEY='Change me'```. 
 
 >NOTICE: For more information on Amazon Access keys look [here](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html)
@@ -52,27 +66,54 @@ AMI name is the name of image that is used as a source for your virtual instance
 
 >NOTICE: You can try other options like [archlinux](https://www.uplinklabs.net/projects/arch-linux-on-ec2/), or even [BSD](http://www.daemonology.net/freebsd-on-ec2/) but it was not tested.
 
-## Provisioning
+## Provisioning your cluster with JUJU
 
+### JuJu environment configuration
 
-Edit ```~/.juju/environments.yaml``` 
+Edit ```~/.juju/environments.yaml``` put your AWS_KEY_ID and AWS_KEY to ```amazon``` subsection. Below is the example of what you need.
+
+```yaml
+default: amazon
+environments:
+   amazon:
+        type: ec2
+        # region specifies the EC2 region. It defaults to us-east-1.
+        #
+        region: us-west-2
+        admin-secret: 'nothingButPintostack'
+        # access-key holds the EC2 access key. It defaults to the
+        # environment variable AWS_ACCESS_KEY_ID.
+        #
+        access-key: AKIAI5KB5GZEXAMPLE
+
+        # secret-key holds the EC2 secret key. It defaults to the
+        # environment variable AWS_SECRET_ACCESS_KEY.
+        #
+        secret-key: 9MkZ+FvxOSrk2I2SE56zEXAMPLEwW8N8uz
+
+        # image-stream chooses a simplestreams stream from which to select
+        # OS images, for example daily or released images (or any other stream
+        # available on simplestreams).
+        #
+        image-stream: "released"
+```
 
 Than open terminal window, go to ```examples/uk-juju``` and edit ```config.yaml.tmpl``` and save it to ```config.yaml```. After editing it sould look like this example below:
 ```yaml
 ---
 pintostack:
     resource-provider-config: |
-        AWS_KEY_ID='AKIsdklfgjkldfsgkljdfQ'
-        AWS_ACCESS_KEY='9MkZdfsgdfklsgjdf567klsgjkldfjfl8N8uz'
+        AWS_KEY_ID='AKIAI5KB5GZEXAMPLE'
+        AWS_ACCESS_KEY='9MkZ+FvxOSrk2I2SE56zEXAMPLEwW8N8uz'
         AWS_KEYPAIR_NAME=PintoStack
         AWS_ROOT_PARTITION_SIZE=20
         AWS_AMI=ami-5189a661
-        AWS_INSTANCE_TYPE=t2.micro
+        AWS_INSTANCE_TYPE=t2.medium
         AWS_REGION=us-west-2
-        AWS_SECURITY_GROUPS='juju-amazon,juju-amazon-0,pintostack'
+        AWS_SECURITY_GROUPS='juju-amazon,juju-amazon-0'
         AWS_SSH_USERNAME=ubuntu
         AWS_TERMINATE_ON_SHUTDOWN=true
-    slaves-number: 8
+    slaves-number: 6
     ssh-private-key: |
       -----BEGIN RSA PRIVATE KEY-----
       MIIEpQIBAAKCAQEA4s9/wZS02ds3AYO2j+riPAxIdD8KTe7Em4okE7VE8P5hwxmT94wFVNs11JP6
@@ -86,7 +127,7 @@ pintostack:
 
 ```
 
-> REMEMBER: This file is YAML formated so it is very important to preserv line spaces and leading TABs, you cat check your syntax [online](http://www.yamllint.com/).
+> REMEMBER: This file is YAML formated so it is very important to preserv line spaces and leading TABs, you can check your syntax [online](http://www.yamllint.com/).
 
 ### Before begining:
 
@@ -102,7 +143,31 @@ Open terminal window, go to ```examples/uk-juju``` subfolder and run:
 $ deploy_uk_demo.sh
 ```
 
-This will build all charms and deploys all cluster components.
+This will return you an IP of Juju-GUI you can open it with browser. Remember to accept SSL Exception. Login with user: ```admin``` password: ```nothingButPintostack```. And than you can watch while build all charms and deploys all cluster components.
+
+After all pending items will disapeare go back to the same terminal window.
+
+### Starting using PintoStack
+
+After all pending items will disapeare in juju-gui go back to the same terminal window and run:
+```
+./open_webui.sh
+```
+It will give you the similar reply
+```
+You are runing inside docker could not open browser.
+Mesos: http://some-host-1.us-west-2.compute.amazonaws.com:5050
+Marathon: http://some-host-1.us-west-2.compute.amazonaws.com:8080
+Consul: http://some-host-1.us-west-2.compute.amazonaws.com:8500
+Connection to closed.
+```
+Copy the Consul URL ```http://some-host-1.us-west-2.compute.amazonaws.com:8500``` and open it in your browser.
+Here you can navigate information about all nodes and services.
+
+* Find the service named ```ipythonnb``` click it and see the node it is running on (```slave-N```). 
+* Navigate to node information and find ```WAN Adderess``` below you will see public adress (like this ```ec2-some-slave-host.us-west-2.compute.amazonaws.com```) copy it.
+* Open your browser with copird URL with port 31080 (like this ```http://ec2-some-slave-host.us-west-2.compute.amazonaws.com:31080```)
+
 
 Monitor the status of ```pintostack/0``` unit
 
@@ -110,11 +175,10 @@ Monitor the status of ```pintostack/0``` unit
 $ juju stat
 ```
 
-To get access to pintostack context use
+After enviroment setup yo
 
-```
-$ juju ssh pintostack/0
-```
+>INFO: To get access to pintostack context use ```$ juju ssh pintostack/0```
+
 
 ## Using PintoStack actions
 

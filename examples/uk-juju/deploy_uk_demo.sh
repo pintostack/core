@@ -40,3 +40,8 @@ juju add-relation pintostack ipythonnb4pintostack
 juju add-relation pintostack hdfsdn4pintostack
 juju add-relation pintostack ukdata4pintostack
 
+juju expose ipythonnb4pintostack
+
+echo "System is running, you can watch PintoStack bootstrap on"
+juju stat | grep -A 25 juju-gui: | grep public-address:
+
