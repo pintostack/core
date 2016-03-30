@@ -177,7 +177,7 @@ Now you will get a standart iPython NoteBook interface.
 
 Open Marathon URL from previews paragraph (```http://some-host-1.us-west-2.compute.amazonaws.com:8080```) and make sure all applications are in state ```Running``` and there is no application ```/pintostack/upload-uk-data-to-hdfs``` or wait while it finishes.
 
-Than go back to the  iPython NoteBook interface we opened in previes paragrath
+Than go back to the  iPython NoteBook interface we opened in previews paragrath
 * Create a notebook
 * Put the code below to the cell
 * Press ```Run Cell```
@@ -216,7 +216,6 @@ for (line, count) in output:
         print("%s: %i" % (line, count))
 print ("Duration is '%i' ms" % (int(round(time.time() * 1000)) - start_time))
 
-
 %matplotlib inline
 
 import matplotlib
@@ -225,6 +224,8 @@ import matplotlib.pyplot as plt
 
 plt.plot([str(x[0]) for x in output], [str(x[1]) for x in output])
 ```
+> IMPORTANT: You can monitor the execution of tasks in Mesos UI ```Frameworks > pyspark-shell >
+Active Tasks```
 
 
 ## Using PintoStack actions
