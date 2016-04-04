@@ -9,19 +9,34 @@ A new approach to running and managing distributed systems, PintoStack gives you
 ### Install JuJu on Ubuntu
 
 ```bash
-sudo apt-get install python-software-properties
+sudo apt-get install python-software-properties pip
 sudo add-apt-repository ppa:juju/stable
 sudo apt-get update
 sudo apt-get install juju-quickstart juju-core
+sudo pip install charm-tools
 ```
 
 ### Install JuJu on Apple OSX
 
+>IMPORTANT: Before all you need ```Latest Python 3 Release``` installer from [here](https://www.python.org/downloads/mac-osx/) or run ```brew install python3```. In both cases do not forget to close terminal and open a new one after install, to have new settings applied.
+
 To install Juju on OS X without Juju quickstart, follow [the manual install instructions](https://jujucharms.com/docs/getting-started#mac-osx). 
+
+Then run this:
+
+```bash
+sudo pip install charm-tools
+```
 
 ### Install JuJu on Windows
 
 To install Juju on Windows without Juju quickstart, follow [the manual install instructions](https://jujucharms.com/docs/getting-started#windows). 
+
+>IMPORTANT: You need to install Python 3 and run the commabd below in bash shell.
+
+```bash
+sudo pip install charm-tools
+```
 
 ## Configuring EC2 for your cluster
 
@@ -42,6 +57,8 @@ The keys are used to replace password based authentication. EC2 requires you to 
 
 
 ### API Access key and secret
+
+> INFO: If you already have working ```AWS Access Key ID``` and ```AWS Secret Access Key``` you can use it, but make sure it is valid for the ```AWS Region```, and skip this paragraph.
 
  * Open [the IAM console](https://console.aws.amazon.com/iam/home?#home)
  * In the navigation pane, choose Users.
@@ -100,6 +117,8 @@ environments:
 
 Than open terminal window, go to ```examples/uk-juju``` and edit ```config.yaml.tmpl``` and save it to ```config.yaml```. After editing it sould look like this example below:
 
+> REMEMBER: This file below is YAML formated so it is very important to preserv line spaces and leading TABs, you can check your syntax [online](http://www.yamllint.com/).
+
 ```yaml
 ---
 pintostack:
@@ -127,8 +146,6 @@ pintostack:
       -----END RSA PRIVATE KEY-----
 
 ```
-
-> REMEMBER: This file is YAML formated so it is very important to preserv line spaces and leading TABs, you can check your syntax [online](http://www.yamllint.com/).
 
 ### Before begining:
 
@@ -189,6 +206,8 @@ Now you will get a standart iPython NoteBook interface.
 ### Running Python NoteBook 
 
 Open Marathon URL from previews paragraph (```http://some-host-1.us-west-2.compute.amazonaws.com:8080```) and make sure all applications are in state ```Running``` and there is no application ```/pintostack/upload-uk-data-to-hdfs``` or wait while it finishes.
+
+>INFO: Juju Web UI do nto work well in Safari, so please use ```Mozzila``` based browser under OSX.
 
 ![](images/04-ipython-notebook.jpg)
 
