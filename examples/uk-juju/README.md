@@ -4,6 +4,12 @@ PintoStack from DataArt is an open source Docker container system. It is very ea
 
 A new approach to running and managing distributed systems, PintoStack gives you immutable container infrastructure, with service discovery and continuous logging. Simply put, PintoStack is an easy, reliable and complete solution to get your cloud up and running.
 
+This tutorial is based on processing big data from ```http://data.dft.gov.uk``` and extracting valueable infromation from huge amount of publicly available data.
+
+You can download this archive to your local machine and see the file we working with ```Accidents7904.csv```:
+
+```http://data.dft.gov.uk/road-accidents-safety-data/Stats19-Data1979-2004.zip```
+
 ## Install JuJu
 
 ### Install JuJu on Ubuntu
