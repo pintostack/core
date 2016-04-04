@@ -33,6 +33,8 @@ juju deploy local:trusty/hdfsdn4pintostack --to 0
 juju deploy local:trusty/ipythonnb4pintostack --to 0
 juju deploy local:trusty/ukdata4pintostack --to 0
 
+juju expose pintostack
+
 echo "Adding component relations"
 
 juju add-relation pintostack hdfsnn4pintostack
