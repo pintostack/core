@@ -267,13 +267,17 @@ import matplotlib.pyplot as plt
 
 plt.plot([str(x[0]) for x in output], [str(x[1]) for x in output])
 ```
+As a result after proccessing done, you will get the plot below, demonstrating UK traffic accidents statistics by year from 1979 to 2004.
+
+![](images/06-ipython-uk-stat-plots.jpg)
+
 > IMPORTANT: You can monitor the execution of tasks in Mesos UI ```Frameworks > pyspark-shell >
 Active Tasks```
 
 
 ![](images/05-mesos-pyspark-tasks.jpg)
 
-## Using PintoStack actions
+## Using PintoStack actions (only for advanced users requires knowledge of underlying software)
 
 ```
 $ juju action defined  pintostack
