@@ -54,6 +54,18 @@ Vagrant.configure(2) do |config|
           override.ssh.password = CONFIG["MANAGED_SSH_PASSWORD"]
           override.ssh.insert_key = true
   end
+  config.vm.provider :google do |google, override|
+          google.google_project_id = CONFIG["GOOGLE_PROJECT_ID"]
+          google.google_client_email = CONFIG["GOOGLE_CLIENT_EMAIL"]
+          google.google_json_key_location = CONFIG["GOOGLE_JSON_KEY_LOCATION"]
+          google.machine_type = CONFIG["MACHINE_TYPE"]
+          google.image = CONFIG["IMAGE"]
+          google.zone = CONFIG["ZONE"]
+          override.ssh.username = CONFIG["GOOGLE_SSH_USERNAME"]
+          override.ssh.private_key_path = CONFIG["GOOGLE_SSH_KEY_PATH"]
+          override.vm.box = 'google'
+          override.vm.box_url = 'https://github.com/mitchellh/vagrant-google/raw/master/google.box'
+  end
   config.vm.provider :virtualbox do |virtualbox|
           virtualbox.gui = false
           virtualbox.memory = CONFIG["VBOX_SIZE"]

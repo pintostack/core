@@ -1,0 +1,9 @@
+GOOGLE_CLIENT_EMAIL="pintostack@pintostack.iam.gserviceaccount.com"
+GOOGLE_JSON_KEY_LOCATION="/pintostack/key.json"
+GOOGLE_PROJECT_ID=pintostack
+GOOGLE_SSH_USERNAME="myuser"
+GOOGLE_SSH_KEY_PATH="/pintostack/id_rsa"
+
+MACHINE_TYPE=n1-standard-1
+IMAGE=ubuntu-1404-trusty-v20160314
+ZONE=us-east1-b
