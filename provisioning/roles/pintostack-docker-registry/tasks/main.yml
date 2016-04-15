@@ -7,14 +7,14 @@
   register: running
 
 - name: pull docker-registry
-  shell: docker pull registry:2
+  shell: docker pull registry:2.3.1
 
 - name: check docker-registry image
   command: docker images
   register: images
 
 - name: tag docker-registry image
-  shell: docker tag registry:2 docker-registry
+  shell: docker tag registry:2.3.1 docker-registry
   when: "{{ 'docker-registry' not in images.stdout }}"
 
 - name: create dir /var/lib/registry/
