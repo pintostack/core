@@ -59,12 +59,19 @@
     "env":{
         "SERVICE_PORT0_NAME": "{{NAME}}",
         "SERVICE_PORT1_NAME": "{{NAME}}-libprocess",
+        "SERVICE_PORT1_CHECK_SCRIPT": "/bin/true",
         "SERVICE_PORT2_NAME": "{{NAME}}-spark-driver",
+        "SERVICE_PORT2_CHECK_SCRIPT": "/bin/true",
         "SERVICE_PORT3_NAME": "{{NAME}}-spark-fileserver",
+        "SERVICE_PORT3_CHECK_SCRIPT": "/bin/true",
         "SERVICE_PORT4_NAME": "{{NAME}}-spark-broadcast",
+        "SERVICE_PORT4_CHECK_SCRIPT": "/bin/true",
         "SERVICE_PORT5_NAME": "{{NAME}}-spark-blockmanager",
+        "SERVICE_PORT5_CHECK_SCRIPT": "/bin/true",
         "SERVICE_PORT6_NAME": "{{NAME}}-spark-ui",
-        "SERVICE_PORT7_NAME": "{{NAME}}-spark-replclassserver"
+        "SERVICE_PORT6_CHECK_SCRIPT": "/bin/true",
+        "SERVICE_PORT7_NAME": "{{NAME}}-spark-replclassserver",
+        "SERVICE_PORT7_CHECK_SCRIPT": "/bin/true"
     },
     "constraints": [["hostname", "UNIQUE"]],
     "healthChecks": [

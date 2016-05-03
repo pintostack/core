@@ -1,0 +1,17 @@
+name: hdfsdn4pintostack
+summary: Launch HDFS Data Node in PintoStack
+maintainer: Yuri Vlasov <yu.vlasov@gmail.com>
+description: |
+  Launch HDFS Data Node in PintoStack
+tags:
+  # Replace "misc" with one or more whitelisted tags from this list:
+  # https://jujucharms.com/docs/stable/authors-charm-metadata
+  - big-data
+  - analytics
+subordinate: false
+provides:
+  hdfs:
+    interface: hdfs-dn
+requires:
+  pintostack_task:
+    interface: marathon-push

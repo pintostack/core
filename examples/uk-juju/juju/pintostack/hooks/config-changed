@@ -1,0 +1,54 @@
+#!/bin/bash
+set -e # If any command fails, stop execution of the hook with that error
+
+status-set maintenance "Refrashing pintostack cluster state"
+
+if [ -n "$(docker ps | grep pintostack-container)" ]; then 
+	status-set maintenance "Stoping pintostack cluster"
+	docker exec pintostack-container bash -c "cd /pintostack; vagrant destroy -f"
+	status-set maintenance "Deleting old pintostack container"
+	docker rm -f pintostack-container
+fi
+
+##
+status-set maintenance "Creating pintostack configuration"
+if [ -f /opt/pintostack/.env ]; then
+	rm -f /opt/pintostack/.env
+fi
+if [ -d /opt/pintostack/.vagrant ]; then
+	rm -rf /opt/pintostack/.vagrant
+fi
+
+RESOURCE_PROVIDER=`config-get resource-provider`
+VPC_IF=`config-get "vpc-if"`
+MASTERS=`config-get masters-number`
+SLAVES=`config-get slaves-number`
+
+sed -i.bak "/^MASTERS.*/d" /opt/pintostack/conf/source.global
+sed -i.bak "/^SLAVES.*/d" /opt/pintostack/conf/source.global
+
+echo "MASTERS=${MASTERS}" >> /opt/pintostack/conf/source.global
+echo "SLAVES=${SLAVES}" >> /opt/pintostack/conf/source.global
+
+config-get resource-provider-config > /opt/pintostack/conf/source.${RESOURCE_PROVIDER}
+echo "SSH_KEY_FILE=conf/id_rsa" >> /opt/pintostack/conf/source.${RESOURCE_PROVIDER}
+echo "RESOURCE_PROVIDER=${RESOURCE_PROVIDER}" >> /opt/pintostack/conf/source.${RESOURCE_PROVIDER}
+echo "VPC_IF=${VPC_IF}" >> /opt/pintostack/conf/source.${RESOURCE_PROVIDER}
+
+config-get ssh-private-key > /opt/pintostack/conf/id_rsa
+config-get ssh-publick-key > /opt/pintostack/conf/id_rsa.pub
+chmod 0600 /opt/pintostack/conf/id_rsa
+chmod 0600 /opt/pintostack/conf/id_rsa.pub
+
+## Remove empty public key to avoid ssh stuck while bootstrap
+if [ $( stat --printf="%s" /opt/pintostack/conf/id_rsa.pub ) -le 200 ]; then
+	rm -f /opt/pintostack/conf/id_rsa.pub
+fi
+
+cd /opt/pintostack
+
+##
+status-set waiting "Pintostack managment container configuration updated"
+
+##
+status-set waiting "Pintostack managment node updating finished"

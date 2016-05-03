@@ -1,0 +1,5 @@
+#!/bin/sh
+set -e
+juju-log "Starting ${0} script"
+relation-set hostname=`unit-get private-address` port=80
+

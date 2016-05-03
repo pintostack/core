@@ -1,0 +1,59 @@
+options:
+  resource-provider:
+    type: string
+    default: "aws"
+    description: "Resource provider"
+
+  vpc-if:
+    type: string
+    default: "eth0"
+    description: "VPC Network IF name usualy eth1 but for AWS eth0"
+
+  resource-provider-config:
+    type: string
+    default: |
+        AWS_KEY_ID='AKIAI5Ksdfgsgtrhrehr'
+        AWS_ACCESS_KEY='9MkgfhgjdfsgfdskghdfkljsghdklshjslPUgfhgfwW8N8uz'
+        AWS_KEYPAIR_NAME=PintoStack
+        AWS_ROOT_PARTITION_SIZE=20
+        AWS_AMI=ami-5189a661
+        AWS_INSTANCE_TYPE=t2.micro
+        AWS_REGION=us-west-2
+        AWS_SECURITY_GROUPS='juju-amazon,allow-pintostack'
+        AWS_SSH_USERNAME=ubuntu
+        AWS_TERMINATE_ON_SHUTDOWN=true
+
+    description: "Resource provider configuration content /pintostack/conf/source.* more [examples](https://github.com/pintostack/core/tree/master/conf)"
+
+  masters-number:
+    type: int
+    default: 1
+    description: "Number of MESOS master hosts to deploy"
+
+  slaves-number:
+    type: int
+    default: 2
+    description: "Number of MESOS slave hosts to deploy"
+
+  ssh-private-key:
+    type: string
+    default: |
+      -----BEGIN RSA PRIVATE KEY-----
+      MIIEpQIBAAKCAQEA4s9/wZS02ds3AYO2j+riPAxIdD8KTe7Em4okE7VE8P5hwxmT94wFVNs11JP6
+      jxb1MLdbcWcKVH4JIBsdYW94C0R2XI7XYJ7Znetxhh0H3R97jQM9TIF6wYKt1FAAfADh0a76mRxq
+      C2GfAg+sGHZzzty5ooPnBhpfMuLsWcWLrf3LpCelYzFl1XG+2ZSLX5O1rA5oLV6INHQIOjDhCQ46
+      GpSL3O7NkIIUOMYiRmMafX2HKtlOmEh1wGPeRPjMozv0NjkCgYEAsFMcem96a2Acezf7XfBEiqDD
+      vJlTxFLaaZ/e+kJ4ohJ17cEKoHueN80z3G47yTN25dJmAZjgkr3MGWebJUyMmERki9/doG+bOaD0
+      OIfT/6zv8OZ1TOusFHWSJpIgKK80umxOHl7ALGURAIQjc7knTht7btx2Ik+SKlwrmJwFDAE=
+      -----END RSA PRIVATE KEY-----
+
+    description: "Put here the content of .pem or id_rsa file"
+
+  ssh-publick-key:
+    type: string
+    default: |
+      -----BEGIN RSA PUBLIC KEY-----
+      fjvldfjsvklfjdlbvkjdfklsbjkldgfjbgklfjbklgfjbklfdjkgfjbkldbjfj
+      -----END RSA PUBLIC KEY-----
+
+    description: "Put here the content of .pem or id_rsa.pub file if do not have one just leave it like it is"

@@ -11,7 +11,7 @@ than open http://MASTER_IP:8080  and http://MASTER_IP:5050"
 fi
 #!/bin/bash
 if [ -f /.dockerinit ]; then
-    echo "You are runing inside docker could not open browser.";
+    echo "You are running inside docker could not open browser.";
 	echo "Mesos: http://${MASTER_1}:5050"
 	echo "Marathon: http://${MASTER_1}:8080"
 	echo "Consul: http://${MASTER_1}:8500"
