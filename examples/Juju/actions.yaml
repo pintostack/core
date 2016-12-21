@@ -1,0 +1,26 @@
+marathon-push:
+  description: Push JSON task description to marathon.
+  params:
+    jsonfile:
+      type: string
+      description: The file name in pintostack/marathon.
+  required: [jsonfile]
+  additionalProperties: false
+
+docker-push:
+  description: Push Dockerfile to be build in DockerImage and put to docker-registry.service.consul:5000.
+  params:
+    dockername:
+      type: string
+      description: The directory name in pintostack/docker containting Dockerfile used as Imange name.
+  required: [dockername]
+  additionalProperties: false
+
+run:
+  description: Run any comand in pintostack context.
+  params:
+    cmd:
+      type: string
+      description: The directory name in pintostack/docker containting Dockerfile used as Imange name.
+  required: [cmd]
+  additionalProperties: false

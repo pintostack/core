@@ -1,0 +1,80 @@
+#!/bin/bash
+set -e # If any command fails, stop execution of the hook with that error
+apt-get install -y docker.io curl wget unzip
+docker pull pintostack/pintostack
+
+dl="https://github.com/pintostack/core/archive/master.zip"
+# Grab Pintostack from upstream.
+status-set maintenance "Fetching and installing pintostack"
+wget "$dl" -O /tmp/pintostack.zip
+# IDEMPOTENCY is very important in all charm hooks, even the install hook.
+if [ -d /tmp/pintostack ]; then
+  rm -rf /tmp/pintostack
+fi
+if [ -d /tmp/core-master ]; then
+  rm -rf /tmpt/core-master
+fi
+if [ -d /opt/pintostack ]; then
+  mv -f /opt/pintostack /tmp/
+fi
+if [ -d /opt/core-master ]; then
+  mv -f /opt/core-master /tmp/
+fi
+
+# Extract to a known location
+juju-log "Extracting pintostack"
+if [ ! -d /opt ]; then
+	mkdir /opt
+fi
+unzip /tmp/pintostack.zip -d /opt
+mv /opt/core-master/ /opt/pintostack
+
+##
+status-set maintenance "Creating pintostack configuration"
+
+RESOURCE_PROVIDER=`config-get resource-provider`
+VPC_IF=`config-get "vpc-if"`
+MASTERS=`config-get masters-number`
+SLAVES=`config-get slaves-number`
+
+sed -i.bak "/^MASTERS.*/d" /opt/pintostack/conf/source.global
+sed -i.bak "/^SLAVES.*/d" /opt/pintostack/conf/source.global
+
+echo "MASTERS=${MASTERS}" >> /opt/pintostack/conf/source.global
+echo "SLAVES=${SLAVES}" >> /opt/pintostack/conf/source.global
+
+config-get resource-provider-config > /opt/pintostack/conf/source.${RESOURCE_PROVIDER}
+echo "SSH_KEY_FILE=conf/id_rsa" >> /opt/pintostack/conf/source.${RESOURCE_PROVIDER}
+echo "RESOURCE_PROVIDER=${RESOURCE_PROVIDER}" >> /opt/pintostack/conf/source.${RESOURCE_PROVIDER}
+echo "VPC_IF=${VPC_IF}" >> /opt/pintostack/conf/source.${RESOURCE_PROVIDER}
+
+#cat <<EOF > /opt/pintostack/conf/
+#EOF
+
+config-get ssh-private-key > /opt/pintostack/conf/id_rsa
+config-get ssh-publick-key > /opt/pintostack/conf/id_rsa.pub
+chmod 0600 /opt/pintostack/conf/id_rsa
+chmod 0600 /opt/pintostack/conf/id_rsa.pub
+
+## Remove empty public key to avoid ssh stuck while bootstrap
+if [ $( stat --printf="%s" /opt/pintostack/conf/id_rsa.pub ) -le 200 ]; then
+	rm -f /opt/pintostack/conf/id_rsa.pub
+fi
+
+##
+status-set waiting "Waiting pintostack managment container start"
+
+cd /opt/pintostack
+
+##
+status-set waiting "Waiting pintostack managment container to build"
+
+docker build -t localhost-pintostack .
+
+##
+status-set waiting "Waiting pintostack managment container to get running"
+
+docker create -v $(pwd)/conf:/pintostack/conf -v $(pwd)/.vagrant:/pintostack/.vagrant --name=pintostack-container localhost-pintostack
+
+##
+status-set waiting "Pintostack managment node bootstrap finished"
